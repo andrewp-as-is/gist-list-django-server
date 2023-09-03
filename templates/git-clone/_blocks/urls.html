@@ -1,0 +1,9 @@
+<h4 class="border-bottom m-2 text-center text-mono">URLs</h4>
+
+<span class="text-mono">
+https://gist.github.com/&lt;LOGIN&gt;/&lt;ID&gt;/archive/&lt;VERSION&gt;.zip
+</span>
+
+<a class="btn" href="/download.txt?login={{ request.user.login }}"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#browser" /></svg>View in browser</a>
+
+<a class="btn" href="/download.txt?login={{ request.user.login }}&download=1"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#download" /></svg>Download</a>

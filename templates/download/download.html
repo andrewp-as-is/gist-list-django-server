@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="page-content container-lg text-center">
+    <h3 class="mb-4 text-center">Download</h3>
+
+    {% if github_user %}
+        {% include "_blocks/user-tools/user.html" %}
+        {% include "download/_blocks/urls.html" %}
+        {% include "download/_blocks/scripts.html" %}
+        {% if unknown_version_gist_list %}
+        {% include "_blocks/user-tools/unknown_version_gist_list.html" %}
+        {% endif %}
+    {% else %}
+        {% include "_blocks/user-tools/search.html" %}
+    {% endif %}
+</div>
+{% endblock %}

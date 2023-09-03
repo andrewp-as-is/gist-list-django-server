@@ -1,0 +1,40 @@
+<div class="BtnGroup">
+          <button data-disable-invalid="" data-disable-with="" type="submit" class="hx_create-pr-button js-sync-select-menu-button btn-primary btn BtnGroup-item">
+                    Create public gist
+                  </button>
+          <details class="details-reset details-overlay select-menu BtnGroup-parent position-relative">
+            <summary data-disable-invalid="" data-disable-with="" aria-label="Select a type of pull request" role="button" class="select-menu-button btn-primary btn BtnGroup-item float-none" aria-haspopup="menu"></summary>
+            <details-menu class="select-menu-modal position-absolute right-0 js-sync-select-menu-text" style="z-index: 99" role="menu">
+              <label class="select-menu-item" tabindex="0" role="menuitemradio" aria-checked="false">
+                <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon octicon-check select-menu-item-icon">
+    <path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
+</svg>
+                <input type="radio" name="gist[public]" id="gist_public_0" value="0" checked="checked">
+                <div class="select-menu-item-text">
+                  <span class="select-menu-item-heading">Create secret gist</span>
+                  <span class="description text-normal">
+                    Secret gists are hidden by search engines but visible to anyone you give the URL to.
+                  </span>
+                  <span data-menu-button-text="" hidden="">
+                    Create secret gist
+                  </span>
+                </div>
+              </label>
+              <label class="select-menu-item" tabindex="0" role="menuitemradio" aria-checked="true">
+                <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" class="octicon octicon-check select-menu-item-icon">
+    <path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
+</svg>
+                <input type="radio" name="gist[public]" id="gist_public_1" value="1">
+                <div class="select-menu-item-text">
+                  <span class="select-menu-item-heading">Create public gist</span>
+                  <span class="description text-normal">
+                    Public gists are visible to everyone.
+                  </span>
+                  <span data-menu-button-text="" hidden="">
+                    Create public gist
+                  </span>
+                </div>
+              </label>
+            </details-menu>
+          </details>
+        </div>

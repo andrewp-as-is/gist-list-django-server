@@ -1,0 +1,13 @@
+/scripts
+/about и тд
+
+scripts vs id, download, clone
+scripts vs backup
+
+
+/scripts
+/gist-id
+/gist-clone
+/scripts/download
+/scripts/gist-clone
+/scripts/gist-id

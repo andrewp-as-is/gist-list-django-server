@@ -1,0 +1,12 @@
+{% load timestamp_timesince %}
+
+<span class="color-fg-muted">
+{% if refresh_lock %}
+  started {{ refresh_lock.get_seconds }} seconds ago
+  {% else %}
+  {% if refresh_time %}refreshed {{ refresh_time.timestamp|timestamp_timesince }}{% endif %}
+{% endif %}
+</span>
+<a class="btn btn-sm" {% if refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="/{{ login  }}/refresh">
+  <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if refresh_lock %}Refreshing...{% else %}Refresh{% endif %}
+</a>

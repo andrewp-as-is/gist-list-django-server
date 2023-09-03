@@ -1,0 +1,24 @@
+<details class="details-reset details-overlay select-menu position-relative mr-2 hx_rsm">
+<summary class="btn select-menu-button text-normal" aria-haspopup="menu" role="button">
+    {{ details.summary.name }}:
+    <span class="text-bold">{{ details.summary.text }}</span>
+</summary>
+<details-menu class="select-menu-modal position-absolute right-0" style="z-index: 99;" role="menu">
+    <div class="select-menu-header text-left">
+        <span class="select-menu-title">{{ details.menu.title }}</span>
+    </div>
+    <div class="select-menu-list">
+        {% for item in details.menu.item_list %}
+        <a class="select-menu-item {% if item.selected %}selected{% endif %}" {% if item.selected %}aria-checked="true"{% endif %} role="menuitemradio" href="{{ item.url }}" rel="nofollow">
+        {% if item.selected %}
+        <svg class="octicon select-menu-item-icon" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
+        {% endif %}
+            <span class="select-menu-item-text {% if item.selected %}text-bold{% endif %}">
+                {{ item.text }}
+                {% if item.count >= 0 %} <span class="Counter float-right">{{ item.count }}</span>{% endif %}
+            </span>
+        </a>
+        {% endfor %}
+    </div>
+</details-menu>
+</details>

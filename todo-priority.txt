@@ -1,0 +1,7 @@
+1) NEW USER logged-in first time: 100
+2) authenticated user refresh: - 90
+3) UNKNOWN user refresh: 80
+4) logged-in after 1 day: 70
+5) user refresh: 50
+---
+followers/following: priority - 10

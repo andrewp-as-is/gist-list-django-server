@@ -1,0 +1,59 @@
+.numbers-summary {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+.numbers-summary li {
+    display: table-cell;
+    padding: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+.numbers-summary li>.nolink, .numbers-summary li>a {
+    display: block;
+    padding: 10px 0;
+    color: #586069;
+    text-decoration: none;
+}
+
+.overall-summary-bottomless {
+    margin-bottom: 0;
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+}
+.overall-summary {
+    position: relative;
+    margin-bottom: 10px;
+    border: 1px solid #dfe2e5;
+    border-radius: 3px;
+}
+
+.file-navigation-options {
+    float: right;
+    margin-left: 3px;
+}
+.file-navigation-option {
+    position: relative;
+    display: inline-block;
+    margin-left: 3px;
+}
+.file-navigation-option .input-group {
+    width: 290px;
+}
+.input-group-button {
+    width: 1%;
+    vertical-align: middle;
+}
+.input-group-button, .input-group .form-control {
+    display: table-cell;
+}
+.file-navigation-option .select-menu {
+    display: inline-block;
+    margin-right: 0;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+.file-navigation-option .input-group .select-menu-button {
+    position: relative;
+    z-index: 2;
+}

@@ -1,0 +1,28 @@
+.post__social-share .social-links__list {
+    margin: 0;
+    padding: 0;
+}
+.post__social-share .social-links__item {
+    list-style: none;
+    margin: 0 16px 16px 0;
+    padding: 0;
+}
+.post__social-share .social-links__item a {
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 16px;
+}
+.post__social-share .social-links__item a .icon {
+    fill: #d1d5da;
+    margin-right: 12px;
+}
+.post__social-share .social-links__text {
+    color: #6a737d;
+    font-weight: 400;
+}
+.share a .icon {
+    fill: #d1d5da;
+    margin-right: 12px;
+}

@@ -1,0 +1,6 @@
+в details перенести и переделать
+---
+url custom
+https://gist.github.com/andrewp-as-is/public
+аналоггично с starred
+https://gist.github.com/andrewp-as-is/starred/secret

@@ -1,0 +1,5 @@
+<td class="no-wrap">
+{% for language in gist.get_languages %}
+<a class="f6 no-wrap text-mono" href="{{ request.path }}?language={{ language|lower }}">{{ language }}</a>{% if not forloop.last %}<span class="text-gray">,</span>{% endif %}
+{% endfor %}
+</td>

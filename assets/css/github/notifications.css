@@ -1,0 +1,40 @@
+.notifications .read.list-group-item {
+    background-color: #f6f8fa;
+}
+.notifications .read .list-group-item-name>a, .notifications .read .notification-actions {
+    color: #586069;
+}
+.notifications .list-group-item-name a {
+    display: block;
+    max-width: 460px;
+}
+
+.notifications .list-group-item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 35px;
+    border-width: 1px 0 0;
+}
+.notifications .list-group-item:first-child {
+    border: 0;
+}
+.notifications .read .mark-as-read {
+    display: none;
+}
+.notification-actions {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    list-style: none;
+}
+.notification-actions .age {
+    width: 120px;
+    font-size: 12px;
+    color: #586069;
+}
+.notification-actions li {
+    float: right;
+    margin-left: 10px;
+    font-size: 16px;
+    line-height: 20px;
+}

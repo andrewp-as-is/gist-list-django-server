@@ -1,0 +1,25 @@
+1) алгоритм (stars sum/etc)
+2) request что сложнее
+3) просто так top user list не нужно, как минимум еще нужно gist list, followers, following
+followers огромный лист зачем?
+но для топа following оч полезно было бы
+4) admin token
+5) admin token check
+6) баланс тк ппц же
+request limit
+7) pagination cursor же может слететь тк в разном порядке
+8) засирание requests worker
+9) etag/etc тк довольно много данных же
+10) refresh.etag кстати?
+time.timestamp аналогично, в refresh
+github_user_refresh.response_info (url,)
+11) search top gists
+12) command naming
+github_demo_data.py
+----
+workflow
+1) response хранится какое-то время (какое?) и можно от этого исходить
+users?page=N
+и далее остальное
+2) etag/time
+аналогично с обычным refresh, см выше

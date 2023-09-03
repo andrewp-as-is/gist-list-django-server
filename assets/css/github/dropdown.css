@@ -1,0 +1,101 @@
+.dropdown {
+    position: relative;
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    width: 160px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 2px;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(27,31,35,.15);
+    border-radius: 4px;
+    box-shadow: 0 1px 15px rgba(27,31,35,.15);
+}
+.dropdown-menu-sw {
+    right: 0;
+    left: auto;
+}
+.dropdown-menu:after, .dropdown-menu:before {
+    position: absolute;
+    display: inline-block;
+    content: "";
+}
+.dropdown-menu-sw:after {
+    top: -14px;
+    right: 10px;
+    left: auto;
+}
+.dropdown-menu:after {
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+}
+.dropdown-menu:after, .dropdown-menu:before {
+    position: absolute;
+    display: inline-block;
+    content: "";
+}
+
+.dropdown-item {
+    display: block;
+    padding: 4px 8px 4px 16px;
+    overflow: hidden;
+    color: #24292e;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #fff;
+    text-decoration: none;
+    background-color: #0366d6;
+    outline: none;
+}
+.dropdown-item:focus >.octicon,.dropdown-item:hover>.octicon{
+    color:inherit;opacity:1
+}
+.dropdown-item.btn-link, .dropdown-signout{width:100%;text-align:left}
+.dropdown-signout{background:none;border:0}
+.dropdown-divider{display:block;height:0;margin:8px 0;border-top:1px solid #e1e4e8}
+.dropdown-header{padding:4px 16px;font-size:12px;color:#586069}
+
+.dropdown-divider {
+    display: block;
+    height: 0;
+    margin: 8px 0;
+    border-top: 1px solid #e1e4e8;
+}
+.dropdown-caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: middle;
+    content: "";
+    border-top-style: solid;
+    border-top-width: 4px;
+    border-right: 4px solid transparent;
+    border-bottom: 0 solid transparent;
+    border-left: 4px solid transparent;
+}
+.dropdown-menu-sw:before {
+    top: -16px;
+    right: 9px;
+    left: auto;
+}
+.dropdown-menu:before {
+    border: 8px solid transparent;
+    border-bottom-color: rgba(27,31,35,.15);
+}
+.dropdown-menu:after, .dropdown-menu:before {
+    position: absolute;
+    display: inline-block;
+    content: "";
+}
+.dropdown-menu:after {
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+}

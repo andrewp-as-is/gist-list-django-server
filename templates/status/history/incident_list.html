@@ -1,0 +1,29 @@
+{% extends "_base.html" %}
+
+{% load timestamp2datetime %}
+{% load timestamp_timesince %}
+
+{% block content %}
+<div class="page-content container-lg">
+<h3 class="text-center">Incidents</h3>
+<table class="width-full">
+{% for incident in incident_list %}
+<tr class="Box-row Box-row--hover-gray">
+    <td class="p-1 text-bold">
+    <svg class="octicon mr-1 color-fg-danger" style="width:16px;height:16px"><use xlink:href="#alert" /></svg>
+    </td>
+    <td class="p-1 text-bold width-full">{{ incident.message|default:'' }}</td>
+    <td class="color-fg-muted no-wrap p-1">{{ incident.timestamp|timestamp2datetime|date:'H:m:s' }} UTC</td>
+    <td class="color-fg-muted no-wrap p-1">{{ incident.timestamp|timestamp_timesince }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+TODO
+
+https://www.githubstatus.com/history
+КРАСИВО )
+2) red vs yellow color
+
+
+{% endblock %}

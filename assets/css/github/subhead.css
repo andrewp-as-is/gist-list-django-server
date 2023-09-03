@@ -1,0 +1,12 @@
+.Subhead {
+    display: flex;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e1e4e8;
+    flex-flow: row wrap;
+}
+.Subhead-heading {
+    font-size: 24px;
+    font-weight: 400;
+    flex: 1 1 auto;
+}

@@ -1,0 +1,27 @@
+<h4 class="border-bottom m-2 text-center text-mono">Scripts</h4>
+
+<table align="center">
+<tbody>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold text-mono">
+        curl -s https://gist.github.com/&lt;LOGIN&gt;/&lt;ID&gt;/archive/&lt;VERSION&gt;.zip -o &lt;ID&gt;.zip
+    </td>
+    <td class="p-1">
+        <a class="btn" href="/download/curl.sh?login={{ request.user.login }}"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#browser" /></svg>View in browser</a>
+    </td>
+    <td class="p-1">
+        <a class="btn" href="/download/curl.sh?login={{ request.user.login }}&download=1"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#download" /></svg>Download</a>
+    </td>
+</tr>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold text-mono">
+        wget -q https://gist.github.com/&lt;LOGIN&gt;/&lt;ID&gt;/archive/&lt;VERSION&gt;.zip -O &lt;ID&gt;.zip
+    </td>
+    <td class="no-wrap p-1">
+        <a class="btn" href="/download/wget.sh?login={{ request.user.login }}"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#browser" /></svg>View in browser</a>
+    </td>
+    <td class="p-1">
+        <a class="btn" href="/download/wget.sh?login={{ request.user.login }}&download=1"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#download" /></svg>Download</a>
+    </td>
+</tr>
+</table>

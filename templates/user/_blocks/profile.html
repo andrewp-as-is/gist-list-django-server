@@ -1,0 +1,92 @@
+{% load format_count %}
+
+{% block extra_head %}
+<script>
+function avatar404() {
+avatar = document.getElementById('avatar');
+html = '<img src="https://github.com/Page-Not-Found.png?size=260"  width="260px" height="260px" />'
+if(avatar.outerHTML) {
+    avatar.outerHTML=html;
+}
+  else {
+      var tmpObj=document.createElement("div");
+      tmpObj.innerHTML='42';
+      ObjParent=Obj.parentNode;
+      ObjParent.replaceChild(tmpObj,Obj);
+      ObjParent.innerHTML=ObjParent.innerHTML.replace('<div>42</div>',html);
+  }
+}
+</script>
+{% endblock %}
+
+<div class="clearfix d-flex d-md-block flex-items-center mb-4 mb-md-0">
+    <a class="Link--muted" href="{{ github_user.get_absolute_url }}">
+        <img id="avatar" alt="" width="260px" height="260px" class="avatar avatar-before-user-status border" src="https://github.com/{{ login }}.png?size=260" style="overflow:hidden" onerror="avatar404()">
+    </a>
+    <h1 class="vcard-names-container float-left col-12 py-3">
+        {% if github_user.name %}
+        <span class="p-name vcard-fullname d-block overflow-hidden" itemprop="name">{{ github_user.name }}</span>
+        {% endif %}
+        <span class="p-nickname vcard-username d-block" itemprop="additionalName">{{ github_user.login }}</span>
+    </h1>
+</div>
+{% if github_user.bio %}
+<div class="p-note user-profile-bio mb-3 js-user-profile-bio f4">
+  <div>{{ github_user.bio }}</div>
+</div>
+{% endif %}
+
+{% if github_user and github_user.type != 'Organization' %}
+<div class="flex-order-1 flex-md-order-none mt-2 mt-md-0">
+  <div class="mb-3">
+    {% if github_user.followers_count != None %}
+    <a class="Link--secondary no-underline no-wrap" href="{{ github_user.get_absolute_url }}/followers">
+      <svg class="octicon text-icon-tertiary" style="width:16px;height:16px"><use xlink:href="#people" /></svg>
+      <span class="text-bold color-text-primary">{{ github_user.followers_count|format_count }}</span>
+      followers
+    </a>
+    {% endif %}
+    {% if github_user.following_count != None %}
+    · <a class="Link--secondary no-underline no-wrap" href="{{ github_user.get_absolute_url }}/following">
+      <span class="text-bold color-text-primary">{{ github_user.following_count|format_count }}</span>
+      following
+    </a>
+    {% endif %}
+    {% if github_user.stars_count != None %}
+    · <a class="Link--secondary no-underline no-wrap" href="{{ github_user.get_absolute_url }}/stars">
+        <svg class="octicon text-icon-tertiary" style="width:16px;height:16px"><use xlink:href="#star" /></svg>
+        <span class="text-bold color-text-primary">{{ github_user.stars_count|format_count }}</span>
+    </a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+{% if github_user.company or github_user.location or github_user.blog %}
+<ul class="vcard-details mb-3">
+{% if github_user.company %}
+<li itemprop="worksFor" class="vcard-detail pt-1 css-truncate css-truncate-target">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#organization" /></svg>
+    <span class="p-label">{{ github_user.company }}</span>
+</li>
+{% endif %}
+{% if github_user.location %}
+<li itemprop="homeLocation" show_title="false" aria-label="Home location: {{ github_user.location }}" class="vcard-detail pt-1 css-truncate css-truncate-target">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#location" /></svg>
+    <span class="p-label">{{ github_user.location }}</span>
+</li>
+{% endif %}
+{% if github_user.blog %}
+<li itemprop="url" data-test-selector="github_user-website-url" class="vcard-detail pt-1 css-truncate css-truncate-target">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
+    <a class="Link--muted" rel="nofollow me" href="{{ github_user.blog }}">{{ github_user.blog }}</a>
+</li>
+{% endif %}
+</ul>
+{% endif %}
+{% include "user/_blocks/languages.html" %}
+
+<a class="btn width-full text-center mt-3" href="https://github.com/{{ login }}" style="width:260px" target="_blank">View GitHub profile</a>
+{% if github_user %}
+<a class="btn width-full text-center mt-2" href="https://gist.github.com/{{ login }}" style="width:260px" target="_blank">View Gists profile</a>
+{% endif %}

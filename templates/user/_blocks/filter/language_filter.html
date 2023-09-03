@@ -1,0 +1,17 @@
+{% if github_user %}
+<h3 class="h4 mb-2">Filter by languages</h3>
+{% if language_filter %}
+<ul class="filter-list small">
+{% for item in language_filter.item_list %}
+<li class="language">
+  <span class="bar" style="width: 2px;"></span>
+    <a class="filter-item {% if item.selected %}selected{% endif %}" href="{{ item.url }}">
+    <span class="count">
+      {{ item.count }}
+    </span> {{ item.name }}
+    </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endif %}

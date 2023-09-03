@@ -1,0 +1,15 @@
+Django
+dj-database-url
+django-configurations-autoenv
+django-configurations-wsgi
+django-github-oauth
+django-github-colors
+django_passwordless_user
+django-passwordless-auth
+
+django-emoji
+django-manifest-loader
+
+gunicorn
+psycopg2
+requests

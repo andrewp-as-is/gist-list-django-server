@@ -1,0 +1,11 @@
+.btn-secret {
+    background-color: #e6e1c0;
+    background-image: linear-gradient(#fffad5,#e6e1c0);
+    border-color: #e3deb9;
+}
+.btn-secret.disabled, .btn-secret.disabled:hover, .btn-secret:disabled, .btn-secret:disabled:hover {
+    color: hsla(0,0%,40%,.5);
+    background-color: #e6e1c0;
+    background-image: linear-gradient(#fffad5,#e6e1c0);
+    border-color: #e3deb9;
+}

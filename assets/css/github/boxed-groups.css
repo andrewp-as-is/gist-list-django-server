@@ -1,0 +1,42 @@
+.boxed-group {
+    position: relative;
+    margin-bottom: 30px;
+    border-radius: 3px;
+}
+
+.boxed-group .heading, .boxed-group>h3 {
+    display: block;
+    padding: 9px 10px 10px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 17px;
+    background-color: #f6f8fa;
+    border: 1px solid rgba(27,31,35,.15);
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+}
+.boxed-group .heading a, .boxed-group>h3 a {
+    color: inherit;
+}
+.boxed-group.flush .boxed-group-inner {
+    padding: 0;
+}
+.boxed-group-inner {
+    padding: 10px;
+    color: #586069;
+    background: #fff;
+    border: 1px solid #d1d5da;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.boxed-group.flush .boxed-group-inner {
+    padding: 0;
+}
+.boxed-group-inner {
+    padding: 10px;
+    color: #586069;
+    background: #fff;
+    border: 1px solid #d1d5da;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}

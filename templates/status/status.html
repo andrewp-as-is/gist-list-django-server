@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="page-content container-lg">
+    {% if check_list %}
+        {% include "status/_blocks/check_list.html" %}
+        {% if incident_list %}
+        {% include "status/_blocks/incident_list.html" %}
+        {% endif %}
+    {% else %}
+        {% include "status/_blocks/error.html" %}
+    {% endif %}
+</div>
+{% endblock %}

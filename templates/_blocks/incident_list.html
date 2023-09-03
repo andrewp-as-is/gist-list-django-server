@@ -1,0 +1,10 @@
+{% load timestamp_timesince %}
+
+<table>
+{% for incident in incident_list %}
+<tr>
+    <td class="px-1"><a href="{{ incident.get_absolute_url }}">{{ incident.name }}</a></td>
+    <td class="px-1"><a href="{{ e.get_absolute_url }}">{{ e.timestamp|timestamp_timesince }}</a></td>
+</tr>
+{% endfor %}
+</table>

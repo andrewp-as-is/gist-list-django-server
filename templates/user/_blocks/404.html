@@ -1,0 +1,12 @@
+{% load timestamp_timesince %}
+
+<div class="blankslate">
+    <h1 class="mb-1">404</h1>
+    <h3 class="mb-1">User Not Found</h3>
+    <div class="color-fg-muted">
+        checked {{ user404.timestamp|timestamp_timesince }}
+    </div>
+    <div class="mb-1">
+        <a class="color-fg-danger" href="https://github.com/{{ login }}">https://github.com/{{ login }}</a>
+    </div>
+</div>

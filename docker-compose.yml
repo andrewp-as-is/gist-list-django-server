@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  django:
+    image: gists42.com-frontend:latest
+    container_name: gists42.com-frontend
+    env_file:
+      - .env

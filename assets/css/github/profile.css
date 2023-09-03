@@ -1,0 +1,49 @@
+.vcard-username {
+    color: #666;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+}
+.vcard-detail {
+    font-size: 14px;
+    padding-left: 24px;
+}
+.vcard-detail .octicon {
+    color: #6a737d;
+    float: left;
+    margin-left: -24px;
+    margin-top: 3px;
+    text-align: center;
+    width: 16px;
+}
+.vcard-details {
+    list-style: none;
+}
+.vcard-details .css-truncate.css-truncate-target {
+    max-width: 100%;
+    width: 100%;
+}
+.vcard-names {
+    line-height: 1;
+}
+.vcard-fullname {
+    font-size: 26px;
+    line-height: 30px;
+}
+.vcard-username {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+    color: #666;
+}
+.user-profile-bio {
+    overflow: hidden;
+    font-size: 14px;
+}
+.form-group .form-control.user-profile-bio-field {
+    width: 440px;
+    height: 5.35em;
+    min-height: 0;
+}

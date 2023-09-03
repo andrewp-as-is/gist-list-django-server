@@ -1,0 +1,25 @@
+<details class="details-overlay details-reset js-feature-preview-indicator-container">
+
+  <summary class="Header-link" aria-label="View profile and more" data-ga-click="Header, show menu, icon:avatar" aria-haspopup="menu" role="button">
+    <img alt="@{{ request.user.login }}" width="20" height="20" src="https://github.com/{{ request.user.login }}.png?size=20" class="avatar avatar-user">
+
+      <span class="feature-preview-indicator js-feature-preview-indicator" hidden=""></span>
+    <span class="dropdown-caret"></span>
+  </summary>
+  <details-menu class="dropdown-menu dropdown-menu-sw mt-n2" style="width: 180px" role="menu">
+    <div class="header-nav-current-user css-truncate"><a role="menuitem" class="no-underline user-profile-link px-3 pt-2 pb-2 mb-n2 mt-n1 d-block">Signed in as <strong class="css-truncate-target">{{ request.user.login }}</strong></a></div>
+    <div role="none" class="dropdown-divider"></div>
+    <a role="menuitem" class="dropdown-item" href="/{{ request.user.login }}">Your gists</a>
+    <a role="menuitem" class="dropdown-item" href="/{{ request.user.login }}/starred">Starred gists</a>
+
+    <div role="none" class="dropdown-divider"></div>
+    <a role="menuitem" class="dropdown-item" href="/token">Your token</a>
+
+    <div role="none" class="dropdown-divider"></div>
+    <a role="menuitem" class="dropdown-item" href="https://github.com/{{ login }}">Your Github profile</a>
+    <a role="menuitem" class="dropdown-item" href="https://gist.github.com/{{ login }}">Your Gists profile</a>
+
+    <div role="none" class="dropdown-divider"></div>
+    <a class="dropdown-item dropdown-signout" href="/logout">Sign out</a>
+  </details-menu>
+</details>

@@ -1,0 +1,8 @@
+search
+----
+search gist
+не нужен тк если кому-то нужно то пойдут на gist.github.com :)
+---
+значит search только для redirect to user page
+----
+homepage search остается

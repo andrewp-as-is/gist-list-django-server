@@ -1,0 +1,12 @@
+https://docs.djangoproject.com/en/4.2/topics/checks/
+
+https://hakibenita.com/automating-the-boring-stuff-in-django-using-the-check-framework
+---
+command не обязательно даже? просто import как signal, там print, logging, sleep, exit
+---
+system_check.py для каждого container
+проверка disk space, etc и если что-то не так то
+0) print(message)
+1) time.sleep(60) чтоб не было постоянных рестартов
+2) sys.exit(1)
+startup_check.py вместо system_check

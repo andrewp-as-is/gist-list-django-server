@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+42 - Answer to the Ultimate Question of Life, the Universe, and Everything
+-->
+{% load static %}
+{% load manifest %}
+{% load timestamp_timesince %}
+<html>
+    <head>
+<base href="{{ BASE_URL }}">
+<title>{% block title %}Gist-manager{% endblock %}</title>
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="{% manifest 'main.css' %}">
+{% block extra_head %}{% endblock %}
+    </head>
+<body class="{% block body_class %}{% endblock %}">
+{% block body %}
+{% include "_blocks/octicons.html" %}
+<div class="position-relative js-header-wrapper">
+    {% include "_blocks/header.html" %}
+</div>
+{% if request.user.is_superuser and incident_list %}
+<div class="flash flash-full flash-error">
+{% include "_blocks/incident_list.html" %}
+</div>
+{% endif %}
+{% if request.GET.error %}
+<div class="flash flash-full flash-error">
+  <div class="px-2">
+    {{ request.GET.error|escape }}
+    <span class="sr-only">&nbsp;</span>
+  </div>
+</div>
+{% endif %}
+{% if request.GET.message %}
+<div class="flash flash-full flash-message">
+  <div class="px-2">
+    {{ request.GET.message|escape }}
+    <span class="sr-only">&nbsp;</span>
+  </div>
+</div>
+{% endif %}
+{% block content %}{% endblock %}
+{% block footer %}{% include "_blocks/footer.html" %}{% endblock %}
+<script src="{% manifest 'main.js' %}"></script>
+{% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+{% endblock %}
+{% endblock %}
+{% include "_blocks/gtag.html" %}
+</body>

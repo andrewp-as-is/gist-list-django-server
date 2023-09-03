@@ -1,0 +1,16 @@
+{% extends "user/gist/_base.html" %}
+
+{% block gist_content %}
+<form class="pb-2" action="{{ request.path }}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <input class="form-control width-full" type="text" name="description" value="{{ gist.description|default:'' }}" placeholder="Gist description…" autocomplete="off" />
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-invisible" href="{{ gist.get_absolute_url }}">Cancel</a>
+    </div>
+</form>
+<script src="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}.js"></script>
+{% endblock %}
+

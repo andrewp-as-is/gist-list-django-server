@@ -1,0 +1,15 @@
+.container-preview.show-code .commit-create, .container-preview.show-code .file-actions {
+    display: block;
+}
+.file-editor-textarea {
+    width: 100%;
+    padding: 5px 4px;
+    font: 12px SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+    resize: vertical;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+}
+.container-preview.show-code .commit-create, .container-preview.show-code .file-actions {
+    display: block;
+}

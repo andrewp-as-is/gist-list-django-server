@@ -1,0 +1,8 @@
+is_restricted
+не реализовано вообще никак
+---
+examples? api example, Carl
+---
+<div class="blankslate">
+    <h3 class="mb-1">{{ login }} organization has enabled OAuth App access restrictions, meaning that data access to third-parties is limited</h3>
+</div>

@@ -1,0 +1,10 @@
+<div class="d-flex flex-justify-center">
+    <div class="p-1">
+        <a class="Link--muted" href="{{ github_user.get_absolute_url }}">
+            <img id="avatar" alt="" width="32px" height="32px" class="avatar avatar-before-user-status" src="https://github.com/{{ github_user.login }}.png?size=32" style="overflow:hidden" />
+        </a>
+    </div>
+    <div class="p-1">
+        <h3><a href="{{ github_user.get_absolute_url }}">{{ github_user.login }}</a></h3>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+.auto-search-group .spinner, .auto-search-group>.octicon {
+    position: absolute;
+    left: 10px;
+    z-index: 5;
+    width: 16px;
+    height: 16px;
+}
+.auto-search-group>.octicon {
+    top: 10px;
+    font-size: 14px;
+    color: #bbb;
+    text-align: center;
+}
+

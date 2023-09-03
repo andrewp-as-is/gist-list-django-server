@@ -1,0 +1,23 @@
+.file {
+    position: relative;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+.file-header {
+    padding: 5px 10px;
+    background-color: #fafbfc;
+    border-bottom: 1px solid #e1e4e8;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.file-actions {
+    float: right;
+    padding-top: 2px;
+    font-size: 13px;
+}
+.file-header:after, .file-header:before {
+    display: table;
+    content: "";
+}

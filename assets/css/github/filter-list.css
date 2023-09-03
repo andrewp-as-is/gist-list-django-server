@@ -1,0 +1,25 @@
+.filter-list {
+    list-style-type: none;
+}
+.filter-item {
+    position: relative;
+    display: block;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    overflow: hidden;
+    font-size: 14px;
+    color: #586069;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.filter-item.selected, .filter-item[aria-current], .filter-item[aria-selected=true] {
+    color: #fff;
+    background-color: #0366d6;
+}
+.filter-item .count {
+    float: right;
+    font-weight: 600;
+}

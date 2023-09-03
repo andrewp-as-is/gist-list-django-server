@@ -1,0 +1,17 @@
+{% if github_user %}
+<h3 class="h4 mb-2">Filter by tag</h3>
+{% if tag_filter %}
+<ul class="filter-list small" data-pjax="">
+{% for item in tag_filter.item_list %}
+<li class="tag">
+  <span class="bar" style="width: 2px;"></span>
+    <a class="filter-item {% if item.selected %}selected{% endif %}" href="{{ item.url }}">
+    <span class="count">
+      {{ item.count }}
+    </span> {{ item.name }}
+    </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endif %}

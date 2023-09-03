@@ -1,0 +1,22 @@
+
+<h2 class="Subhead-heading">GraphQL API</h2>
+<table class="mb-2" align="center">
+    <tr>
+        <td class="color-text-secondary text-left">limit:</td>
+        <td class="px-2">{{ token.graphql_ratelimit_limit|default:'-' }}</td>
+    </tr>
+    <tr>
+        <td class="color-text-secondary text-left">remaining:</td>
+        <td class="px-2">{{ token.graphql_ratelimit_remaining|default:'-' }}</td>
+    </tr>
+    <tr>
+        <td class="color-text-secondary text-left">used:</td>
+        <td class="px-2">{{ token.graphql_ratelimit_used|default:'-' }}</td>
+    </tr>
+    {% if token.graphql_ratelimit_reset %}
+    <tr>
+        <td class="color-text-secondary text-left">Reset:</td>
+        <td class="px-2"><local-time datetime="{{ token.reset_at|date:'Y-m-d' }}T{{ token.reset_at|date:'H:i:s' }}Z" month="short" day="numeric" year="numeric" title="{{ token.reset_at|date:'H:i:s' }} GMT+3">{{ token.graphql_ratelimit_reset|date:'H:i:s' }} GMT+3</local-time></td>
+    </tr>
+    {% endif %}
+</table>

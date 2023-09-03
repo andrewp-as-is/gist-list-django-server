@@ -1,0 +1,41 @@
+
+
+отдельная страница где будет расписано security/terms о token scopes
+но если manager в названии то ок
+---
+/edit
+удаляет всегда только первый файл
+
+алгоритм для топов на home
+---
+проверить layout
+https://gist.github.com/mattpodwysocki
+https://gist.github.com/getify
+https://gist.github.com/hofmannsven
+https://gist.github.com/esperlu
+https://gist.github.com/paulrosania
+https://gist.github.com/lsbardel
+https://gist.github.com/cyx
+https://gist.github.com/lmars
+https://gist.github.com/scttnlsn
+https://gist.github.com/Btibert3
+https://gist.github.com/didip
+https://gist.github.com/drgarcia1986
+---
+с download могут быть проблемы если не совпадает version
+---
+а если version не известно то может быть в api/scripts делать закомментированную строчку?
+----
+а как clone если description с emoji и :tags или #tags?
+а можно заменять :tag на #tag
+---
+
+https://forum.vuejs.org/uploads/default/6f94cad67f6f7ce57563c3da7bcf0b00334415fc
+-----
+css migration
+https://primer.style/css/support/v16-migration
+
+rss?
+
+js edit в таблице
+https://stackoverflow.com/questions/13001830/creating-and-submitting-a-form-with-javascript

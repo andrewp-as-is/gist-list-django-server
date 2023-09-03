@@ -1,0 +1,75 @@
+.auth-form {
+    width: 340px;
+    margin: 0 auto;
+}
+
+.auth-form .btn {
+    margin-top: 20px;
+}
+.auth-form-body {
+    padding: 20px;
+    font-size: 14px;
+    background-color: #fff;
+    border: 1px solid #d8dee2;
+    border-top: 0;
+    border-radius: 0 0 3px 3px;
+}
+.auth-form-body .input-block {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+.auth-form-header {
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+    text-shadow: none;
+    background-color: initial;
+    border: 0;
+}
+.auth-form-header h1 {
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: -.5px;
+}
+.auth-form label {
+    display: block;
+    margin-bottom: 7px;
+    text-align: left;
+}
+.label-link {
+    float: right;
+    font-size: 12px;
+}
+.session-authentication .auth-form-body {
+    border-top: 1px solid #d8dee2;
+    border-radius: 5px;
+}
+.session-authentication .auth-form label {
+    display: block;
+    margin-bottom: 7px;
+    text-align: left;
+}
+.session-authentication .flash {
+    padding: 15px 20px;
+    margin: 0 auto 10px;
+    font-size: 13px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+.session-authentication .flash .flash-close {
+    height: 40px;
+}
+.session-authentication .create-account-callout {
+    padding: 15px 20px;
+    text-align: center;
+    border: 1px solid #d8dee2;
+    border-radius: 5px;
+}
+.session-authentication .header-logged-out {
+    background-color: initial;
+    border-bottom: 0;
+}
+.session-authentication .header-logo {
+    color: #333;
+}

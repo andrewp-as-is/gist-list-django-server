@@ -1,0 +1,31 @@
+<header class="Header py-lg-0" style="height: 52px">
+
+<div class="Header-item d-none d-lg-flex">
+    <a class="Header-link no-underline f4" href="/" title="42 - Answer to the Ultimate Question of Life, the Universe, and Everything">gist-manager</a>
+</div>
+
+<div class="Header-item Header-item--full flex-column flex-lg-row flex-order-2 flex-lg-order-none mr-0 mr-lg-3 mt-3 mt-lg-0 Details-content--hidden">
+  <div class="header-search flex-self-stretch flex-lg-self-auto mr-0 mr-lg-3 mb-3 mb-lg-0 scoped-search site-scoped-search js-site-search position-relative js-jump-to" role="combobox" aria-haspopup="listbox" aria-expanded="false" style="overflow-wrap: break-word; height: 28px">
+      <div class="position-relative">
+      {% include "_blocks/header/form.html" %}
+      </div>
+  </div>
+  {% include "_blocks/header/nav.html" %}
+</div>
+
+{% if request.user.is_authenticated %}
+<div class="Header-item">
+  <a class="Header-link" href="/new">
+    <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#plus" /></svg>
+  </a>
+</div>
+<div class="Header-item position-relative mr-0 d-none d-lg-flex">
+  {% include "_blocks/header/profile.html" %}
+</div>
+{% else %}
+<nav class="d-flex">
+  <a class="Header-link py-lg-3 mr-3" href="/login">Sign in</a>
+</nav>
+{% endif %}
+
+</header>

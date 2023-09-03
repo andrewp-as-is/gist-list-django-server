@@ -1,0 +1,41 @@
+{% load pagination_url %}
+{% spaceless %}
+{% comment %}
+django pagination packages:
+dj_pagination NOT NATIVE
+django-core-pagination OLD
+{% endcomment %}
+
+{% if is_paginated %}
+<nav class="paginate-container" aria-label="Pagination">
+  <div class="pagination">
+{% if page_obj.has_previous %}
+  <a href="?{% pagination_url page_obj.previous_page_number %}">Previous</a>
+  {% if page_obj.number > 5 %}
+    <a href="?page=1">1</a>
+    {% if page_obj.number > 6 %}
+      <span>...</span>
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% for num in page_obj.paginator.page_range %}
+  {% if page_obj.number == num %}
+    <em aria-current="page">{{ num }}</em>
+  {% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
+    <a href="?{% pagination_url num %}">{{ num }}</a>
+  {% endif %}
+{% endfor %}
+{% if page_obj.has_next %}
+  {% if page_obj.number < page_obj.paginator.num_pages|add:'-5' %}
+    <span>...</span>
+    <a href="?{% pagination_url page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+  {% elif page_obj.number < page_obj.paginator.num_pages|add:'-4' %}
+    <a href="?{% pagination_url page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+  {% endif %}
+
+  <a href="?{% pagination_url page_obj.next_page_number %}">Next</a>
+{% endif %}
+  </div>
+</nav>
+{% endif %}
+{% endspaceless %}

@@ -1,0 +1,18 @@
+
+если много запросов, то
+или не создавать или при создании показывать какое-то глобальное сообщение с помощью css flash flash-xxx стилей вверху например что слишком много запросов
+и вообще показывать кол-во текущих запросов и пользователей?
+---
+domain.com/status
+domain.com/about
+domain.com/help
+domain.com/repo
+domain.com/privacy
+feedback. feedback as github issue?
+issues vs bug tracker/etc
+Security (docs/about)
+about
+blog/news/changelog?
+changelog как будто продукт какой-то, но тут менеджер чужих продуктов )
+и какой тут функционал кроме list/table )))
+

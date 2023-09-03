@@ -1,0 +1,11 @@
+<div class="p-1">
+<div class="d-flex flex-items-start">
+    <form action="{{ request.path }}" method="get">
+        <input type="search" id="filter" name="q" class="form-control" placeholder="Find a user…" autocomplete="off" aria-label="Find a user…" value="{% if request.GET.q %}{{ q }}{% endif %}" {% if request.GET.q %}autofocus{% endif %}>
+    </form>
+</div>
+{% if request.GET %}
+<strong>{{ page_obj.paginator.count }}</strong>
+  result{% if page_obj.paginator.count == 0 or page_obj.paginator.count > 1 %}s{% endif %}
+{% endif %}
+</div>

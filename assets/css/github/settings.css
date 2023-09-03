@@ -1,0 +1,20 @@
+.listgroup-item-title {
+    display: block;
+    font-weight: 600;
+}
+.listgroup-item-body {
+    display: block;
+}
+.recent-user-key {
+    color: #28a745;
+}
+.user-key-badge {
+    display: block;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-top: 3px;
+    font-size: 12px;
+    line-height: 1.4;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}

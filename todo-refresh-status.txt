@@ -1,0 +1,11 @@
+1) что выводить на морде?
+2) где конкретно?
+3) urls list ?
+---
+{% if rate_limit.is_exceeded %}
+<span class="flash flash-error">github secondary rate limit exceeded</span>
+{% else %}
+<a class="btn btn-sm" {% if sync.is_disabled or rate_limit.is_exceeded %}
+с одной стороны такое не нужно показывать, с другой а как оправдать ожидания/тормоза?
+но... что даст пользователю это сообщение?
+github ratelimit просто или типа того?

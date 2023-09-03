@@ -1,0 +1,41 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="page-content container-lg clearfix">
+<form action="{{ request.path }}" accept-charset="UTF-8" method="post">
+  {% csrf_token %}
+  <div>
+    <div id="gists" class="js-gist-files">
+      <input type="text" class="form-control input-block input-contrast" name="gist[description]" value="" aria-label="Gist description" placeholder="Gist description…" autocomplete="off">
+      <div class="border m-3">
+        <div class="bg-gray px-2 py-1">
+          <input type="text" class="form-control input-block input-contrast" name="gist[filename]" value="" placeholder="Filename including extension…" autocomplete="off" style="width: 250px">
+        </div>
+        <textarea id="code" name="gist[code]"></textarea>
+      </div>
+    </div>
+  </div>
+<div class="form-actions py-3">
+  <button type="submit" name="gist[public]" value="1" class="btn js-gist-create ">Create public gist</button>
+  <button type="submit" name="gist[public]" value="0" class="btn btn-secret js-gist-create " aria-describedby="secret_gist_desc">
+    Create secret gist
+  </button>
+  <span id="secret_gist_desc" class="mr-2 mt-2 float-right tooltipped tooltipped-w tooltipped-multiline" aria-label="Secret gists are hidden from search engines but visible to anyone you give the URL.">
+    <svg class="octicon octicon-info" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+  </span>
+</div>
+</form>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css" />
+<script>
+  myTextarea = document.getElementById("code");
+  var editor = CodeMirror.fromTextArea(myTextarea, {
+    lineNumbers: true
+  });
+</script>
+{% endblock %}

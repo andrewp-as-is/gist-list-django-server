@@ -1,0 +1,32 @@
+.table-list-filters:first-child, .table-list-header-toggle:first-child {
+    padding-left:16px;
+}
+.table-list-filters .select-menu, .table-list-header-toggle .select-menu {
+    position: relative;
+}
+.table-list-filters .select-menu-button, .table-list-header-toggle .select-menu-button {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.table-list-filters.states .selected, .table-list-header-toggle.states .selected {
+    font-weight: 600;
+}
+.table-list-filters .btn-link, .table-list-header-toggle .btn-link {
+    color: #586069;
+}
+.table-list-filters .btn-link .octicon, .table-list-header-toggle .btn-link .octicon {
+    margin-right:4px;
+}
+.table-list-filters .btn-link.selected, .table-list-header-toggle .btn-link.selected:hover {
+    color: #24292e;
+}
+.table-list-filters .btn-link:hover, .table-list-header-toggle .btn-link:hover {
+    color:#24292e;text-decoration:none;
+}
+
+.table-list-header-toggle .btn-link+.btn-link {
+    margin-left: 10px;
+}
+.table-list-header-toggle .btn-link {
+    color: #586069;
+}

@@ -1,0 +1,10 @@
+{% if unknown_version_gist_list %}
+<h4 class="color-fg-danger m-2 text-center text-mono">
+    Unknown gist version ({{ unknown_version_gist_list|length }})
+</h4>
+<div class="flash flash-full flash-warn">
+    {% for gist in unknown_version_gist_list %}
+    <a href="/{{ gist.id }}">{{ gist.id }}</a><br />
+    {% endfor %}
+</div>
+{% endif %}

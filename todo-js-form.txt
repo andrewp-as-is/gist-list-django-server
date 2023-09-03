@@ -1,0 +1,2 @@
+js edit в таблице
+https://stackoverflow.com/questions/13001830/creating-and-submitting-a-form-with-javascript

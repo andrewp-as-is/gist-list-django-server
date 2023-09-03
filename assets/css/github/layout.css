@@ -1,0 +1,10 @@
+.page-content {
+    padding-top: 20px;
+}
+.file-header:after, .file-header:before {
+    display: table;
+    content: "";
+}
+.file-header:after {
+    clear: both;
+}

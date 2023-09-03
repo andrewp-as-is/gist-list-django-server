@@ -1,0 +1,21 @@
+{% load timestamp_timesince %}
+{% load timestamp2datetime %}
+
+<h3 class="text-center">Status</h3>
+<table class="width-full">
+{% for check in check_list %}
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold">{{ check.name }}</td>
+    <td class="p-1 text-bold">
+    {% if check.success %}
+    <svg class="octicon mr-1 color-fg-success" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
+    {% else %}
+    <svg class="octicon mr-1 color-fg-danger" style="width:16px;height:16px"><use xlink:href="#alert" /></svg>
+    {% endif %}
+    </td>
+    <td class="p-1 text-bold width-full">{{ check.message|default:'' }}</td>
+    <td class="color-fg-muted no-wrap p-1">{{ check.timestamp|timestamp2datetime|date:'H:m:s' }} UTC</td>
+    <td class="color-fg-muted no-wrap p-1">{{ check.timestamp|timestamp_timesince }}</td>
+</tr>
+{% endfor %}
+</table>

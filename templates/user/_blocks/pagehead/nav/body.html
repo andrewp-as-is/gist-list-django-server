@@ -1,0 +1,18 @@
+{% load format_count %}
+
+<a class="UnderlineNav-item {% if request.path == github_user.get_absolute_url or not github_user %}selected{% endif %}" href="{{ github_user.get_absolute_url }}">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
+    Gists{% if gists_count != None %} <span class="Counter">{{ gists_count|format_count }}</span>{% endif %}
+</a>
+{% if forks_count %}
+<a class="UnderlineNav-item {% if '/forked' in request.path and '/forked' != request.path %}selected{% endif %}" href="{{ github_user.get_absolute_url }}/forked">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg>
+    Forked <span class="Counter">{{ forks_count|format_count }}</span>
+</a>
+{% endif %}
+{% if github_user.login == request.user.login %}
+<a class="UnderlineNav-item {% if '/starred' in request.path and '/starred' != request.path %}selected{% endif %}" href="{{ github_user.get_absolute_url }}/starred">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#star" /></svg>
+    Starred{% if github_user.stars_count != None %} <span class="Counter">{{ github_user.stars_count|format_count }}</span>{% endif %}
+</a>
+{% endif %}

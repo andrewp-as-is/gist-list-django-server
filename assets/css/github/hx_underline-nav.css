@@ -1,0 +1,7 @@
+.hx_underlinenav-item {
+    display: flex;
+    align-items: center;
+}
+.hx_underlinenav-item .UnderlineNav-octicon {
+    margin-right: 6px;
+}

@@ -1,0 +1,61 @@
+.Header {
+    background-color: #24292e;
+    color: hsla(0,0%,100%,.7);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 16px;
+    z-index: 32;
+}
+.Header, .Header-item {
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.Header-item {
+    align-self: stretch;
+    margin-right: 16px;
+}
+.Header-item--full {
+    flex: auto;
+}
+
+.Header-link {
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.Header-link {
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.page-responsive .Header.Details .Header-item.Details-content--hidden {
+    display: flex!important;
+}
+
+.header-nav-current-user {
+    padding-bottom: 0;
+    font-size: inherit;
+}
+.header-nav-current-user .user-profile-link {
+    color: #24292e;
+}
+
+.notification-indicator .mail-status.unread {
+    display: inline-block;
+}
+.notification-indicator .mail-status {
+    position: absolute;
+    top: -6px;
+    left: 6px;
+    z-index: 2;
+    display: none;
+    width: 14px;
+    height: 14px;
+    color: #fff;
+    background-image: linear-gradient(#54a3ff,#006eed);
+    background-clip: padding-box;
+    border: 2px solid #24292e;
+    border-radius: 50%;
+}

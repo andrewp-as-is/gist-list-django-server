@@ -1,0 +1,15 @@
+.Box--overlay {
+    width: 448px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-color: #444d56;
+    box-shadow: 0 0 18px rgba(0,0,0,.4);
+}
+.Box--overlay .Box-header {
+    margin: 0;
+    border-width: 0 0 1px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}

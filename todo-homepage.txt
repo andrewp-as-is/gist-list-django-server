@@ -1,0 +1,28 @@
+user list
+search vs refresh?
+refreshed_at
+---
+search
+добавлять 404 user в search 1 result
+---
+top language/tag хоть и дерьмово, но за счет БД и list может зайти
+но кто указывает tags? :)
+--
+headers
+---
+frontpage
+login,name,gists only ?
+тк иначе непонятно что к чему
+login,name,gists,stargazers
+именно stargazers, а не stars
+ВАЖНО
+---
+top users
+top gists (search)
+---
+gists search not supported :(
+парсить https://api.github.com/gists и юзеров оттуда на топовых (удалять периодически левых)
+топовые gists рано или поздно соберутся
+---
+language
+tags ?

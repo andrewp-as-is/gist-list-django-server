@@ -1,0 +1,52 @@
+{% load format_count %}
+
+<div class="page-content container-lg text-center">
+{% include "_blocks/user_search.html" %}
+<table class="width-full">
+<tbody>
+{% for user in user_list %}
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1">
+        <a href="{{ user.get_absolute_url }}"><img class="avatar" height="32" width="32" alt="@{{ user.login }}" src="{{ user.get_avatar_url }}?size=32"></a>
+    </td>
+    <td class="no-wrap p-1 text-left">
+      <a class="color-fg-muted" href="{{ user.get_absolute_url }}">{{ user.login }}</a>
+    </td>
+    <td class="no-wrap p-1 text-left">{{ user.name|default:''|truncatechars:20 }}</td>
+    <td class="no-wrap p-1 text-left">
+      {% if user.followers_count %}
+      <a class="color-fg-muted" href="{{ user.get_absolute_url }}/followers">
+        <svg class="octicon text-icon-tertiary" style="width:16px;height:16px"><use xlink:href="#people" /></svg> {{ user.followers_count|format_count }} followers
+      {% endif %}
+    </a>
+    </td>
+    <td class="no-wrap p-1 text-left">
+      {% if user.following_count %}
+      <a class="color-fg-muted" href="{{ user.get_absolute_url }}/following">
+      {{ user.following_count|format_count }} following
+      {% endif %}
+    </a>
+    </td>
+    <td class="no-wrap p-1 text-left">
+      <a class="color-fg-muted" href="{{ user.get_absolute_url }}">
+        {% if user.public_gists_count %}
+        <svg class="octicon text-icon-tertiary" style="width:16px;height:16px"><use xlink:href="#file-code" /></svg> {{ user.public_gists_count|format_count }} gists
+      {% endif %}
+    </a>
+    </td>
+    <td class="no-wrap p-1 text-left width-full">{% if user.bio %}{{ user.bio|truncatechars:42 }}{% endif %}</td>
+    <td class="color-fg-muted no-wrap p-1 text-left">
+        {% if user.company %}
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#organization" /></svg> {{ user.company|truncatechars:20 }}
+        {% endif %}
+    </td>
+    <td class="color-fg-muted no-wrap p-1 text-left">
+        {% if user.location %}
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#location" /></svg> {{ user.location|truncatechars:20 }}
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>

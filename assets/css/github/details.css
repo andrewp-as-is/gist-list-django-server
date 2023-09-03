@@ -1,0 +1,15 @@
+.details-overlay[open]>summary:before {
+    background: transparent;
+    bottom: 0;
+    content: " ";
+    cursor: default;
+    display: block;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 80;
+}
+details:not([open])>*:not(summary) {
+    display: none !important;
+}

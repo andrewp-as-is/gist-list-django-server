@@ -1,0 +1,46 @@
+.repohead.experiment-repo-nav {
+    padding-bottom: 0;
+    background-color: #fafbfc;
+}
+.pagehead {
+    position: relative;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e1e4e8;
+}
+.repohead .repohead-details-container {
+    margin-bottom: 20px;
+}
+.pagehead ul.pagehead-actions {
+    position: relative;
+    z-index: 31;
+    float: right;
+    margin: 0;
+}
+.pagehead-actions>li:last-child {
+    margin-right: 0;
+}
+.pagehead-actions>li {
+    float: left;
+    margin: 0 10px 0 0;
+    font-size: 11px;
+    color: #24292e;
+    list-style-type: none;
+}
+.repohead h1 {
+    position: relative;
+    float: left;
+    max-width: 635px;
+    padding-left: 18px;
+    font-size: 18px;
+    line-height: 26px;
+    color: #586069;
+}
+.pagehead h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+}

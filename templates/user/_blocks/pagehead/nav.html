@@ -1,0 +1,10 @@
+<nav class="UnderlineNav">
+    <div class="UnderlineNav-body">
+        {% if github_user and refresh_time %}
+        {% include "user/_blocks/pagehead/nav/body.html" %}
+        {% endif %}
+    </div>
+    <div class="UnderlineNav-actions">
+        {% include "user/_blocks/pagehead/nav/actions.html" %}
+    </div>
+</nav>

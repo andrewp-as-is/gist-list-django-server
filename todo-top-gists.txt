@@ -1,0 +1,5 @@
+теоретически можно сделать top gists, languages, tags
+1) top users
+2) github gist event
+3) forks
+у топовых куча forks

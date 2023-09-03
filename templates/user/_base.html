@@ -1,0 +1,86 @@
+{% extends "_base.html" %}
+
+{% load format_count %}
+{% load timestamp2datetime %}
+{% load timesince %}
+
+{% block title %}{{ login }}{% endblock %}
+
+{% block extra_head %}
+<link rel="canonical" href="{{ github_user.get_absolute_url }}" />
+{% endblock %}
+
+{% block content %}
+<div class="pagehead bg-gray-light pb-0 pt-3 mb-4">
+  <div class="px-0">
+    <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+      <div class="flex-auto min-width-0 width-fit mr-3">
+        <div class="d-flex">
+          <div class="d-none d-md-block">
+            <a class="avatar mr-2 flex-shrink-0" href="{{ github_user.get_absolute_url }}"><img class=" avatar-user" src="{% if github_user %}https://avatars.githubusercontent.com/u/{{ github_user.id }}?s=32&amp;v=4{% else %}https://github.com/{{ login }}.png?size=32{% endif %}" width="32" height="32" alt="@{{ login }}"></a>
+          </div>
+          <div class="d-flex flex-column">
+            <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+              <span class="author"><a href="{{ github_user.get_absolute_url }}">{{ login }}</a></span>
+              {% if gist %}
+              <span class="mx-1 color-text-secondary">/</span>
+              <strong itemprop="name" class="css-truncate-target mr-1" style="max-width: 410px">
+                <a href="{{ gist.get_absolute_url }}" rel="nofollow">{{  gist.filename_list.0 }}</a>
+              </strong>
+              {% endif %}
+            </h1>
+            {% if not gist and github_user %}
+            <div class="note m-0">
+              {% if refresh_time %}
+              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/followers">
+                <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#people" /></svg>
+                    <span class="text-bold color-fg-default">{{ github_user.followers_count|format_count }}</span> followers
+              </a>
+              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/following">
+                    <span class="text-bold color-fg-default">{{ github_user.following_count|format_count }}</span> following
+              </a>
+              {% endif %}
+              <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
+              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ login }}" href="https://gist.github.com/{{ login }}">gist.github.com/{{ login }}</a>
+            </div>
+            {% endif %}
+            {% if gist %}
+            {% if gist.fork %}
+            <div class="note m-0">
+              Forked from <span class="color-text-secondary f6">forked from</span> <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">{{ gist.fork.name|truncatechars:70 }}</a>
+            </div>
+            {% endif %}
+            <div class="note m-0">
+              Last active <time-ago datetime="{{ gist.updated_at|timestamp2datetime|date:'Y-m-dTH:i:S' }}Z" class="no-wrap" title="{{ gist.updated_at|date:'d b Y, H:i' }} GMT+3">{{ gist.updated_at|timestamp2datetime|timesince }}</time-ago>
+              <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
+              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ gist.id }}" href="https://gist.github.com/{{ gist.id }}">gist.github.com/{{ gist.id }}</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% block pagehead_actions %}{% endblock %}
+    </div>
+    <div class="d-flex flex-md-row flex-column px-0 pr-md-3 px-lg-5">
+      {% block pagehead_nav %}
+      <div class="flex-md-order-1 flex-order-2 flex-auto">
+        {% include "user/_blocks/pagehead/nav.html" %}
+      </div>
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{% if github_user %}
+  {% if refresh_time %}
+    {% block container %}{% endblock %}
+  {% else %}
+    {% include "user/_blocks/unknown.html" %}
+  {% endif %}
+{% else %}
+    {% if user404 %}
+      {% include "user/_blocks/404.html" %}
+    {% else %}
+      {% include "user/_blocks/unknown.html" %}
+    {% endif %}
+{% endif %}
+{% endblock %}

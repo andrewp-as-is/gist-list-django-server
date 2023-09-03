@@ -1,0 +1,72 @@
+{% load emoji_tags %}
+{% load gist_time %}
+{% load gist_file_anchor %}
+{% load gist_confirm_name %}
+
+<table class="width-full">
+{% for gist in gist_list %}
+<tr class="Box-row Box-row--hover-gray">
+  <td class="no-wrap px-1 text-center">
+    <a class="Link--muted" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}/edit" target="_blank">
+      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#pencil" /></svg>
+    </a>
+  </td>
+  {% if '/download' in request.path %}
+  <td class="no-wrap px-1 text-center">
+    {% if gist.version %}
+    <a class="Link-muted" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}/archive/{{ gist.version }}.zip" target="_blank">
+      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#download" /></svg>
+    </a>
+    {% else %}
+    -
+    {% endif %}
+  </td>
+  <td class="no-wrap px-1">
+    <code>{{ gist.id }}</code>
+  </td>
+  {% endif %}
+  <td class="f5 no-wrap px-1 text-gray width-full">
+    <a class="Link--muted mr-2" href="/{{ github_user.login }}/{{ gist.id }}" aria-label="{{ gist.id }}">
+    {% if gist.description %}
+        {{ gist.description|truncatechars:150|emoji_replace }}
+    {% endif %}
+    </a>
+    {% if not gist.public %}<span class="Label Label--outline">Secret</span>{% endif %}
+  </td>
+  <td class="f6 no-wrap px-3" style="width: 1%;">
+    <a class="f6 no-wrap text-mono" href="{{ gist.get_absolute_url }}#{{ gist.get_files.0|gist_file_anchor }}" {% if gist.get_files.0|length > 42 %} title="{{ gist.filename }}"{% endif %}>{{ gist.filename|truncatechars:42 }}</a>{% if gist.get_files|length > 1 %}, <span class="tooltipped tooltipped-n" aria-label="{{ gist.files }}">...</span>{% endif %}
+  </td>
+  <td class="f6 no-wrap px-1">
+    <a class="Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
+     {{ gist.files_count }}
+    </a>
+  </td>
+  <td class="f6 no-wrap px-1">
+    <a class="Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+     {% if gist.stargazers_count >= 0 %}
+      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#star" /></svg>
+     {{ gist.stargazers_count }}
+     {% endif %}
+    </a>
+  </td>
+  <td class="f6 no-wrap px-1">
+    <a class="Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+     {% if gist.forks_count >= 0 %}
+      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg>
+     {{ gist.forks_count }}
+     {% endif %}
+    </a>
+  </td>
+  <td class="f6 no-wrap px-1">
+    <a class="Link--muted" href="https://gist.github.com/{{ gist.id }}#comments" target="_blank">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#comment" /></svg> {{ gist.comments_count }}
+    </a>
+  </td>
+  <td class="f6 px-1" nowrap>
+    last active {{ gist.updated_at|gist_time }}
+  </td>
+</tr>
+{% endfor %}
+</table>
+{{ pagination }}

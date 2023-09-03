@@ -1,0 +1,31 @@
+.BorderGrid {
+    display: table;
+    border-collapse: collapse;
+    border-style: hidden;
+    table-layout: fixed;
+    width: 100%;
+    margin-top: -16px;
+    margin-bottom: -16px;
+}
+.BorderGrid--spacious {
+    margin-top: -24px;
+    margin-bottom: -24px;
+}
+.BorderGrid-row {
+    display: table-row;
+}
+.BorderGrid--spacious .BorderGrid-cell {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+.BorderGrid .BorderGrid-cell {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+.BorderGrid-cell {
+    display: table-cell;
+    border: 1px solid #e1e4e8;
+}
+.UnderlineNav-item.selected .UnderlineNav-octicon, .UnderlineNav-item[aria-current]:not([aria-current=false]) .UnderlineNav-octicon, .UnderlineNav-item[role=tab][aria-selected=true] .UnderlineNav-octicon {
+    color: inherit;
+}

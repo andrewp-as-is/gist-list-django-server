@@ -1,0 +1,85 @@
+{% load timestamp2datetime %}
+{% load emoji_tags %}
+{% load gist_time %}
+
+<table class="width-full">
+{% for gist in gist_list %}
+<tr class="Box-row Box-row--hover-gray">
+  {% if request.user.id == github_user.id and '/starred' not in request.path%}
+  <td class="no-wrap px-1 text-left text-mono">
+    <a class="Link--muted" href="{{ gist.get_absolute_url }}" title="{{ gist.id }}">
+      {{ gist.id|slice:2 }}…{{ gist.id|slice:"-2:" }}
+    </a>
+  </td>
+  {% endif %}
+  {% if '/starred' in request.path %}
+  <td style="width: 1%;">
+    <a href="{{ gist.owner.get_absolute_url }}">
+      <img src="https://github.com/{{ gist.owner.login }}.png?size=16" height="16" width="16" />
+    </a>
+  </td>
+  {% endif %}
+  <td class="no-wrap px-1" style="width: 1%;">
+    {% if '/starred' in request.path %}
+    <a class="f6 no-wrap text-mono" href="{{ gist.owner.get_absolute_url }}">{{ gist.owner.login }}</a> /
+    {% endif %}
+    <a class="f6 no-wrap text-mono" href="{{ gist.get_absolute_url }}#{{ gist.filenames.0 }}" title="{{ gist.filename_list|join:',' }}">
+    {{ gist.filename_list.0|truncatechars:30 }}
+  </a>
+    {% if not gist.public %}<span class="Label Label--outline">Secret</span>{% endif %}
+    {% if gist.fork %}<span class="color-text-secondary f6">forked from</span> <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">{{ gist.fork.name|truncatechars:70 }}</a>
+    {% endif %}
+  </td>
+  <td class="px-1 width-full">
+    <a class="f6 Link--muted mr-2" href="/{{ github_user.login }}/{{ gist.id }}">
+    {% if gist.description %}
+        {{ gist.description|truncatechars:150|emoji_replace }}
+    {% endif %}
+    </a>
+  </td>
+  <td class="f6 no-wrap px-1">
+      {% for tag in gist.get_tags %}
+      <a class="f6 Link--muted" href="{{ request.path }}?tag={{ tag }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">#{{ tag }}</a>
+      {% endfor %}
+  </td>
+  <td class="f6 no-wrap px-1">
+    {% for language in gist.get_language_list %}
+    <a class="f6 Link--muted" href="{{ request.path }}?language={{ language.slug }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language.name }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </td>
+  <td class="no-wrap px-1">
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank" title="{{ gist.filenames|join:"&#10;" }}">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
+     {{ gist.files_count }} file{% if gist.files_count > 1 %}s{% endif %}
+    </a>
+  </td>
+  <td class="no-wrap px-1">
+    {% if gist.stargazers_count %}
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#star" /></svg>
+     {{ gist.stargazers_count }}
+     {% endif %}
+    </a>
+  </td>
+  <td class="no-wrap px-1">
+    {% if gist.forks_count %}
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg>
+    </a>
+    {% endif %}
+  </td>
+  <td class="no-wrap px-1">
+    {% if gist.comments_count %}
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}#comments" target="_blank">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#comment" /></svg> {{ gist.comments_count|default:'' }}
+    </a>
+    {% endif %}
+  </td>
+  <td class="f6 px-1" nowrap>
+    <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">
+    {% if gist.updated_at %}last active {{ gist.updated_at|timestamp2datetime|gist_time }}{% else %}created {{ gist.created_at|timestamp2datetime|gist_time }}{% endif %}</a>
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% include "_blocks/pagination.html" %}

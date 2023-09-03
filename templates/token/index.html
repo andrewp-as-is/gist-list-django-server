@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="page-content container-lg text-center">
+    <h1>Token</h1>
+    <div class="ghd-spotlight ghd-spotlight-note border rounded-1 my-3 p-3 f5 color-border-accent-emphasis color-bg-accent">
+        OAuth token scopes: <span class="text-mono">gist,delete_gist,private_gist,star_gist</span>
+    </div>
+    <h1 class="Subhead-heading">Ratelimit</h1>
+{% include "token/_blocks/core.html" %}
+{% include "token/_blocks/graphql.html" %}
+
+</div>
+{% endblock %}
