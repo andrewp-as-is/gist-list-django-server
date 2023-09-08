@@ -16,7 +16,7 @@ class Manager(models.Manager):
         try:
             return super().bulk_create(objs,**kwargs)
         finally:
-            execute_sql('VACUUM FULL github.gist_star')
+            execute_sql('VACUUM github.gist_star')
 
 class GistStar(models.Model):
     objects = Manager()

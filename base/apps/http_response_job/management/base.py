@@ -8,7 +8,7 @@ from django.conf import settings
 from django.db import connection
 from django.template.defaultfilters import filesizeformat
 
-from base.apps.error.utils import save_python_errors
+from base.apps.error.utils import save_python_error
 from base.apps.http_response.models import Response
 from base.apps.http_response.utils import get_path
 from base.apps.job_cursor.utils import save_cursor
@@ -21,6 +21,7 @@ domain_xxx_response_job.job (response_id)
 """
 
 class ResponseJobCommand(BaseCommand):
+    JOB_CURSOR_NAME = None
     RESPONSE_JOB = None
 
     def handle(self, *args, **options):
@@ -38,7 +39,8 @@ class ResponseJobCommand(BaseCommand):
             id__in=self.RESPONSE_JOB.objects.values_list('response_id',flat=True)
         ))
         if self.job_list:
-            save_cursor(self.RESPONSE_JOB,self.job_list)
+            cursor_name = type(self).__module__.split('.')[-1] # name.py
+            save_cursor(cursor_name,self.job_list)
         self.id2response = {r.id:r for r in self.response_list}
         self.response_id2job = {j.response_id:j for j in self.job_list}
         self.init()

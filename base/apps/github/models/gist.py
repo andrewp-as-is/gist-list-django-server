@@ -39,7 +39,7 @@ class Manager(models.Manager):
         try:
             return super().bulk_create(objs,**kwargs)
         finally:
-            execute_sql('VACUUM FULL github.gist')
+            execute_sql('VACUUM github.gist')
 
 class GistMixin:
 

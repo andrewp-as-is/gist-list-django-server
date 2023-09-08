@@ -1,10 +1,13 @@
 import builtins
 from datetime import datetime, timezone
 import os
+import time
 
 from django.conf import settings
 
 from django.db import connection
+
+from base.apps.postgres.models import RefreshInfo
 
 def bulk_create(obj_list,model2kwargs=None):
     db_table_list = []
@@ -74,4 +77,11 @@ def refresh_model_matview(model):
         db_table.split('.')[0],
         db_table.split('.')[1]
     )
+    started_at = time.time()
     execute_sql('REFRESH MATERIALIZED VIEW %s' % regclass)
+    duration = time.time() - started_at
+    RefreshInfo(
+        regclass=regclass,
+        duration=duration,
+        timestamp = int(time.time())
+    ).save()

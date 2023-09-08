@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.views.generic.base import RedirectView
 from django.urls import include, path, register_converter
+
 
 
 urlpatterns = [
@@ -10,9 +12,12 @@ urlpatterns = [
 
     path('status', include('urls.status')),
     path('robots.txt', include('urls.robots_txt')),
-    path('login', RedirectView.as_view(url='auth/github/redirect', permanent=False)),
-    path('logout', include('auth.logout')), # delete Token on logout
+
     path('auth/', include('urls.auth')),
+    path('login', RedirectView.as_view(url='auth/github/redirect', permanent=False)),
+    path('logout', LogoutView.as_view(
+        next_page=(getattr(settings,'LOGOUT_REDIRECT_URL','/') or '/')
+    )),
 
     # path('clone', include('urls.clone')),
 

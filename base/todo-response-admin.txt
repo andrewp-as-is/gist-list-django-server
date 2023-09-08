@@ -1,0 +1,5 @@
+response admin page
+get_path
+get_headers
+get_request_headers
+--

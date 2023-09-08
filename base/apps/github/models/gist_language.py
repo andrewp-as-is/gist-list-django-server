@@ -11,7 +11,7 @@ class Manager(models.Manager):
         try:
             return super().bulk_create(objs,**kwargs)
         finally:
-            execute_sql('VACUUM FULL github.gist_language')
+            execute_sql('VACUUM github.gist_language')
 
 class GistLanguage(models.Model):
     objects = Manager()

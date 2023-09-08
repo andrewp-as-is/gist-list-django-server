@@ -1,4 +1,4 @@
-__all__ = ['AbstractUser','User','UserBase']
+__all__ = ['AbstractUser','User',]
 
 from django.db import models
 
@@ -34,7 +34,7 @@ class Manager(models.Manager):
         try:
             return super().bulk_create(objs,**kwargs)
         finally:
-            execute_sql('VACUUM FULL github."user"')
+            execute_sql('VACUUM github."user"')
 
 class AbstractUser(models.Model):
     objects = Manager()
@@ -88,11 +88,3 @@ class Manager(models.Manager):
                 ]
             )
         return super().bulk_create(objs,**kwargs)
-
-class UserBase(models.Model):
-    objects = Manager()
-
-    login = models.CharField(max_length=39,unique=True)
-
-    class Meta:
-        managed = False

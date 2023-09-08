@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from views.auth import logout as views
+from views.user.gists import tags as views
 
 urlpatterns = [
     path('', views.View.as_view()),

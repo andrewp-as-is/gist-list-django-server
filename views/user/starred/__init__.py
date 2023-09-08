@@ -1,16 +1,12 @@
-from base.apps.github.models import GistStar
-from base.apps.github_gist_star_matview.models import Gist as MatviewGist
-from base.apps.github_gist_star_new_matview.models import Gist as NewMatviewGist
-from views.user.gists import ListView
+from views.user.gists import View as ListView
+from .utils import get_gist_star_model
 
-
-class ListView(ListView):
+class View(ListView):
 
     def get_model(self):
         if self.github_user:
-            if NewMatviewGist.objects.filter(stargazer_id=self.github_user.id).only('id').first():
-                return NewMatviewGist
-        return MatviewGist
+            return get_gist_star_model(self.github_user.id)
+        return Gist.objects.none()
 
     def get_queryset_base(self):
         model = self.get_model()

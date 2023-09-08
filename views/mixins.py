@@ -11,8 +11,9 @@ class PythonErrorMixin:
             return super().dispatch(*args, **kwargs)
         except Exception as e:
             save_python_error(e)
-            response = render(self.request,'500.html', status=500)
-            return response
+            raise e
+            #response = render(self.request,'500.html', status=500)
+           # return response
 
 class IncidentMixin:
 

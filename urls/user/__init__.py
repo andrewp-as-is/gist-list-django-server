@@ -12,6 +12,7 @@ urlpatterns = [
     path('/refresh-status', include('urls.user.refresh_status')),
     path('/followers',      include('urls.user.followers')),
     path('/following',      include('urls.user.following')),
+    path('/tags',   include('urls.user.gists.tags')),
     path('/<str:pk>', include('urls.user.gist')),
     path('',   include('urls.user.gists')),
 ]

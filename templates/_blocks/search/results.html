@@ -1,4 +1,6 @@
 {% if request.GET %}
+<div class="clearfix">
 <strong>{{ page_obj.paginator.count }}</strong>
   result{% if page_obj.paginator.count == 0 or page_obj.paginator.count > 1 %}s{% endif %}
+</div>
 {% endif %}

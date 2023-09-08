@@ -1,17 +1,10 @@
-__all__ = ['SizeCapture']
+__all__ = ['VacuumFullInfo']
 
 from django.db import models
 
-class Manager(models.Manager):
-    def bulk_create(self, objs, **kwargs):
-        if not kwargs:
-            kwargs = dict(ignore_conflicts=True)
-        return super().bulk_create(objs,**kwargs)
-
-class SizeCapture(models.Model):
-    objects = Manager()
-
+class VacuumFullInfo(models.Model):
     regclass = models.TextField() # DROP safe (regclass vs oid)
+    duration = models.FloatField()
     size_before = models.TextField()
     size_after = models.TextField()
     timestamp = models.TextField()

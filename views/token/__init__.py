@@ -46,6 +46,8 @@ class View(LoginRequiredMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # user.id = github.user.id
-        token = Token.objects.get(user_id=self.request.user.id)
-        context['token'] = token
+        try:
+            context['token'] = Token.objects.get(user_id=self.request.user.id)
+        except Token.DoesNotExist:
+            pass
         return context

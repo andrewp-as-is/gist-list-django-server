@@ -3,11 +3,13 @@ from datetime import datetime
 from django.contrib import admin
 from django.utils.timesince import timesince
 
-from ..models import Info
+from ..models import CallInfo
 
-class InfoAdmin(admin.ModelAdmin):
+class CallInfoAdmin(admin.ModelAdmin):
     list_display = [
         'name',
+        'success',
+        'duration',
         'time',
         'timesince',
     ]
@@ -29,4 +31,4 @@ class InfoAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-admin.site.register(Info,InfoAdmin)
+admin.site.register(CallInfo,CallInfoAdmin)

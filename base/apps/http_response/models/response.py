@@ -20,7 +20,7 @@ class AbstractResponse(models.Model):
     url = models.TextField()
     status = models.IntegerField()
     relpath = models.TextField(null=True) # hardcoded path to prevent endless loop disk overflow
-    content_size = models.IntegerField(null=True)
+    content_size = models.IntegerField(null=True) # todo: remove?
     job_priority = models.IntegerField(null=True)
     timestamp = models.IntegerField(default=get_timestamp)
 
@@ -74,11 +74,6 @@ class AbstractResponse(models.Model):
             return dict(parse_headers(fp)) if fp else {}
         return {}
 
-    def get_etag(self):
-        for k,v in self.get_headers().items():
-            if k.lower()=='etag':
-                return v
-
     def delete_files(self):
         path = self.get_path()
         if os.path.exists(path):
@@ -91,3 +86,4 @@ class Response(AbstractResponse):
 
     class Meta:
         managed = False
+        ordering = ('-timestamp',)

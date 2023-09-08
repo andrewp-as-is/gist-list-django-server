@@ -28,7 +28,6 @@ class AbstractJob(models.Model):
     allow_redirects = models.BooleanField(default=True)
     response_relpath = models.TextField(null=True)
     attempts_count = models.IntegerField(default=0)
-    attempts_limit = models.IntegerField()
     priority = models.IntegerField(default=0)
 
     class Meta:

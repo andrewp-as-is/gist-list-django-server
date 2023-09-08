@@ -1,14 +1,39 @@
 import json
 import time
+
+from django.apps import apps
 from django.db import transaction
 import requests
 
+from base.apps.github_gist_matview.models import Gist as MatviewGist
+from base.apps.github_gist_new_matview.models import Gist as NewMatviewGist
 from base.apps.github_user_refresh.models import Lock
 from base.apps.github.utils.graphql import get_user_followers_query, get_user_following_query, get_viewer_gists_query
 from base.apps.github.utils.http_response import get_api_viewer_gists_pagination_page_relpath, get_api_viewer_gists_starred_pagination_page_relpath, get_api_graphql_user_followers_pagination_page_relpath, get_api_graphql_user_following_pagination_page_relpath, get_api_graphql_viewer_gists_pagination_page_relpath
 from base.apps.http_request_job.models import Job as RequestJob
 from base.utils import bulk_create
 
+def get_gist_model(user_id):
+    if not user_id:
+        return MatviewGist
+    if NewMatviewGist.objects.filter(owner_id=user_id).only('id').first():
+        return NewMatviewGist
+    return MatviewGist
+
+def iter_app_model_list(app_label):
+    for model in apps.get_models():
+        if model._meta.app_label==app_label:
+            yield model
+
+def get_gist_language_model(app_label):
+    for model in iter_app_model_list(app_label):
+        if 'language' in model.__name__.lower():
+            return model
+
+def get_gist_tag_model(app_label):
+    for model in iter_app_model_list(app_label):
+        if 'tag' in model.__name__.lower():
+            return model
 
 def get_github_api_data(url,token):
     headers = {"Authorization": "Bearer %s" % token}
@@ -83,8 +108,7 @@ def refresh_user(user,token,priority,**options):
             headers=headers,
             data = data,
             response_relpath=response_relpath,
-            priority=priority if '/follow' not in url else 10,
-            attempts_limit=5
+            priority=priority if '/follow' not in url else 10
         )]
     with transaction.atomic():
         defaults = dict(token_id=token.id,timestamp=int(time.time()))
