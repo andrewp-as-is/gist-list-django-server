@@ -16,10 +16,10 @@ from ..utils import get_path, get_timestamp
 http.client._MAXHEADERS = 42
 
 class AbstractResponse(models.Model):
-    domain = models.TextField()
-    url = models.TextField()
+    domain = models.CharField(max_length=255)
+    url = models.CharField(max_length=255)
     status = models.IntegerField()
-    relpath = models.TextField(null=True) # hardcoded path to prevent endless loop disk overflow
+    relpath = models.CharField(null=True,max_length=255) # hardcoded path to prevent endless loop disk overflow
     content_size = models.IntegerField(null=True) # todo: remove?
     job_priority = models.IntegerField(null=True)
     timestamp = models.IntegerField(default=get_timestamp)

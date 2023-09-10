@@ -1,11 +1,11 @@
 from views.user.gists import View as ListView
-from .utils import get_gist_star_model
+from .utils import get_starred_gist_model
 
 class View(ListView):
 
     def get_model(self):
         if self.github_user:
-            return get_gist_star_model(self.github_user.id)
+            return get_starred_gist_model(self.github_user.id)
         return Gist.objects.none()
 
     def get_queryset_base(self):

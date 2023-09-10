@@ -49,29 +49,27 @@
   </td>
   <td class="no-wrap px-1">
     <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank" title="{{ gist.filenames|join:"&#10;" }}">
-    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
-     {{ gist.files_count }} file{% if gist.files_count > 1 %}s{% endif %}
+    <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> {{ gist.files_count }} file{% if gist.files_count > 1 %}s{% endif %}
     </a>
   </td>
   <td class="no-wrap px-1">
     {% if gist.stargazers_count %}
     <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
-      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#starred" /></svg>
-     {{ gist.stargazers_count }}
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star" /></svg> {{ gist.stargazers_count }}
      {% endif %}
     </a>
   </td>
   <td class="no-wrap px-1">
     {% if gist.forks_count %}
     <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
-      <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg>
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg> {{ gist.forks_count }}
     </a>
     {% endif %}
   </td>
   <td class="no-wrap px-1">
     {% if gist.comments_count %}
     <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}#comments" target="_blank">
-    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#comment" /></svg> {{ gist.comments_count|default:'' }}
+    <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#comment" /></svg> {{ gist.comments_count|default:'' }}
     </a>
     {% endif %}
   </td>

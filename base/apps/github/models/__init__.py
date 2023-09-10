@@ -7,7 +7,5 @@ from .gist_tag import *
 from .gist_tsv import *
 from .language import *
 from .token import *
-from .token_core_ratelimit import *
-from .token_graphql_ratelimit import *
-from .token_search_ratelimit import *
+from .token_ratelimit import *
 from .user import *

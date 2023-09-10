@@ -17,12 +17,14 @@ def bulk_create(obj_list,model2kwargs=None):
     if not model2kwargs:
         model2kwargs = {}
     for model in sorted(model_list,key=lambda m:m._meta.db_table):
-        model_obj_list = list(filter(lambda c:isinstance(c,model),obj_list))
+        _obj_list = list(filter(lambda c:isinstance(c,model),obj_list))
         db_table = model._meta.db_table.replace('"','')
         db_table_list+=[db_table]
-        builtins.print('CREATE: %s %s' % (db_table,len(model_obj_list)))
-        model_kwargs = model2kwargs.get(model,{})
-        model.objects.bulk_create(model_obj_list,**model_kwargs)
+        builtins.print('CREATE: %s %s' % (db_table,len(_obj_list)))
+        # dict syntax: dict(Model={}) and {Model:{}}
+        kwargs_list = [model2kwargs.get(k,None) for k in [model,model.__name__]]
+        kwargs = next(filter(None,kwargs_list),None) or {}
+        model.objects.bulk_create(_obj_list,**kwargs)
 
 def bulk_delete(obj_list):
     db_table_list = []

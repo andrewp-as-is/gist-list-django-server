@@ -34,6 +34,11 @@
       {% endif %}
     </a>
     </td>
+    <td class="no-wrap p-1 text-left">
+        {% for language_name in user.language_name_list|slice:":5" %}
+          <a class="color-fg-muted" href="{{ user.get_absolute_url }}?language={{ language_name }}">{{ language_name }}</a>
+        {% endfor %}
+    </td>
     <td class="no-wrap p-1 text-left width-full">{% if user.bio %}{{ user.bio|truncatechars:42 }}{% endif %}</td>
     <td class="color-fg-muted no-wrap p-1 text-left">
         {% if user.company %}

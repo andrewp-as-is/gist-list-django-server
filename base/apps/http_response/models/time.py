@@ -2,6 +2,8 @@ __all__ = ['Time']
 
 from django.db import models
 
+from base.utils import execute_sql
+
 class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
         if not kwargs:
@@ -19,7 +21,7 @@ class Manager(models.Manager):
 class Time(models.Model):
     objects = Manager()
 
-    url = models.TextField(unique=True)
+    url = models.CharField(unique=True,max_length=255)
     timestamp = models.IntegerField()
 
     class Meta:

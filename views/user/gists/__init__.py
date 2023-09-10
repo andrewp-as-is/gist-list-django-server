@@ -58,8 +58,8 @@ class View(UserMixin,ListView):
             if count:
                 language_stat = get_language_stat(self.get_queryset_base(),gist_language_model)
                 tag_stat = get_tag_stat(self.get_queryset_base(),gist_tag_model)
-                context['languages_count'] = len(language_stat.keys())
-                context['tags_count'] = len(tag_stat.keys())
+                context['languages_count'] = len(language_stat.keys())-1
+                context['tags_count'] = len(tag_stat.keys())-1
                 context['language_details'] = Details(self.request,
                     name='Language',
                     menu_title = 'Select language',
@@ -93,19 +93,19 @@ class View(UserMixin,ListView):
         qs = qs.exclude(
             id__in=GistDelete.objects.values_list('gist_id',flat=True)
         ) # live gists only
-        language_slug = self.request.GET.get('language','').strip().lower()
-        language = get_language(language_slug)
-        if language_slug:
+        language_value = self.request.GET.get('language','').strip().lower()
+        if language_value:
+            language = get_language(language_value)
             if language:
                 qs = qs.filter(language_m2m=language.id)
-            else:
+            if language_value=='none':
                 qs = qs.filter(language_m2m=None)
         tag_slug = self.request.GET.get('tag','').strip().lower()
         if tag_slug:
             tag = get_tag(tag_slug)
             if tag:
                 qs = qs.filter(tag_m2m=tag.id)
-            else:
+            if tag_slug=='none':
                 qs = qs.filter(tag_m2m=None)
         q = self.request.GET.get('q','').strip()
         if q:

@@ -20,6 +20,7 @@ def set_db_table(sender, **kwargs):
         else: # models/table.py
             db_table = '%s\".\"%s' % (db_schema,sender.__module__.split('.')[-1])
         sender._meta.db_table = db_table
+        sender._meta.verbose_name_plural = db_table.split('.')[1].replace('"','')
 
 # todo: pre_init, class_prepared documentation/comment
 pre_init.connect(set_db_table)

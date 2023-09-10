@@ -12,11 +12,11 @@ class Manager(models.Manager):
 class PythonError(models.Model):
     objects = Manager()
 
-    filename = models.TextField()
+    filename = models.CharField(max_length=255)
     lineno = models.IntegerField()
     count = models.IntegerField(default=1)
-    exc_type = models.TextField()
-    exc_message = models.TextField()
+    exc_type = models.CharField(max_length=255)
+    exc_message = models.CharField(max_length=255)
     exc_traceback = models.TextField()
     timestamp = models.IntegerField()
 

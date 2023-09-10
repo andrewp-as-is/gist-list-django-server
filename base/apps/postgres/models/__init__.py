@@ -1,6 +1,7 @@
 from .database_size import *
 from .database_size_capture import *
 from .matview import *
+from .matview_table import *
 
 from .pg_class import *
 from .pg_file_settings import *

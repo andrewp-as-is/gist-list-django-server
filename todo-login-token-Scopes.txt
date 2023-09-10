@@ -1,8 +1,0 @@
-1) logout delete token
-2) login page with
-Oauth Scopes ?
-впрочем главная проблема как scopes получить и сохранить, а не login page :)
-X-RateLimit-Limit: 5000
-X-OAuth-Scopes: public_repo
-но там показывает не все
-да и вообще страница с scopes будет отталкивать, надо как-то опционально делать и ненавязчиво

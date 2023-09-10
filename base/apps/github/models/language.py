@@ -1,3 +1,6 @@
+__all__ = ['AbstractLanguage','Language']
+
+
 from django.db import models
 
 """
@@ -14,13 +17,16 @@ class Manager(models.Manager):
             )
         return super().bulk_create(objs,**kwargs)
 
-
-class Language(models.Model):
-    objects = Manager()
-
+class AbstractLanguage(models.Model):
     name = models.TextField(unique=True)
     slug = models.TextField(unique=True)
     color = models.TextField(null=True)
+
+    class Meta:
+        abstract = True
+
+class Language(AbstractLanguage):
+    objects = Manager()
 
     class Meta:
         managed = False

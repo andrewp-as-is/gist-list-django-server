@@ -11,3 +11,5 @@ scripts vs backup
 /scripts/download
 /scripts/gist-clone
 /scripts/gist-id
+---
+убрать нахрен?

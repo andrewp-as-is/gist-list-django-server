@@ -5,11 +5,9 @@ from django.db import models
 from base.utils import get_timestamp
 
 class Output(models.Model):
-    name = models.TextField()
-    output = models.TextField()
+    name = models.CharField(max_length=255)
     timestamp = models.IntegerField(default=get_timestamp)
 
     class Meta:
         managed = False
-        ordering = ('-timestamp', )
-        verbose_name_plural = "Output"
+        ordering = ('-timestamp',)

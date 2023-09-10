@@ -24,8 +24,8 @@ class Manager(models.Manager):
 class Etag(models.Model):
     objects = Manager()
 
-    url = models.TextField(unique=True)
-    etag = models.TextField()
+    url = models.CharField(unique=True,max_length=255)
+    etag = models.CharField(max_length=255)
     timestamp = models.IntegerField()
 
     class Meta:

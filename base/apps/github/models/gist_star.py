@@ -13,10 +13,9 @@ class Manager(models.Manager):
                 unique_fields = ['user_id','gist_id'],
                 update_fields = ['order']
             )
-        try:
-            return super().bulk_create(objs,**kwargs)
-        finally:
-            execute_sql('VACUUM github.gist_star')
+        result = super().bulk_create(objs,**kwargs)
+        execute_sql('VACUUM github.gist_star')
+        return result
 
 class GistStar(models.Model):
     objects = Manager()

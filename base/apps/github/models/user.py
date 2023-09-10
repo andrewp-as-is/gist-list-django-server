@@ -1,5 +1,6 @@
 __all__ = ['AbstractUser','User',]
 
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from base.utils import execute_sql
@@ -31,10 +32,9 @@ class Manager(models.Manager):
                     'updated_at'
                 ]
             )
-        try:
-            return super().bulk_create(objs,**kwargs)
-        finally:
-            execute_sql('VACUUM github."user"')
+        result = super().bulk_create(objs,**kwargs)
+        execute_sql('VACUUM github."user"')
+        return result
 
 class AbstractUser(models.Model):
     objects = Manager()
@@ -60,6 +60,9 @@ class AbstractUser(models.Model):
 
     created_at = models.IntegerField(null=True)
     updated_at = models.IntegerField(null=True)
+
+    language_name_list = ArrayField(models.TextField())
+    tag_slug_list = ArrayField(models.TextField())
 
     class Meta:
         abstract = True

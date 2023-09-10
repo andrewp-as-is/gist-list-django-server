@@ -1,0 +1,8 @@
+1) where is NULL можно и без m2m model в случае language
+partial index where language_name_list IS NULL
+2) как быть с tag list?
+3) lifehacks?
+tags_count или tag_list
+4) как без m2m models
+5) не хочеццо плодить лишние модельки
+

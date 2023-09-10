@@ -41,8 +41,8 @@ class View(UserMixin,TemplateView):
             menu_title = 'Select order',
             menu_item_list=menu_item_list
         )
-        context['tags_count'] = len(stat)
-        unknown_count = total_count-len(stat)
+        context['tags_count'] = len(stat)-1
+        unknown_count = total_count-len(stat)+1
         tag_list = list(sorted(
             tag_list,
             key=lambda t:-t.count if self.request.GET.get('sort','count')=='count' else t.slug

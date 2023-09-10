@@ -20,9 +20,9 @@ class Manager(models.Manager):
 class AbstractJob(models.Model):
     objects = Manager()
 
-    domain = models.TextField()
-    url = models.TextField(unique=True)
-    method = models.TextField(default='GET')
+    domain = models.CharField(max_length=255)
+    url = models.CharField(unique=True,max_length=255)
+    method = models.CharField(default='GET',max_length=255)
     data = models.TextField(null=True)
     headers = models.TextField(null=True)
     allow_redirects = models.BooleanField(default=True)

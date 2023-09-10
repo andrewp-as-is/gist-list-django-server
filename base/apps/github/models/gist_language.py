@@ -8,10 +8,9 @@ class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
         if not kwargs:
             kwargs = dict(ignore_conflicts=True)
-        try:
-            return super().bulk_create(objs,**kwargs)
-        finally:
-            execute_sql('VACUUM github.gist_language')
+        result = super().bulk_create(objs,**kwargs)
+        execute_sql('VACUUM github.gist_language')
+        return result
 
 class GistLanguage(models.Model):
     objects = Manager()

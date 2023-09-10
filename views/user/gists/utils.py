@@ -12,6 +12,8 @@ from views.utils import get_gist_model, get_url
 LANGUAGE_LIST = list(Language.objects.all())
 TAG_LIST = list(Tag.objects.all())
 ID2LANGUAGE = {language.id:language for language in LANGUAGE_LIST}
+NAME2LANGUAGE = {language.name:language for language in LANGUAGE_LIST}
+SLUG2LANGUAGE = {language.slug:language for language in LANGUAGE_LIST}
 ID2TAG = {tag.id:tag for tag in TAG_LIST}
 SLUG2TAG = {tag.slug:tag for tag in TAG_LIST}
 
@@ -65,12 +67,11 @@ def get_object(model,**kwargs):
     except model.DoesNotExist:
         pass
 
-def get_language(slug):
-    if slug:
-        try:
-            return Language.objects.get(slug=slug)
-        except Language.DoesNotExist:
-            pass
+def get_language(value):
+    if value in NAME2LANGUAGE:
+        return NAME2LANGUAGE[value]
+    if value in SLUG2LANGUAGE:
+        return SLUG2LANGUAGE[value]
 
 def get_tag(slug):
     if slug:

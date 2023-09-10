@@ -1,8 +1,8 @@
-from base.apps.github_gist_star_matview.models import Gist as MatviewGist
-from base.apps.github_gist_star_new_matview.models import Gist as NewMatviewGist
+from base.apps.github_matview.models import StarredGist
+from base.apps.github_matview_new.models import StarredGist as NewStarredGist
 
-def get_gist_star_model(stargazer_id):
+def get_starred_gist_model(stargazer_id):
     if stargazer_id:
-        if NewMatviewGist.objects.filter(stargazer_id=stargazer_id).only('id').first():
-            return NewMatviewGist
-    return MatviewGist
+        if NewStarredGist.objects.filter(stargazer_id=stargazer_id).only('id').first():
+            return NewStarredGist
+    return StarredGist

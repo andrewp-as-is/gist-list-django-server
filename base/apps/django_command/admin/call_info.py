@@ -8,7 +8,6 @@ from ..models import CallInfo
 class CallInfoAdmin(admin.ModelAdmin):
     list_display = [
         'name',
-        'success',
         'duration',
         'time',
         'timesince',
@@ -18,11 +17,11 @@ class CallInfoAdmin(admin.ModelAdmin):
     ]
 
     def time(self,obj):
-        return datetime.fromtimestamp(obj.called_at)
+        return datetime.fromtimestamp(obj.timestamp)
     time.short_description = "time"
 
     def timesince(self,obj):
-        return '%s ago' % timesince(datetime.fromtimestamp(obj.called_at))
+        return '%s ago' % timesince(datetime.fromtimestamp(obj.timestamp))
     timesince.short_description = "timesince"
 
     def has_add_permission(self, request, obj=None):

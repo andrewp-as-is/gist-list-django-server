@@ -35,6 +35,7 @@ urlpatterns = [
     path('search', include('urls.search')),
     path('status', include('urls.status')),
     path('token', include('urls.token')),
+    path('users', include('urls.users')),
 
     path('<slug:login>/', include('urls.user')),
     path('<slug:login>', include('urls.user')),

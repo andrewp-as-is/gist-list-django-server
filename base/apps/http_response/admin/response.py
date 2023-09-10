@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 from django.contrib import admin
 from django.utils.timesince import timesince
@@ -15,9 +16,22 @@ class ResponseAdmin(admin.ModelAdmin):
         'time',
         'timesince',
     ]
+    readonly_fields = ['content','headers','request_headers']
     search_fields = [
         'url',
     ]
+
+    def content(self,obj):
+        path = obj.get_content_path()
+        return open(path).read() if os.path.exists(path) else None
+
+    def headers(self,obj):
+        path = obj.get_headers_path()
+        return open(path).read() if os.path.exists(path) else None
+
+    def request_headers(self,obj):
+        path = obj.get_request_headers_path()
+        return open(path).read() if os.path.exists(path) else None
 
     def time(self,obj):
         return datetime.fromtimestamp(obj.timestamp)

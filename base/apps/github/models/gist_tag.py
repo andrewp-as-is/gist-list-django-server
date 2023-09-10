@@ -8,10 +8,9 @@ class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
         if not kwargs:
             kwargs = dict(ignore_conflicts=True)
-        try:
-            return super().bulk_create(objs,**kwargs)
-        finally:
-            execute_sql('VACUUM github.gist_tag')
+        result = super().bulk_create(objs,**kwargs)
+        execute_sql('VACUUM github.gist_tag')
+        return result
 
 class GistTag(models.Model):
     objects = Manager()
@@ -21,4 +20,4 @@ class GistTag(models.Model):
 
     class Meta:
         managed = False
-        unique_together = ('gist', 'tag',)
+        unique_together = [('gist', 'tag',)]

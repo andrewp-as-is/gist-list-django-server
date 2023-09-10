@@ -1,5 +1,5 @@
-from base.apps.github_gist_matview.models import Gist as MatviewGist
-from base.apps.github_gist_new_matview.models import Gist as NewMatviewGist
+from base.apps.github_matview.models import Gist as MatviewGist
+from base.apps.github_matview_new.models import Gist as NewMatviewGist
 
 def get_gist_model(user_id):
     if not user_id:

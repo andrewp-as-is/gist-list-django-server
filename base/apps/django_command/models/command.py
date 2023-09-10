@@ -16,7 +16,7 @@ class Manager(models.Manager):
 class Command(models.Model):
     objects = Manager()
 
-    name = models.TextField(unique=True)
+    name = models.CharField(unique=True,max_length=255)
     duration = models.FloatField()
     timestamp = models.IntegerField()
 

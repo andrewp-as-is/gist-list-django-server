@@ -32,7 +32,11 @@ class UserMixin:
         except User.DoesNotExist:
             self.github_user = None
             self.github_user_id = None
-        return super().dispatch(*args, **kwargs)
+        response = super().dispatch(*args, **kwargs)
+        if response.status_code in [200,304] and self.refresh_time:
+            response['ETag'] = self.refresh_time.timestamp
+            # response['Last-Modified'] = last_modified
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

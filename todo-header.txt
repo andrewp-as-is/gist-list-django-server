@@ -1,9 +1,0 @@
-new languages tags users
-languages tags вполне можно свое (для fast access), но со ссылкой на глобальное
-/LOGIN/languages
-/LOGIN/tags
----
-/languages -> /LOGIN/languages
-/tags -> /LOGIN/tags
----
-new - зачем если default order = new как раз
