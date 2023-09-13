@@ -1,3 +1,7 @@
 1) лишнее
 2) if else ?
 3) etc
+---
+per page/template
+templates/NAME/_blocks/octicons.html
+templates/NAME/name.html

@@ -9,3 +9,19 @@
 с одной стороны такое не нужно показывать, с другой а как оправдать ожидания/тормоза?
 но... что даст пользователю это сообщение?
 github ratelimit просто или типа того?
+--
+/refresh
+1) your refresh status
+2) global
+3) current vs recently completed
+/refresh/history
+4) refresh info - gists count, followers count, etc. requests count
+5) refresh total requests count/report ?
+6) refresh report (started_at, finished_at, http_requests_count
+auth vs public
+logged-in, etc
+7) refresh/history
+refresh/status
+refresh/request
+8) github_user_refresh.current
+github_user_refresh.history

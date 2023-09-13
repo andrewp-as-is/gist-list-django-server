@@ -7,6 +7,9 @@ register = Library()
 
 @register.filter
 def timesince(d):
+    if not d:
+        return
+
     td = datetime.now() - d
     if td.days==0 and td.total_seconds()<60:
         return 'now'

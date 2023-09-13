@@ -7,7 +7,6 @@ from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 
 from base.apps.django_command_job.utils import create_job
-from base.utils import execute_sql
 from .language import Language
 
 NAME2LANGUAGE = {l.name:l for l in Language.objects.all()}
@@ -16,12 +15,20 @@ NAME2LANGUAGE = {l.name:l for l in Language.objects.all()}
 https://developer.github.com/v3/gists/
 """
 
+class QuerySet(models.query.QuerySet):
+    def delete(self):
+        create_job('github_gist_after_delete')
+        super().delete()
+
 
 class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
         result = super().bulk_create(objs,**kwargs)
-        execute_sql('VACUUM github.gist')
-        create_job('github_matview_new')
+        create_job('github_gist_after_insert')
+        return result
+
+    def get_queryset(self):
+        result = QuerySet(self.model, using=self._db)
         return result
 
 class GistMixin:

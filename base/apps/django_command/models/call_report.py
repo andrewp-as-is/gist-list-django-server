@@ -1,8 +1,8 @@
-__all__ = ['CallInfo']
+__all__ = ['CallReport']
 
 from django.db import models
 
-class CallInfo(models.Model):
+class CallReport(models.Model):
     name = models.CharField(max_length=255)
     duration = models.FloatField()
     timestamp = models.IntegerField()

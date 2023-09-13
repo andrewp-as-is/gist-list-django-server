@@ -1,5 +1,0 @@
-domain.com/django_command/output/
-domain.com/http_response/output/
-output/ зачем если files по определению output
-
-но подчеркнуть что output тоже неплохо

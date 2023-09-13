@@ -8,15 +8,24 @@ from ..models import RefreshStat
 
 class RefreshStatAdmin(admin.ModelAdmin):
     list_display = [
-        'regclass',
+        'schemaname',
+        'tablename',
         'avg_duration',
         'min_duration',
         'max_duration',
+        'timestamp',
     ]
     list_filter = [
+        'schemaname',
     ]
     search_fields = [
-        'regclass',
+        'schemaname',
+        'tablename',
     ]
+    def time(self,obj):
+        return datetime.fromtimestamp(obj.called_at)
+
+    def timesince(self,obj):
+        return '%s ago' % timesince(datetime.fromtimestamp(obj.called_at))
 
 admin.site.register(RefreshStat,RefreshStatAdmin)

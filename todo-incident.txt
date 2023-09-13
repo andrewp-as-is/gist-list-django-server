@@ -1,0 +1,4 @@
+/incident
+incident history
+---
+https://www.githubstatus.com/history

@@ -6,4 +6,5 @@ register = Library()
 
 @register.filter
 def timestamp2datetime(timestamp):
-    return _datetime.fromtimestamp(timestamp)
+    if timestamp:
+        return _datetime.fromtimestamp(timestamp)

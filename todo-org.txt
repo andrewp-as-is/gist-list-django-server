@@ -1,5 +1,0 @@
-
-org
-https://gist.github.com/google
-https://gist.github.com/facebook
-https://gist.github.com/github

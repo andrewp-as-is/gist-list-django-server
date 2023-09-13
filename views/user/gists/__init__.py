@@ -7,7 +7,7 @@ from base.apps.github.models import Gist, GistDelete, GistTag, GistLanguage, Use
 from views.base import ListView
 from views.details import Details
 from views.user.mixins import UserMixin
-from views.utils import get_gist_model
+from utils import get_gist_model, get_gist_language_model, get_gist_tag_model
 from .utils import get_object, get_language, get_language_filter, get_language_item_list, get_language_stat, get_tag_filter, get_tag_item_list, get_tag_stat, get_tag
 from . import details
 
@@ -19,22 +19,6 @@ class View(UserMixin,ListView):
     def get_model(self):
         user_id = self.github_user.id if self.github_user else None
         return get_gist_model(user_id)
-
-    def iter_app_model(self):
-        gist_model = self.get_model()
-        for model in apps.get_models():
-            if model._meta.app_label==gist_model._meta.app_label:
-                yield model
-
-    def get_gist_language_model(self):
-        for model in self.iter_app_model():
-            if 'language' in model.__name__.lower():
-                return model
-
-    def get_gist_tag_model(self):
-        for model in self.iter_app_model():
-            if 'tag' in model.__name__.lower():
-                return model
 
     def get(self,request,*args,**kwargs):
         login = self.kwargs.get('login')
@@ -51,11 +35,12 @@ class View(UserMixin,ListView):
                 context['blankslate'] = not self.github_user.public_gists_count and not self.github_user.private_gists_count
             else:
                 context['blankslate'] = not self.github_user.public_gists_count
-            gist_language_model = self.get_gist_language_model()
-            gist_tag_model = self.get_gist_tag_model()
             count = self.get_queryset_base().count()
             context['queryset_count'] = count
             if count:
+                model = self.get_model()
+                gist_language_model = get_gist_language_model(model._meta.app_label)
+                gist_tag_model = get_gist_tag_model(model._meta.app_label)
                 language_stat = get_language_stat(self.get_queryset_base(),gist_language_model)
                 tag_stat = get_tag_stat(self.get_queryset_base(),gist_tag_model)
                 context['languages_count'] = len(language_stat.keys())-1
@@ -93,26 +78,51 @@ class View(UserMixin,ListView):
         qs = qs.exclude(
             id__in=GistDelete.objects.values_list('gist_id',flat=True)
         ) # live gists only
+        gist_model = self.get_model()
+        gist_language_model = get_gist_language_model(model._meta.app_label)
+        gist_tag_model = get_gist_tag_model(model._meta.app_label)
         language_value = self.request.GET.get('language','').strip().lower()
         if language_value:
             language = get_language(language_value)
             if language:
-                qs = qs.filter(language_m2m=language.id)
+                # qs = qs.filter(language_m2m=language.id)
+                qs = qs.filter(
+                    id__in=gist_language_model.objects.filter(
+                        gist_id__in=self.get_queryset_base().values_list('id',flat=True),
+                        language_id=language.id
+                    ).values_list('gist_id',flat=True)
+                )
             if language_value=='none':
-                qs = qs.filter(language_m2m=None)
+                # qs = qs.filter(language_m2m=None)
+                qs = qs.exclude(
+                    id__in=gist_language_model.objects.filter(
+                        gist_id__in=self.get_queryset_base().values_list('id',flat=True)
+                    ).values_list('gist_id',flat=True)
+                )
         tag_slug = self.request.GET.get('tag','').strip().lower()
         if tag_slug:
             tag = get_tag(tag_slug)
             if tag:
-                qs = qs.filter(tag_m2m=tag.id)
+                # qs = qs.filter(tag_m2m=tag.id)
+                qs = qs.filter(
+                    id__in=gist_tag_model.objects.filter(
+                        gist_id__in=self.get_queryset_base().values_list('id',flat=True),
+                        tag_id=tag.id
+                    ).values_list('gist_id',flat=True)
+                )
             if tag_slug=='none':
-                qs = qs.filter(tag_m2m=None)
+                # qs = qs.filter(tag_m2m=None)
+                qs = qs.exclude(
+                    id__in=gist_tag_model.objects.filter(
+                        gist_id__in=self.get_queryset_base().values_list('id',flat=True)
+                    ).values_list('gist_id',flat=True)
+                )
         q = self.request.GET.get('q','').strip()
         if q:
             qs = qs.filter(
                 Q(**{'id__icontains':q}) |
-                Q(**{'description__icontains':q}) |
-                Q(**{'filenames__icontains':q})
+                Q(**{'description__icontains':q})
+                # Q(**{'filename__icontains':q})
                 # Q(**{'languages__icontains':q})
             )
         sort = self.request.GET.get('sort','')

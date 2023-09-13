@@ -12,4 +12,5 @@ django-manifest-loader
 
 gunicorn
 psycopg2
+pytz
 requests

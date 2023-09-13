@@ -13,3 +13,11 @@ scripts vs backup
 /scripts/gist-id
 ---
 убрать нахрен?
+--
+scripts в header
+---
+для pro все, для free first 10/50 например
+--
+backup лучше
+--
+а scripts - генерация repo (но технически можно только push request или код сгенерировать, а для repo уже нужен token scope дополнительный)

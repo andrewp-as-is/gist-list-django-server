@@ -1,3 +1,7 @@
+"""
+https://docs.github.com/en/rest/reference/gists#create-a-gist
+"""
+
 import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,12 +10,9 @@ from django.views.generic.base import TemplateView
 
 import requests
 
-from base.apps.github.models import Gist
-from base.apps.github.models import Token
-
-"""
-https://docs.github.com/en/rest/reference/gists#create-a-gist
-"""
+from base.apps.github.models import Gist, Token
+from base.apps.github.utils.http_response import get_api_gists_gist_relpath
+from base.apps.http_request_job.models import Job as RequestJob
 
 class View(LoginRequiredMixin,TemplateView):
     template_name = 'new/new.html'
@@ -23,17 +24,42 @@ class View(LoginRequiredMixin,TemplateView):
         names = request.POST.getlist('gist[contents][][name]')
         values = request.POST.getlist('gist[contents][][value]')
         files = {}
+        filename_list = []
         for i,name in enumerate(names):
+            filename_list+=[name]
             files[name] = dict(content = values[i],filename = names[i])
         url = 'https://api.github.com/gists'
         headers = {"Authorization": "Bearer %s" % token.token}
         data = dict(public=public,description = description,files = files)
         r = requests.post(url,headers=headers,data=json.dumps(data))
-        # token.update(r.headers)
-        # r.raise_for_status()
+        # todo: update token core ratelimit
+        r.raise_for_status()
         if r.status_code in [201]:
             data = r.json()
-            # todo
-            Gist(id = data['id'],owner_id = data['owner']['id'],**get_kwargs(data)).save()
-            #
+            url = 'https://api.github.com/gists/%s' % data['id']
+            headers = "\n".join([
+                "Authorization: Bearer %s" % token.token,
+                "X-GitHub-Api-Version: 2022-11-28"
+            ])
+            response_relpath = get_api_gists_gist_relpath(data['id'])
+            defaults = dict(
+                domain = 'api.github.com',
+                method='GET',
+                headers=headers,
+                response_relpath=response_relpath,
+                priority=100
+            )
+            RequestJob.objects.get_or_create(defaults,url=url)
+            defaults = dict(
+                owner_id=self.request.user.id,
+                description=description,
+                public=public,
+                fork=False,
+                filename_list = filename_list,
+                files_count=len(files),
+                forks_count=0,
+                stargazers_count=0
+            )
+            gist, created = Gist.objects.update_or_create(defaults,id=data['id'])
+            return redirect(gist.get_absolute_url())
         return redirect('/')

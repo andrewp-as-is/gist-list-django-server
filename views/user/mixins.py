@@ -12,6 +12,7 @@ class UserMixin:
     def dispatch(self, *args, **kwargs):
         self.login = self.kwargs['login']
         # /ID -> /LOGIN/ID redirect
+        self.refresh_time = None
         try:
             gist = Gist.objects.get(id=self.login)
             return redirect(gist.get_absolute_url())
@@ -28,13 +29,14 @@ class UserMixin:
             try:
                 self.refresh_time = Time.objects.get(user_id=self.github_user.id)
             except Time.DoesNotExist:
-                self.refresh_time = None
+                pass
         except User.DoesNotExist:
             self.github_user = None
             self.github_user_id = None
         response = super().dispatch(*args, **kwargs)
         if response.status_code in [200,304] and self.refresh_time:
-            response['ETag'] = self.refresh_time.timestamp
+            pass
+            # response['ETag'] = self.refresh_time.timestamp
             # response['Last-Modified'] = last_modified
         return response
 

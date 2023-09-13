@@ -4,11 +4,12 @@ from django.contrib import admin
 from django.template.defaultfilters import filesizeformat
 from django.utils.timesince import timesince
 
-from ..models import RefreshInfo
+from ..models import RefreshReport
 
-class RefreshInfoAdmin(admin.ModelAdmin):
+class RefreshReportAdmin(admin.ModelAdmin):
     list_display = [
-        'regclass',
+        'schemaname',
+        'tablename',
         'duration',
         'time',
         'timesince',
@@ -21,10 +22,8 @@ class RefreshInfoAdmin(admin.ModelAdmin):
 
     def time(self,obj):
         return datetime.fromtimestamp(obj.called_at)
-    time.short_description = "time"
 
     def timesince(self,obj):
         return '%s ago' % timesince(datetime.fromtimestamp(obj.called_at))
-    timesince.short_description = "timesince"
 
-admin.site.register(RefreshInfo,RefreshInfoAdmin)
+admin.site.register(RefreshReport,RefreshReportAdmin)

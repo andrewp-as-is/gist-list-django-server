@@ -1,0 +1,18 @@
+1) refresh per free user
+2) superadmin no limits
+3) priority
+4) no followers/following
+5) gist revision/forks
+5) scripts
+6) logged-in
+7) click star to ..., follow ...
+admin_followers.py
+admin_stargazers.py
+---
+plan.refresh_limit
+----
+user profile menu
+your plan
+upgrade
+---
+на github кстаит уже нет profile dropdown

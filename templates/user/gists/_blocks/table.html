@@ -1,6 +1,5 @@
-{% load timestamp2datetime %}
+{% load timestamp_timesince %}
 {% load emoji_tags %}
-{% load gist_time %}
 
 <table class="width-full">
 {% for gist in gist_list %}
@@ -75,7 +74,7 @@
   </td>
   <td class="f6 px-1" nowrap>
     <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">
-    {% if gist.updated_at %}last active {{ gist.updated_at|timestamp2datetime|gist_time }}{% else %}created {{ gist.created_at|timestamp2datetime|gist_time }}{% endif %}</a>
+    {% if gist.updated_at %}last active {{ gist.updated_at|timestamp_timesince }}{% else %}created {{ gist.created_at|timestamp_timesince }}{% endif %}</a>
   </td>
 </tr>
 {% endfor %}

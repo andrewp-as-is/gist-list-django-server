@@ -1,5 +1,10 @@
 import os
 
+# api.github.com/gists/gist/ID
+
+def get_api_gists_gist_relpath(gist_id):
+    return 'api.github.com/gists/gist/%s' % gist_id
+
 # api.github.com/user/ID user profile
 
 def get_api_user_profile_relpath(user_id):

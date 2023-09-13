@@ -7,7 +7,7 @@ from django.conf import settings
 
 from django.db import connection
 
-from base.apps.postgres.models import RefreshInfo
+from base.apps.postgres.models import RefreshReport
 
 def bulk_create(obj_list,model2kwargs=None):
     db_table_list = []
@@ -75,15 +75,14 @@ def get_timestamp():
 
 def refresh_model_matview(model):
     db_table = model._meta.db_table.replace('"','')
-    regclass = '"%s"."%s"' % (
-        db_table.split('.')[0],
-        db_table.split('.')[1]
-    )
+    schemaname = db_table.split('.')[0].replace('"','')
+    tablename = db_table.split('.')[1].replace('"','')
     started_at = time.time()
-    execute_sql('REFRESH MATERIALIZED VIEW %s' % regclass)
+    execute_sql('REFRESH MATERIALIZED VIEW "%s"."%s"' % (schemaname,tablename))
     duration = time.time() - started_at
-    RefreshInfo(
-        regclass=regclass,
+    RefreshReport(
+        schemaname=schemaname,
+        tablename=tablename,
         duration=duration,
         timestamp = int(time.time())
     ).save()

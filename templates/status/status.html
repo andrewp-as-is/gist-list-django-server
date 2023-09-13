@@ -1,14 +1,39 @@
 {% extends "_base.html" %}
 
+{% load format_count %}
+
 {% block content %}
 <div class="page-content container-lg">
-    {% if check_list %}
-        {% include "status/_blocks/check_list.html" %}
-        {% if incident_list %}
-        {% include "status/_blocks/incident_list.html" %}
+<h3 class="text-center">Status</h3>
+<table class="width-full">
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold">
+        <a class="color-fg-muted" href="/healthcheck">Healthcheck</a>
+    </td>
+    <td class="p-1 text-bold">
+        <a class="color-fg-muted" href="/healthcheck">
+        {% if healthcheck_success %}
+        <svg class="octicon mr-1 color-fg-success" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
+        {% else %}
+        <svg class="octicon mr-1 color-fg-danger" style="width:16px;height:16px"><use xlink:href="#alert" /></svg>
         {% endif %}
-    {% else %}
-        {% include "status/_blocks/error.html" %}
-    {% endif %}
+        </a>
+    </td>
+</tr>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold {% if incident_count %}color-fg-danger{% endif %}">
+        <a class="color-fg-muted" href="/incident">incidents</a>
+    </td>
+    <td class="p-1 text-bold {% if incident_count %}color-fg-danger{% endif %}">{% if incident_count %}{{ incident_count|format_count }}{% else %}-{% endif %}</td>
+</tr>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold">current user refreshes</td>
+    <td class="p-1 text-bold">{{ github_user_refresh_count|format_count }}</td>
+</tr>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold">current http requests</td>
+    <td class="p-1 text-bold">{{ http_request_count|format_count }}</td>
+</tr>
+</table>
 </div>
 {% endblock %}

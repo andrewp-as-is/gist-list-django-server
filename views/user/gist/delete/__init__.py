@@ -30,7 +30,7 @@ class DeleteView(LoginRequiredMixin,GistMixin,View):
         if r.status_code in [204]:
             GistStar.objects.filter(gist_id=gist_id).delete()
             Gist.objects.filter(id=gist_id).delete()
-            GistDelete.objects.get_or_create(user_id=user_id)
+            GistDelete.objects.get_or_create(gist_id=gist_id)
             UserModificationJob.objects.get_or_create(user_id=user_id)
             message = "gist %s was successfully deleted." % gist_id
             return redirect(url+'?message=%s' % message)

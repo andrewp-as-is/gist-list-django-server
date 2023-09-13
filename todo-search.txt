@@ -1,4 +1,4 @@
-search
+search страница
 ----
 search gist
 не нужен тк если кому-то нужно то пойдут на gist.github.com :)

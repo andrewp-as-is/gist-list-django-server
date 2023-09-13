@@ -5,7 +5,7 @@ import os
 import time
 from urllib.parse import parse_qs, urlparse
 
-from base.conf import ROOT_DIRNAME
+from .conf import HTTP_RESPONSE_DIRNAME
 
 http.client._MAXHEADERS = 42
 
@@ -17,7 +17,7 @@ def get_headers(text):
 
 def get_path(relpath):
     if relpath:
-        return os.path.join(ROOT_DIRNAME,'response',relpath)
+        return os.path.join(HTTP_RESPONSE_DIRNAME,relpath)
 
 def get_timestamp():
     return int(time.time())

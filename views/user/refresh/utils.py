@@ -18,11 +18,9 @@ def get_github_user(user_id):
     except User.DoesNotExist:
         pass
 
-def get_token_lock(token_id):
-    try:
-        return Lock.objects.get(token_id=token_id)
-    except Lock.DoesNotExist:
-        pass
+def get_token_locks_count(token_id):
+    return Lock.objects.filter(token_id=token_id).count()
+
 
 def get_refresh_time(user_id):
     try:

@@ -2,14 +2,14 @@ __all__ = ['GistTag']
 
 from django.db import models
 
-from base.utils import execute_sql
+from base.apps.django_command_job.utils import create_job
 
 class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
         if not kwargs:
             kwargs = dict(ignore_conflicts=True)
         result = super().bulk_create(objs,**kwargs)
-        execute_sql('VACUUM github.gist_tag')
+        create_job('github_gist_tag_after_insert')
         return result
 
 class GistTag(models.Model):

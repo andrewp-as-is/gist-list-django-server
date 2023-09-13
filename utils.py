@@ -1,8 +1,10 @@
 import json
+from datetime import date, datetime, timedelta
 import time
 
 from django.apps import apps
 from django.db import transaction
+from django.utils.timesince import timesince as _timesince
 import requests
 
 from base.apps.github_matview.models import Gist as MatviewGist
@@ -118,3 +120,23 @@ def refresh_user(user,token,priority,**options):
         defaults = dict(token_id=token.id,timestamp=int(time.time()))
         lock, created = Lock.objects.get_or_create(defaults,user_id=user.id)
         RequestJob.objects.bulk_create(create_list,ignore_conflicts=True)
+
+
+def timesince(d):
+    yesterday = date.today() - timedelta(days = 1)
+    td = datetime.now() - d
+    td_seconds = td.total_seconds()
+    td_hours = int(td_seconds / (60*60))
+    if td.days == 0 and td.total_seconds()<60:
+        return 'now'
+    if td.days == 0 and not td_hours:
+        return '%s ago' % _timesince(d).split(',')[0]
+    if td.days == 0 and td.total_seconds()<60*60*2:
+        return '1 hour ago'
+    if td.days == 0  or (d.date() == yesterday and td_hours<=23):
+        return '%s hours ago' % td_hours
+    if d.date() == yesterday:
+        return 'yesterday'
+    if td.days<=31:
+        return '%s days ago' % td.days
+    return '%s ago' % _timesince(d).split(',')[0]

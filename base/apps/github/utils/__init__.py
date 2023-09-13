@@ -1,6 +1,9 @@
 from datetime import datetime
+import time
+import pytz
 
 def get_api_timestamp(string):
     if not string:
         return
-    return int(datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ").timestamp())
+    d = datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ")
+    return int(pytz.timezone('UTC').localize(d).timestamp())

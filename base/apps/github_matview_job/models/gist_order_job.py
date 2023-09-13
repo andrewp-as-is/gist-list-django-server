@@ -16,7 +16,7 @@ class Manager(models.Manager):
 class GistOrderJob(models.Model):
     objects = Manager()
 
-    user_id = models.IntegerField(unique=True)
+    owner_id = models.IntegerField(unique=True)
 
     class Meta:
         managed = False

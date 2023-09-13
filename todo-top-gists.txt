@@ -3,3 +3,9 @@
 2) github gist event
 3) forks
 у топовых куча forks
+----
+search
+color|language|count
+----
+search
+tag|count

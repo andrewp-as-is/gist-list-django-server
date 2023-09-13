@@ -1,0 +1,26 @@
+pricing.plan
+
+plan.plan
+user_plan.plan
+user.user (plan_id)
+default 0 (trial)
+plan (id,name,order,...)
+---
+refresh_per_hour_limit refresh per hour limit
+refresh_live_limit
+followers - following refresh
+following - following refresh
+logged_in_refresh - auto refresh after logged in
+starred todo
+request_high_priority bool
+---
+user_plan.py
+---
+показывать ли data других юзеров если нет доступа по плану?
+---
+PRO
+BRO - если расшарили/написали статью
+---
+user.user_plan (plan_id,started_at,finished_at,note)
+---
+settings/plan info + admin message для first100, bro и тд

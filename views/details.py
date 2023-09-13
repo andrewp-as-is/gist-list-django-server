@@ -17,7 +17,7 @@ class Details(dict):
         data = {k:v for k,v in self.request.GET.items()}
         data.update(kwargs)
         params = []
-        for k in list(data.keys()):
+        for k in list(filter(lambda k:k not in ['page'],data.keys())):
             params.append('%s=%s' % (k,data[k]))
         return self.request.path+'?'+'&'.join(params)
 

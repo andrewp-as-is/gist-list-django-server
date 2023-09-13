@@ -1,7 +1,7 @@
 {% extends "_base.html" %}
 
 {% load format_count %}
-{% load timestamp2datetime %}
+{% load timestamp_timesince %}
 {% load timesince %}
 
 {% block title %}{{ login }}{% endblock %}
@@ -51,7 +51,7 @@
             </div>
             {% endif %}
             <div class="note m-0">
-              Last active <time-ago datetime="{{ gist.updated_at|timestamp2datetime|date:'Y-m-dTH:i:S' }}Z" class="no-wrap" title="{{ gist.updated_at|date:'d b Y, H:i' }} GMT+3">{{ gist.updated_at|timestamp2datetime|timesince }}</time-ago>
+              Last active <time-ago datetime="{{ gist.updated_at|timestamp_timesince|date:'Y-m-dTH:i:S' }}Z" class="no-wrap" title="{{ gist.updated_at|date:'d b Y, H:i' }} GMT+3">{{ gist.updated_at|timestamp_timesince }}</time-ago>
               <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
               <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ gist.id }}" href="https://gist.github.com/{{ gist.id }}">gist.github.com/{{ gist.id }}</a>
             </div>

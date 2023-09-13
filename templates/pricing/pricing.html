@@ -1,0 +1,27 @@
+{% extends "_base.html" %}
+
+{% load format_count %}
+
+{% block content %}
+<div class="page-content container-lg">
+<h3 class="text-center">Pricing</h3>
+<table class="width-full">
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold"></td>
+    {% for plan in plan_list %}
+    <td class="no-wrap p-1 text-bold">
+        <a class="color-fg-muted" href="/healthcheck">{{ plan.name }}</a>
+    </td>
+    {% endfor %}
+</tr>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold">http request priority</td>
+    {% for plan in plan_list %}
+    <td class="no-wrap p-1 text-bold">
+        <a class="color-fg-muted" href="/healthcheck">{{ plan.name }}</a>
+    </td>
+    {% endfor %}
+</tr>
+</table>
+</div>
+{% endblock %}
