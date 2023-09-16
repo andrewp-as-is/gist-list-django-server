@@ -4,9 +4,9 @@ import time
 from django.views.generic.base import TemplateView
 
 from base.apps.healthcheck.models import Healthcheck
-from base.apps.http_request_job.models import Job as HttpRequestJob
+from base.apps.http_request.models import Job as HttpRequestJob
 from base.apps.incident.models import Incident
-from base.apps.github_user_refresh.models import Lock
+from base.apps.github.models import UserRefreshViewer
 
 class View(TemplateView):
     template_name = "status/status.html"
@@ -25,5 +25,5 @@ class View(TemplateView):
         context['healthcheck_success'] = Healthcheck.objects.filter(success=False).count()==0
         context['http_request_count'] = HttpRequestJob.objects.all().count()
         context['incident_count'] = Incident.objects.all().count()
-        context['github_user_refresh_count'] = Lock.objects.all().count()
+        context['github_user_refresh_count'] = UserRefreshViewer.objects.all().count()
         return context

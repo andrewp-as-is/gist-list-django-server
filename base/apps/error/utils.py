@@ -25,5 +25,8 @@ def save_python_error(e):
     if not created:
         PythonError.objects.filter(id=error.id).update(
             count = error.count+1,
+            exc_type=type(e).__name__,
+            exc_message=str(e),
+            exc_traceback=traceback.format_exc(),
             timestamp=int(time.time())
         )

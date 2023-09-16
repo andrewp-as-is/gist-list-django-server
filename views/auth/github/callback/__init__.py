@@ -3,7 +3,6 @@ from django.shortcuts import redirect
 
 from views.base import View as _View
 
-from base.apps.django_command_job.utils import create_job as create_django_command_job
 from utils import get_github_api_data
 from .utils import create_github_token, create_github_user, create_user, get_access_token
 

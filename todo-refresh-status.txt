@@ -1,6 +1,9 @@
 1) что выводить на морде?
-2) где конкретно?
-3) urls list ?
+frontend/web
+1. | http request |
+2. | http response | 0/42
+3. | processing | check yes/no
+4. | `refresh matview` | check yes/no
 ---
 {% if rate_limit.is_exceeded %}
 <span class="flash flash-error">github secondary rate limit exceeded</span>
@@ -25,3 +28,69 @@ refresh/status
 refresh/request
 8) github_user_refresh.current
 github_user_refresh.history
+9) user_refresh
+owner vs public (other user)
+free vs pro тк разное
+--
+логичнее показывать только свой refresh
+---
+вопрос namespace/etc
+actor_id
+github_user_refresh.xxx vs user
+---
+modification можно выбирать из refresh_report distinct
+---
+user.refresh_lock вопрос только в column naming
+---
+viewer_id как вариант
+---
+user_id bigint
+authenticated bool NOT NULL
+
+UNIQUE(user_id,authenticated)
+---
+user_id bigint NOT NULL UNIQUE,
+token_id int NOT NULL,
+---
+user_id bigint NOT NULL UNIQUE,
+authenticated bool NOT NULL
+---
+как тогда определить user refresh count если нет token_id
+---
+user_id bigint NOT NULL UNIQUE,
+authenticated bool NOT NULL
+---
+lock тогда по идее другое
+это блокировка refresh self или другого,но другого для всех тк public
+---
+counter ?
+lock для lock
+counter только для подсчета :)
+название неоднозначное ппц
+---
+modification в github.modification как вариант
+---
+counter тогда логичнее в user.refresh
+github_user_refresh сомнительный namespace, user.xxx еще более )
+2) где сбрасывать/удалять count после завершения?
+разброс этого всего по namespace сомнительная затея тк нет изоляции
+---
+github.xxx тк там уже ratelimit, а временная таблица
+github.user_refresh_lock (user_id,authenticated)
+github.user_refresh_counter (user_id,viewer_id)
+github.user_modification
+github.user_refresh_report (history)
+github.user404 (login,timestamp)
+github.user_refresh_lock (user_id,authenticated)
+---
+github.user_refresh (user_id,timestamp)
+github.user_refresh_time (user_id,timestamp)
+user_refresh_time чуть более логично если все остальное подписано как github.user_refresh_xxx
+---
+github.user_refresh_report (history) зачем? если есть time
+статистику duration смотреть?
+ну правда нахрена знать историю если не для отладки как в случае command/etc
+request_list еще логично
+но под любой чих делать xxx_list это перебор КАРЛ
+---
+

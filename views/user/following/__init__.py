@@ -3,12 +3,11 @@ from django.db.models.functions import Lower
 from base.apps.github.models import User, Follower
 
 from views.base import ListView
-from views.user.mixins import UserMixin
+from ..mixins import UserMixin
 
 class ListView(UserMixin,ListView):
     context_object_name = "user_list"
     template_name = "user/following/user_list.html"
-    paginate_by = 100
 
     def get_queryset(self,**kwargs):
         qs = User.objects.filter(

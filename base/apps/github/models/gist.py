@@ -6,8 +6,9 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 
-from base.apps.django_command_job.utils import create_job
+from base.apps.django_command.utils import create_job
 from .language import Language
+
 
 NAME2LANGUAGE = {l.name:l for l in Language.objects.all()}
 
@@ -15,20 +16,10 @@ NAME2LANGUAGE = {l.name:l for l in Language.objects.all()}
 https://developer.github.com/v3/gists/
 """
 
-class QuerySet(models.query.QuerySet):
-    def delete(self):
-        create_job('github_gist_after_delete')
-        super().delete()
-
-
 class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
         result = super().bulk_create(objs,**kwargs)
         create_job('github_gist_after_insert')
-        return result
-
-    def get_queryset(self):
-        result = QuerySet(self.model, using=self._db)
         return result
 
 class GistMixin:
@@ -51,7 +42,7 @@ class AbstractGist(models.Model):
 
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
-    language_name_list = ArrayField(models.TextField())
+    language_list = ArrayField(models.TextField()) # language name list
 
     version = models.TextField(null=True)
 
@@ -73,7 +64,7 @@ class AbstractGist(models.Model):
 
     def get_language_list(self):
         language_list = []
-        for language_name in self.language_name_list or []:
+        for language_name in self.language_list or []:
             language = NAME2LANGUAGE.get(language_name,None)
             if language:
                 language_list+=[language]

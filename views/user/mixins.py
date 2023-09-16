@@ -5,8 +5,7 @@ from django.db.models import Count, F
 from django.shortcuts import redirect, render
 import requests
 
-from base.apps.github.models import Gist, User
-from base.apps.github_user_refresh.models import Lock, Time, User404
+from base.apps.github.models import Gist, User, User404, UserRefreshLock, UserRefreshTime
 
 class UserMixin:
     def dispatch(self, *args, **kwargs):
@@ -22,22 +21,25 @@ class UserMixin:
             User.objects.get(login=self.login)
             self.github_user = User.objects.get(login=self.kwargs['login'])
             self.github_user_id = self.github_user.id
+            authenticated = (self.request.user.id == self.github_user.id)
             try:
-                self.refresh_lock = Lock.objects.get(user_id=self.github_user.id)
-            except Lock.DoesNotExist:
+                self.refresh_lock = UserRefreshLock.objects.get(user_id=self.github_user.id)
+            except UserRefreshLock.DoesNotExist:
                 self.refresh_lock = None
             try:
-                self.refresh_time = Time.objects.get(user_id=self.github_user.id)
-            except Time.DoesNotExist:
+                self.refresh_time = UserRefreshTime.objects.get(
+                    user_id=self.github_user.id,
+                    authenticated=authenticated
+                )
+            except UserRefreshTime.DoesNotExist:
                 pass
         except User.DoesNotExist:
             self.github_user = None
             self.github_user_id = None
         response = super().dispatch(*args, **kwargs)
         if response.status_code in [200,304] and self.refresh_time:
-            pass
-            # response['ETag'] = self.refresh_time.timestamp
-            # response['Last-Modified'] = last_modified
+            response['ETag'] = self.refresh_time.timestamp
+            response['Last-Modified'] = self.refresh_time.timestamp
         return response
 
     def get_context_data(self, **kwargs):

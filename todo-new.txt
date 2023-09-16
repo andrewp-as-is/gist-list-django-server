@@ -6,5 +6,5 @@ user/new или как
 https://gist.github.com
 но если xxx-list то это другой функционал
 ---
-language_name_list из data, job и тд
+language_list из data, job и тд
 request не нужон

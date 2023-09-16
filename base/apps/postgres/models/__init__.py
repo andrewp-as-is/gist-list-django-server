@@ -1,5 +1,6 @@
 from .database_size import *
-from .database_size_capture import *
+
+from .job import *
 from .matview import *
 from .matview_table import *
 
@@ -9,8 +10,8 @@ from .pg_namespace import *
 from .pg_stat_activity import *
 from .pg_stat_all_tables import *
 
-from .refresh_report import *
-from .refresh_stat import *
+from .sql_report import *
+from .sql_stat import *
 
 from .table_size import *
 from .vacuum_full_report import *

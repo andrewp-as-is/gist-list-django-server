@@ -35,7 +35,7 @@
     </a>
     </td>
     <td class="no-wrap p-1 text-left">
-        {% for language_name in user.language_name_list|slice:":5" %}
+        {% for language_name in user.language_list|slice:":5" %}
           <a class="color-fg-muted" href="{{ user.get_absolute_url }}?language={{ language_name }}">{{ language_name }}</a>
         {% endfor %}
     </td>

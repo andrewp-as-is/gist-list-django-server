@@ -16,4 +16,4 @@ class Follower(models.Model):
 
     class Meta:
         managed = False
-        unique_together = ('user', 'follower_id',)
+        unique_together = ('user', 'follower',)

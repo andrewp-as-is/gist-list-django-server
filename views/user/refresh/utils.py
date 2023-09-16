@@ -4,12 +4,12 @@ import requests
 
 from base.apps.github.models import User
 from base.apps.github.utils import get_api_timestamp
-from base.apps.github_user_refresh.models import Lock, Time
+from base.apps.github.models import UserRefreshViewer, UserRefreshLock, UserRefreshTime
 
 def get_lock(user_id):
     try:
-        return Lock.objects.get(user_id=user_id)
-    except Lock.DoesNotExist:
+        return UserRefreshLock.objects.get(user_id=user_id)
+    except UserRefreshLock.DoesNotExist:
         pass
 
 def get_github_user(user_id):
@@ -18,14 +18,14 @@ def get_github_user(user_id):
     except User.DoesNotExist:
         pass
 
-def get_token_locks_count(token_id):
-    return Lock.objects.filter(token_id=token_id).count()
+def get_viewer_refresh_count(viewer_id):
+    return UserRefreshViewer.objects.filter(viewer_id=viewer_id).count()
 
 
 def get_refresh_time(user_id):
     try:
-        return Time.objects.get(user_id=user_id)
-    except Time.DoesNotExist:
+        return UserRefreshTime.objects.get(user_id=user_id)
+    except UserRefreshTime.DoesNotExist:
         pass
 
 def create_github_user(data):

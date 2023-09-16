@@ -12,7 +12,7 @@ import requests
 
 from base.apps.github.models import Gist, Token
 from base.apps.github.utils.http_response import get_api_gists_gist_relpath
-from base.apps.http_request_job.models import Job as RequestJob
+from base.apps.http_request.models import Job as RequestJob
 
 class View(LoginRequiredMixin,TemplateView):
     template_name = 'new/new.html'

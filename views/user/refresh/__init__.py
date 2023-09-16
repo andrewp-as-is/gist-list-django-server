@@ -3,13 +3,12 @@ import time
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from base.apps.github.models import User, Token
-from base.apps.github_user_refresh.models import Lock, Time, User404
+from base.apps.github.models import Gist, Token, User, UserRefreshLock, UserRefreshTime
 
 from views.base import View
 from views.user.mixins import UserMixin
 from utils import get_github_api_data, refresh_user
-from .utils import create_github_user, get_github_user, get_lock, get_refresh_time, get_token_locks_count
+from .utils import create_github_user, get_github_user, get_lock, get_refresh_time, get_viewer_refresh_count
 
 class View(LoginRequiredMixin, UserMixin, View):
     def get(self,request,*args,**kwargs):
@@ -17,9 +16,9 @@ class View(LoginRequiredMixin, UserMixin, View):
         token = Token.objects.get(user_id=request.user.id)
         if token.core_ratelimit_remaining<100:
             return redirect('/token?error=token ratelimit reached')
-        locks_count = get_token_locks_count(token.id)
-        if locks_count>=10:
-            message = '%s users are currently refreshing' % locks_count
+        refresh_count = get_viewer_refresh_count(self.request.user.id)
+        if refresh_count>=10:
+            message = '%s users are currently refreshing' % refresh_count
             return redirect('/%s?error=%s' % (self.login,message))
         if self.github_user:
             if get_lock(self.github_user.id):

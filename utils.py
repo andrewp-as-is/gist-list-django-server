@@ -9,10 +9,10 @@ import requests
 
 from base.apps.github_matview.models import Gist as MatviewGist
 from base.apps.github_matview_new.models import Gist as NewMatviewGist
-from base.apps.github_user_refresh.models import Lock
+from base.apps.github.models import UserRefreshLock, UserRefreshViewer
 from base.apps.github.utils.graphql import get_user_followers_query, get_user_following_query, get_viewer_gists_query, get_user_gists_query
 from base.apps.github.utils.http_response import get_api_viewer_gists_pagination_page_relpath, get_api_viewer_gists_starred_pagination_page_relpath, get_api_graphql_user_followers_pagination_page_relpath, get_api_graphql_user_following_pagination_page_relpath, get_api_graphql_viewer_gists_pagination_page_relpath, get_api_graphql_user_gists_pagination_page_relpath
-from base.apps.http_request_job.models import Job as RequestJob
+from base.apps.http_request.models import Job as RequestJob
 from base.utils import bulk_create
 
 def get_gist_model(user_id):
@@ -72,7 +72,8 @@ def refresh_user(user,token,priority,**options):
     url = 'https://api.github.com/graphql?schema=user.following&user_id=%s' % user.id
     url2relpath[url] = get_api_graphql_user_following_pagination_page_relpath(user.id,1)
     url2query[url] = get_user_following_query(user.login)
-    if user.id==token.user_id: # authenticated user (unknown pages count)
+    authenticated = user.id==token.user_id
+    if authenticated: # authenticated user (unknown pages count)
         # gists/starred api v3 only, graphql not supported
         url = 'https://api.github.com/gists/starred?user_id=%s&per_page=100&page=1' % user.id
         url2relpath[url] = get_api_viewer_gists_starred_pagination_page_relpath(user.id,1)
@@ -116,11 +117,18 @@ def refresh_user(user,token,priority,**options):
             response_relpath=response_relpath,
             priority=priority if '/follow' not in url else 10
         )]
+        create_list+=[UserRefreshLock(
+            user_id=user.id,
+            authenticated=authenticated,
+            timestamp=int(time.time())
+        )]
+        create_list+=[UserRefreshViewer(
+            user_id=user.id,
+            viewer_id=token.user_id,
+            timestamp=int(time.time())
+        )]
     with transaction.atomic():
-        defaults = dict(token_id=token.id,timestamp=int(time.time()))
-        lock, created = Lock.objects.get_or_create(defaults,user_id=user.id)
-        RequestJob.objects.bulk_create(create_list,ignore_conflicts=True)
-
+        bulk_create(create_list)
 
 def timesince(d):
     yesterday = date.today() - timedelta(days = 1)

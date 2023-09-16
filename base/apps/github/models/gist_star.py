@@ -26,4 +26,4 @@ class GistStar(models.Model):
 
     class Meta:
         managed = False
-        unique_together = ('gist', 'user',)
+        unique_together = [('gist', 'user',)]

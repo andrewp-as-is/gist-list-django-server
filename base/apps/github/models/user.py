@@ -61,7 +61,7 @@ class AbstractUser(models.Model):
     created_at = models.IntegerField(null=True)
     updated_at = models.IntegerField(null=True)
 
-    language_name_list = ArrayField(models.TextField())
+    language_list = ArrayField(models.TextField())
     tag_slug_list = ArrayField(models.TextField())
 
     class Meta:

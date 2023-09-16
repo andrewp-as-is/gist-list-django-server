@@ -18,13 +18,14 @@ class CallReportAdmin(admin.ModelAdmin):
 
     def time(self,obj):
         return datetime.fromtimestamp(obj.timestamp)
-    time.short_description = "time"
 
     def timesince(self,obj):
         return '%s ago' % timesince(datetime.fromtimestamp(obj.timestamp))
-    timesince.short_description = "timesince"
 
     def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
         return False
 
     def has_delete_permission(self, request, obj=None):

@@ -24,3 +24,5 @@ BRO - если расшарили/написали статью
 user.user_plan (plan_id,started_at,finished_at,note)
 ---
 settings/plan info + admin message для first100, bro и тд
+---
+plans в 2 строчки - обычные и акции/special

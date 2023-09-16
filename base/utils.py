@@ -7,7 +7,7 @@ from django.conf import settings
 
 from django.db import connection
 
-from base.apps.postgres.models import RefreshReport
+from base.apps.postgres.models import SqlReport
 
 def bulk_create(obj_list,model2kwargs=None):
     db_table_list = []
@@ -24,7 +24,14 @@ def bulk_create(obj_list,model2kwargs=None):
         # dict syntax: dict(Model={}) and {Model:{}}
         kwargs_list = [model2kwargs.get(k,None) for k in [model,model.__name__]]
         kwargs = next(filter(None,kwargs_list),None) or {}
+        unique_fields = list(filter(
+            lambda f:hasattr(f,'unique') and f.unique,
+            model._meta.get_fields()
+        ))
+        #if not kwargs and unique_fields:
+        #    kwargs = dict(ignore_conflicts=True)
         model.objects.bulk_create(_obj_list,**kwargs)
+    # todo: VACUUM job
 
 def bulk_delete(obj_list):
     db_table_list = []
@@ -39,12 +46,19 @@ def bulk_delete(obj_list):
     for db_table in db_table_list:
         sql = 'VACUUM "%s"."%s";' % (db_table.split('.')[0],db_table.split('.')[1])
         execute_sql(sql)
+    # todo: VACUUM job
 
 
 def execute_sql(sql):
     cursor = connection.cursor()
     builtins.print(sql)
+    timestamp = time.time()
     cursor.execute(sql)
+    SqlReport(
+        sql=sql,
+        duration=time.time() - timestamp,
+        timestamp = int(timestamp)
+    ).save()
 
 def iter_files(path):
     for root, dirs, files in os.walk(path):
@@ -77,12 +91,5 @@ def refresh_model_matview(model):
     db_table = model._meta.db_table.replace('"','')
     schemaname = db_table.split('.')[0].replace('"','')
     tablename = db_table.split('.')[1].replace('"','')
-    started_at = time.time()
-    execute_sql('REFRESH MATERIALIZED VIEW "%s"."%s"' % (schemaname,tablename))
-    duration = time.time() - started_at
-    RefreshReport(
-        schemaname=schemaname,
-        tablename=tablename,
-        duration=duration,
-        timestamp = int(time.time())
-    ).save()
+    sql = 'REFRESH MATERIALIZED VIEW "%s"."%s"' % (schemaname,tablename)
+    execute_sql(sql)

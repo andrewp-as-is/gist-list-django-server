@@ -1,6 +1,6 @@
 from django.views.generic.base import TemplateView
 
-from base.apps.http_request_job.models import Job
+from base.apps.http_request.models import Job
 from views.user.mixins import UserMixin
 from .utils import get_user_id
 

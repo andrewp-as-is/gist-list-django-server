@@ -4,7 +4,6 @@ from django.shortcuts import redirect
 import requests
 
 from base.apps.github.models import Gist, GistDelete, GistStar, Token
-from base.apps.github_job.models import UserModificationJob
 from views.base import View
 from views.user.gist.mixins import GistMixin
 
@@ -31,7 +30,7 @@ class DeleteView(LoginRequiredMixin,GistMixin,View):
             GistStar.objects.filter(gist_id=gist_id).delete()
             Gist.objects.filter(id=gist_id).delete()
             GistDelete.objects.get_or_create(gist_id=gist_id)
-            UserModificationJob.objects.get_or_create(user_id=user_id)
+            # UserModificationJob.objects.get_or_create(user_id=user_id)
             message = "gist %s was successfully deleted." % gist_id
             return redirect(url+'?message=%s' % message)
         if r.status_code >= 400:

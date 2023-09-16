@@ -6,10 +6,11 @@ from django.shortcuts import redirect
 from base.apps.github.models import Gist, GistDelete, GistTag, GistLanguage, User
 from views.base import ListView
 from views.details import Details
-from views.user.mixins import UserMixin
 from utils import get_gist_model, get_gist_language_model, get_gist_tag_model
+from ..mixins import UserMixin
 from .utils import get_object, get_language, get_language_filter, get_language_item_list, get_language_stat, get_tag_filter, get_tag_item_list, get_tag_stat, get_tag
 from . import details
+
 
 class View(UserMixin,ListView):
     context_object_name = "gist_list"

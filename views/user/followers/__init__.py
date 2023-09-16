@@ -1,20 +1,17 @@
-from django.db.models import F, Q
-from django.db.models.functions import Lower
+from django.db.models import Q
 
 from base.apps.github.models import User, Follower
+from base.apps.github_matview.models import Follower
 
 from views.base import ListView
-from views.user.mixins import UserMixin
+from ..mixins import UserMixin
 
 class ListView(UserMixin,ListView):
-    context_object_name = "user_list"
-    template_name = "user/followers/user_list.html"
-    paginate_by = 100
+    context_object_name = "follower_list"
+    template_name = "user/followers/follower_list.html"
 
     def get_queryset(self,**kwargs):
-        qs = User.objects.filter(
-            id__in=Follower.objects.filter(user_id=self.github_user.id).values_list('follower_id',flat=True)
-        )
+        qs = Follower.objects.filter(user_id=self.github_user.id)
         q = self.request.GET.get('q','').strip()
         if q:
             qs = qs.filter(
@@ -23,6 +20,8 @@ class ListView(UserMixin,ListView):
                 Q(**{'company__icontains':q}) |
                 Q(**{'location__icontains':q})
             )
-        return qs.order_by(Lower('login'))
+        qs = qs.select_related('follower')
+        return qs
+        # return qs.order_by(Lower('login'))
 
 

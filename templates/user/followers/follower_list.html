@@ -1,0 +1,14 @@
+{% extends "user/_base.html" %}
+
+{% load follower_list %}
+
+{% block title %}{% if request.user.login == login %}Your followers{% else %}{{ login }}{% if github_user.name %} ({{ github_user.name}}) {% endif %}/Followers{% endif %}{% endblock %}
+
+{% block container %}
+{% if not github_user.followers_count %}
+    {% include "user/followers/_blocks/blankslate.html" %}
+{% else %}
+    {% follower_list follower_list as user_list %}
+    {% include "_blocks/user_list.html" %}
+{% endif %}
+{% endblock %}
