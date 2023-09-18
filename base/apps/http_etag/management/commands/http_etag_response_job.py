@@ -1,7 +1,7 @@
 import time
 
-from base.apps.http_response_job.management.base import ResponseJobCommand
-from base.apps.http_etag.models import Etag,NewEtag
+from base.apps.http_response.management.base import ResponseJobCommand
+from base.apps.http_etag.models import Etag
 from base.utils import bulk_create, execute_sql
 
 

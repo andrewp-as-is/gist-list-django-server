@@ -1,0 +1,1 @@
+sql_job matview timestamp же не обновляется Карл

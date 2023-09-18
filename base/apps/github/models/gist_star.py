@@ -2,8 +2,6 @@ __all__ = ['GistStar']
 
 from django.db import models
 
-from base.utils import execute_sql
-
 
 class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
@@ -14,14 +12,13 @@ class Manager(models.Manager):
                 update_fields = ['order']
             )
         result = super().bulk_create(objs,**kwargs)
-        execute_sql('VACUUM github.gist_star')
         return result
 
 class GistStar(models.Model):
     objects = Manager()
 
-    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.CASCADE)
-    user = models.ForeignKey('github.User', related_name='+',on_delete=models.CASCADE)
+    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.DO_NOTHING)
+    user = models.ForeignKey('github.User', related_name='+',on_delete=models.DO_NOTHING)
     order = models.IntegerField()
 
     class Meta:

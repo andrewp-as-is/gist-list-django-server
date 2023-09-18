@@ -13,7 +13,7 @@ def get_api_user_profile_relpath(user_id):
 # api.github.com/user/ID/gists user gists
 
 def get_api_user_gists_pagination_relpath(user_id):
-    return 'api.github.com/user/gists/%s' % user_id
+    return 'api.github.com/user/%s/gists' % user_id
 
 def get_api_user_gists_pagination_page_relpath(user_id,page):
     pagination_relpath = get_api_user_gists_pagination_relpath(user_id)
@@ -35,7 +35,7 @@ def get_api_gists_gist_relpath(gist_id):
 # api.github.com/gists/starred authenticated user stars
 
 def get_api_viewer_gists_starred_pagination_relpath(user_id):
-    return 'api.github.com/viewer/gists/starred/%s' % user_id
+    return 'api.github.com/viewer/%s/gists/starred' % user_id
 
 def get_api_viewer_gists_starred_pagination_page_relpath(user_id,page):
     pagination_relpath = get_api_viewer_gists_starred_pagination_relpath(user_id)

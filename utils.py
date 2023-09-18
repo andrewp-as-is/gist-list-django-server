@@ -11,7 +11,7 @@ from base.apps.github_matview.models import Gist as MatviewGist
 from base.apps.github_matview_new.models import Gist as NewMatviewGist
 from base.apps.github.models import UserRefreshLock, UserRefreshViewer
 from base.apps.github.utils.graphql import get_user_followers_query, get_user_following_query, get_viewer_gists_query, get_user_gists_query
-from base.apps.github.utils.http_response import get_api_viewer_gists_pagination_page_relpath, get_api_viewer_gists_starred_pagination_page_relpath, get_api_graphql_user_followers_pagination_page_relpath, get_api_graphql_user_following_pagination_page_relpath, get_api_graphql_viewer_gists_pagination_page_relpath, get_api_graphql_user_gists_pagination_page_relpath
+from base.apps.github.utils.http_response import get_api_user_gists_pagination_page_relpath,get_api_viewer_gists_pagination_page_relpath, get_api_viewer_gists_starred_pagination_page_relpath, get_api_graphql_user_followers_pagination_page_relpath, get_api_graphql_user_following_pagination_page_relpath, get_api_graphql_viewer_gists_pagination_page_relpath, get_api_graphql_user_gists_pagination_page_relpath
 from base.apps.http_request.models import Job as RequestJob
 from base.utils import bulk_create
 
@@ -56,6 +56,7 @@ def refresh_user(user,token,priority,**options):
     # root = 'api.github.com/user/%s' % (user.id)
     url2relpath = {}
     url2query = {}
+    # todo: followers/following request
     """
     if user.followers_count:
         for page in range(1,int(user.followers_count/100)+2):
@@ -66,6 +67,8 @@ def refresh_user(user,token,priority,**options):
             url = 'https://api.github.com/user/%s/following?per_page=100&page=%s' % (user.id,page)
             url2relpath[url] = 'following/%s' % page
     """
+    url = 'https://api.github.com/user/%s' % user.id
+    url2relpath[url] = 'api.github.com/user/%s/profile' % user.id
     url = 'https://api.github.com/graphql?schema=user.followers&user_id=%s' % user.id
     url2relpath[url] = get_api_graphql_user_followers_pagination_page_relpath(user.id,1)
     url2query[url] = get_user_followers_query(user.login)
@@ -86,13 +89,11 @@ def refresh_user(user,token,priority,**options):
         url2relpath[url] = get_api_graphql_viewer_gists_pagination_page_relpath(user.id,1)
         url2query[url] = get_viewer_gists_query()
     else: # public user
-        url = 'https://api.github.com/user/%s' % user.id
-        url2relpath[url] = 'api.github.com/user/%s/profile' % user.id
         # todo: etag. no need all requests if no changes. where to check?
         if user.public_gists_count:
-            # &page=1 request only
+            # &page=1 request only (etag check)
             url = 'https://api.github.com/user/%s/gists?per_page=100&page=%s' % (user.id,1)
-            url2relpath[url] = 'api.github.com/user/%s/gists/%s' % (user.id,1)
+            url2relpath[url] = get_api_user_gists_pagination_page_relpath(user.id,1)
             # graphql user gists - `files` `language` not supported
             url = 'https://api.github.com/graphql?schema=user.gists&user_id=%s' % user.id
             url2relpath[url] = get_api_graphql_user_gists_pagination_page_relpath(user.id,1)
@@ -128,6 +129,7 @@ def refresh_user(user,token,priority,**options):
             timestamp=int(time.time())
         )]
     with transaction.atomic():
+        print('bulk_create: %s' % create_list)
         bulk_create(create_list)
 
 def timesince(d):

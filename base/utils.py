@@ -7,10 +7,10 @@ from django.conf import settings
 
 from django.db import connection
 
-from base.apps.postgres.models import SqlReport
+from base.apps.django_command.models import Job as DjangoCommandJob
+from base.apps.postgres.models import SqlJob, SqlReport
 
 def bulk_create(obj_list,model2kwargs=None):
-    db_table_list = []
     model_list = list(set(map(lambda c:type(c),obj_list)))
     if not obj_list:
         return
@@ -19,7 +19,6 @@ def bulk_create(obj_list,model2kwargs=None):
     for model in sorted(model_list,key=lambda m:m._meta.db_table):
         _obj_list = list(filter(lambda c:isinstance(c,model),obj_list))
         db_table = model._meta.db_table.replace('"','')
-        db_table_list+=[db_table]
         builtins.print('CREATE: %s %s' % (db_table,len(_obj_list)))
         # dict syntax: dict(Model={}) and {Model:{}}
         kwargs_list = [model2kwargs.get(k,None) for k in [model,model.__name__]]
@@ -28,26 +27,22 @@ def bulk_create(obj_list,model2kwargs=None):
             lambda f:hasattr(f,'unique') and f.unique,
             model._meta.get_fields()
         ))
-        #if not kwargs and unique_fields:
-        #    kwargs = dict(ignore_conflicts=True)
         model.objects.bulk_create(_obj_list,**kwargs)
-    # todo: VACUUM job
 
 def bulk_delete(obj_list):
-    db_table_list = []
     model_list = list(set(map(lambda d:type(d),obj_list)))
     for model in sorted(model_list,key=lambda m:m._meta.db_table):
         model_obj_list = list(filter(lambda d:isinstance(d,model),obj_list))
         id_list = list(map(lambda d:d.id,model_obj_list))
         db_table = model._meta.db_table.replace('"','')
-        db_table_list+=[db_table]
         builtins.print('DELETE: %s %s' % (db_table,len(model_obj_list)))
         model.objects.filter(id__in=id_list).delete()
-    for db_table in db_table_list:
+    create_list = []
+    for model in model_list:
+        db_table = model._meta.db_table.replace('"','')
         sql = 'VACUUM "%s"."%s";' % (db_table.split('.')[0],db_table.split('.')[1])
-        execute_sql(sql)
-    # todo: VACUUM job
-
+        create_list+=[SqlJob(sql=sql)]
+    bulk_create(create_list)
 
 def execute_sql(sql):
     cursor = connection.cursor()
@@ -93,3 +88,18 @@ def refresh_model_matview(model):
     tablename = db_table.split('.')[1].replace('"','')
     sql = 'REFRESH MATERIALIZED VIEW "%s"."%s"' % (schemaname,tablename)
     execute_sql(sql)
+
+
+"""
+   # for model in model_list:
+    #    db_table = model._meta.db_table.replace('"','')
+    #    sql = 'VACUUM "%s"."%s";' % (db_table.split('.')[0],db_table.split('.')[1])
+    #    if next(filter(lambda c:type(c)==SqlJob and c.sql==sql,obj_list),None):
+     #       obj_list+=[SqlJob(sql=sql)]
+    for model in model_list:
+        if model._meta.db_table.endswith('_job'):
+            db_table = model._meta.db_table.replace('"','')
+            name = db_table.replace('.','_')
+            if next(filter(lambda c:type(c)==DjangoCommandJob and c.name==name,obj_list),None):
+                obj_list+=[DjangoCommandJob(name=name)]
+"""

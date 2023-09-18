@@ -5,8 +5,8 @@ from django.db import models
 from base.apps.github.models import AbstractGist
 
 class StarredGist(AbstractGist):
-    stargazer = models.ForeignKey('github.User',related_name='github_gist_star_new_matview_stargazer',on_delete=models.CASCADE)
-    owner = models.ForeignKey('github.User',related_name='github_gist_star_new_matview_owner',on_delete=models.CASCADE)
+    stargazer = models.ForeignKey('github.User',related_name='github_gist_star_new_matview_stargazer',on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey('github.User',related_name='github_gist_star_new_matview_owner',on_delete=models.DO_NOTHING)
 
     starred_order = models.IntegerField()
 

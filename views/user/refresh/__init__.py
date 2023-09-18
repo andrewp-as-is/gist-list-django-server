@@ -30,7 +30,7 @@ class View(LoginRequiredMixin, UserMixin, View):
                 # refresh_time = get_refresh_time(self.github_user.id)
                 # if not refresh_time or refresh_time.timestamp+60*60<int(time.time()):
                 refresh_user(self.github_user,token,priority=50)
-            return redirect('/'+self.login)
+            return redirect('/'+self.login+'?message=refresh started')
         else: # unknown user
             url = 'https://api.github.com/users/%s' % self.login
             data = get_github_api_data(url,token.token)

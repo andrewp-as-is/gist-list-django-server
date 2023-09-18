@@ -1,8 +1,8 @@
-__all__ = ['RepeatConfig',]
+__all__ = ['Scheduler',]
 
 from django.db import models
 
-class RepeatConfig(models.Model):
+class Scheduler(models.Model):
     name = models.CharField(unique=True,max_length=255)
     seconds = models.IntegerField()
 

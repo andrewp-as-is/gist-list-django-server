@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib import admin
+from django.utils.timesince import timesince
 
 from ..models import SqlReport
 
@@ -9,14 +10,14 @@ class SqlReportAdmin(admin.ModelAdmin):
         'sql',
         'duration',
         'time',
-        'timestamp',
+        'timesince',
     ]
     search_fields = [
         'sql',
     ]
 
     def time(self,obj):
-        return datetime.fromtimestamp(obj.timestamp)
+        return datetime.fromtimestamp(obj.timestamp).strftime('%Y-%m-%d %H:%M:%S')
 
     def timesince(self,obj):
         return '%s ago' % timesince(datetime.fromtimestamp(obj.timestamp))

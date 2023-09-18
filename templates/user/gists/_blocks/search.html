@@ -3,11 +3,6 @@
     {% include "user/gists/_blocks/search/form.html" %}
 
     {% include "user/gists/_blocks/search/details.html" %}
-    {% if request.user.id == github_user.id %}
-    <a class="btn btn-primary" href="/new">
-        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> New
-    </a>
-    {% endif %}
     </div>
     <div class="float-right">
 <nav class="subnav-links float-left d-flex no-wrap">

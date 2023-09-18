@@ -5,8 +5,8 @@ from django.db import models
 
 
 class GistStar(models.Model):
-    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.CASCADE)
-    user = models.ForeignKey('github.User', related_name='+',on_delete=models.CASCADE)
+    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.DO_NOTHING)
+    user = models.ForeignKey('github.User', related_name='+',on_delete=models.DO_NOTHING)
     order = models.IntegerField()
 
     class Meta:

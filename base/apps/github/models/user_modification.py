@@ -18,7 +18,7 @@ class Manager(models.Manager):
 class UserModification(models.Model):
     objects = Manager()
 
-    user = models.OneToOneField('github.User', related_name='+',on_delete=models.CASCADE)
+    user = models.OneToOneField('github.User', related_name='+',on_delete=models.DO_NOTHING)
     timestamp = models.IntegerField()
 
     class Meta:

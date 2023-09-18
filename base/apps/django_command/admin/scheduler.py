@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.utils.timesince import timesince
 
-from ..models import RepeatConfig
+from ..models import Scheduler
 
-class RepeatConfigAdmin(admin.ModelAdmin):
+class SchedulerAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'seconds',
@@ -12,4 +12,4 @@ class RepeatConfigAdmin(admin.ModelAdmin):
         'name',
     ]
 
-admin.site.register(RepeatConfig,RepeatConfigAdmin)
+admin.site.register(Scheduler,SchedulerAdmin)

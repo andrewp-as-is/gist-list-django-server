@@ -19,4 +19,5 @@ from .user_refresh_time import *
 from .user_refresh_viewer import *
 from .user_pagination_job_detect import *
 from .user_procedure_job_detect import *
+from .user_request_job_detect import *
 from .user_response_job_detect import *

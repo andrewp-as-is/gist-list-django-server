@@ -1,6 +1,5 @@
 __all__ = ['GistLanguageJob']
 
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 

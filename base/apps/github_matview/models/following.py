@@ -11,8 +11,8 @@ class Manager(models.Manager):
 class AbstractFollowing(models.Model):
     objects = Manager()
 
-    user = models.ForeignKey('User', related_name='+',on_delete=models.CASCADE)
-    follower = models.ForeignKey('User', related_name='+',on_delete=models.CASCADE)
+    user = models.ForeignKey('User', related_name='+',on_delete=models.DO_NOTHING)
+    follower = models.ForeignKey('User', related_name='+',on_delete=models.DO_NOTHING)
 
     login_order = models.IntegerField()
     name_order = models.IntegerField()

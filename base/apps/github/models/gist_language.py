@@ -3,7 +3,7 @@ __all__ = ['GistLanguage']
 from django.db import models
 
 class GistLanguage(models.Model):
-    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.CASCADE)
+    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.DO_NOTHING)
     language_id = models.IntegerField()
 
     class Meta:

@@ -11,7 +11,7 @@ class Manager(models.Manager):
 class GistDelete(models.Model):
     objects = Manager()
 
-    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.CASCADE)
+    gist = models.ForeignKey('Gist', related_name='+',on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = False

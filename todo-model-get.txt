@@ -1,0 +1,11 @@
+постоянная проблема как получить model :)
+вообще логично в app.utils тогда :)
+но изоляции нет
+по user_refresh_time ?
+user_modification?
+refresh_xxx тоже можно обновлять as MATVIEW :)
+если все через них
+---
+github_matview.xxx
+github_matview_new.user_info
+

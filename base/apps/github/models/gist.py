@@ -16,12 +16,6 @@ NAME2LANGUAGE = {l.name:l for l in Language.objects.all()}
 https://developer.github.com/v3/gists/
 """
 
-class Manager(models.Manager):
-    def bulk_create(self, objs, **kwargs):
-        result = super().bulk_create(objs,**kwargs)
-        create_job('github_gist_after_insert')
-        return result
-
 class GistMixin:
 
     def display_name(self): # todo?
@@ -30,11 +24,9 @@ class GistMixin:
         return self.filenames[0]
 
 class AbstractGist(models.Model):
-    objects = Manager()
-
     id = models.CharField(max_length=100, primary_key=True)
 
-    # fork = models.ForeignKey('Gist', null=True,on_delete=models.CASCADE)
+    # fork = models.ForeignKey('Gist', null=True,on_delete=models.DO_NOTHING)
     # is_fork = models.BooleanField(default=False)
 
     public = models.BooleanField(default=True)
@@ -75,9 +67,7 @@ class AbstractGist(models.Model):
             return 'https://gist.github.com/%s/%s/archive/%s.zip' % (self.owner.login,self.id,self.version,)
 
 class Gist(AbstractGist):
-    objects = Manager()
-
-    owner = models.ForeignKey('github.User',related_name='+',on_delete=models.CASCADE)
+    owner = models.ForeignKey('github.User',related_name='+',on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = False

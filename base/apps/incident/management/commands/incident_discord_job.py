@@ -6,13 +6,11 @@ from django.core.management.base import BaseCommand
 
 from base.apps.incident.models import DiscordJob as Job, Incident
 from base.apps.job.utils import save_cursor
-from base.utils import refresh_model_matview
 
 URL = "https://discord.com/api/webhooks/1146811450787102741/6GTQLhrSiaWT2BY7tQi0nroCJrzbTWr6-W0WWXR9_v16atwtPMz4Uq7K9ZLe3yR48Z9P"
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        refresh_model_matview(Job)
         self.job_list = []
         try:
             self.job_list = list(Job.objects.all())

@@ -1,3 +1,0 @@
-from django.views.generic.base import View
-
-from views.base import View

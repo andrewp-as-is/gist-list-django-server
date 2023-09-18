@@ -8,13 +8,18 @@ from django.db import models
 class Manager(models.Manager):
     def bulk_create(self, objs, **kwargs):
         if not kwargs:
-            kwargs = dict(ignore_conflicts=True)
-        return super().bulk_create(objs,**kwargs)
+            kwargs = dict(
+                update_conflicts=True,
+                unique_fields = ['user','authenticated'],
+                update_fields = ['timestamp']
+            )
+        result = super().bulk_create(objs,**kwargs)
+        return result
 
 class UserRefreshTime(models.Model):
     objects = Manager()
 
-    user = models.OneToOneField('github.User', related_name='+',on_delete=models.CASCADE)
+    user = models.OneToOneField('github.User', related_name='+',on_delete=models.DO_NOTHING)
     authenticated = models.BooleanField()
     timestamp = models.IntegerField()
 

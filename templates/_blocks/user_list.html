@@ -1,6 +1,6 @@
 {% load format_count %}
+{% load timestamp_timesince %}
 
-<div class="page-content container-lg text-center">
 {% include "_blocks/user_search.html" %}
 <table class="width-full">
 <tbody>
@@ -50,8 +50,18 @@
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#location" /></svg> {{ user.location|truncatechars:20 }}
         {% endif %}
     </td>
+    <td class="color-fg-muted no-wrap p-1 text-left">
+      {% if user.refresh_timestamp %}
+        {{ user.refresh_timestamp|timestamp_timesince }}
+        {% endif %}
+    </td>
+    <td class="color-fg-muted no-wrap p-1 text-left">
+        <a class="btn btn-sm" rel="nofollow" href="/{{ user.login  }}/refresh">
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#sync" /></svg> Refresh
+        </a>
+    </td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
-</div>
+{% include "_blocks/pagination.html" %}

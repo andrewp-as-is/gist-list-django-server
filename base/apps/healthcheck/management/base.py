@@ -3,7 +3,7 @@ import time
 from django.core.management.base import BaseCommand
 from django.utils.timesince import timesince
 
-from base.apps.django_command_job.models import Job as DjangoCommandJob
+from base.apps.django_command.models import Job as DjangoCommandJob
 from base.apps.healthcheck.exceptions import CheckError
 from base.apps.healthcheck.models import Healthcheck
 from base.apps.incident.models import Incident

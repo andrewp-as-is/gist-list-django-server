@@ -18,15 +18,14 @@ from django.core.management import call_command
 from base.apps.django_command.utils import get_output_path
 from base.apps.error.utils import save_python_error
 from base.utils import bulk_create, execute_sql
-from ...models import CallReport, Command as _Command, Config, Job, Output
+from ...models import CallReport, Command as _Command, OutputConfig, Job, Output
 
-NAME2CONFIG = {c.name:c for c in Config.objects.all()}
+NAME2OUTPUT_CONFIG = {c.name:c for c in OutputConfig.objects.all()}
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.create_list = []
-        execute_sql('CALL django_command.insert()')
         job_list = list(Job.objects.exclude(
             name='django_command_job' # prevent endless loop
         ).order_by('-priority'))
@@ -36,7 +35,7 @@ class Command(BaseCommand):
         bulk_create(self.create_list)
 
     def process_job(self,job):
-        config = NAME2CONFIG.get(job.name,'')
+        output_config = NAME2OUTPUT_CONFIG.get(job.name,'')
         timestamp = time.time()
         if settings.DEBUG:
             print('CALL COMMAND: %s' % job.name)
@@ -57,9 +56,10 @@ class Command(BaseCommand):
             if output:
                 if settings.DEBUG:
                     print(output)
-                if config and config.output:
+                if output_config and output_config.save:
+                    size = len(output)
                     self.create_list+=[Output(
-                        name=job.name,timestamp=int(timestamp)
+                        name=job.name,size=size,timestamp=int(timestamp)
                     )]
                     path = get_output_path(job.name,int(timestamp))
                     dirname = os.path.dirname(path)

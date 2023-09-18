@@ -1,10 +1,10 @@
-__all__ = ['Config']
+__all__ = ['OutputConfig']
 
 from django.db import models
 
-class Config(models.Model):
+class OutputConfig(models.Model):
     name = models.CharField(max_length=255)
-    output = models.BooleanField()
+    save = models.BooleanField()
 
     class Meta:
         managed = False
