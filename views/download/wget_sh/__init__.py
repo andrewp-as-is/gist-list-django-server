@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from base.apps.github.models import User
 from views.base import View as _View
-from views.utils import get_gist_model
+# from views.utils import get_gist_model
 
 FILENAME = 'gist-wget.sh'
 

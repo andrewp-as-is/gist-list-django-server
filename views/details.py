@@ -43,7 +43,8 @@ class Details(dict):
         for i in self.menu_item_list:
             i['selected'] = i['value'] == value or i['text'] == value or (value=='' and i['value']==default_value)
             kwargs = {key:i['value']}
-            i['url'] = self.get_url(**kwargs)
+            if 'url' not in i:
+                i['url'] = self.get_url(**kwargs)
             item_list+=[i]
         return item_list
 

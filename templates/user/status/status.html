@@ -1,0 +1,38 @@
+{% extends "user/_base.html" %}
+
+{% block container %}
+<div class="page-content container-lg text-center">
+
+<table align="center">
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold text-left">http request</td>
+    <td class="no-wrap p-1 text-bold text-center">
+    {% if not request_job %}
+    <svg class="octicon mr-1 color-fg-success" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
+    {% else %}
+    <svg class="octicon mr-1 color-fg-danger" style="width:16px;height:16px"><use xlink:href="#hourglass" /></svg>
+    {% endif %}
+    </td>
+</tr>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold text-left">http response processing</td>
+    <td class="no-wrap p-1 text-center">
+    {% if not request_job %}
+        {% if not internal_job %}
+        <svg class="octicon mr-1 color-fg-success" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
+        {% else %}
+        <svg class="octicon mr-1 color-fg-danger" style="width:16px;height:16px"><use xlink:href="#alert" /></svg>
+        {% endif %}
+    {% else %}-{% endif %}
+    </td>
+</tr>
+<tr class="Box-row Box-row--hover-gray">
+    <td class="no-wrap p-1 text-bold text-left text-mono">refresh matview</td>
+    <td class="no-wrap p-1 text-center">
+        {% if not request_job and not internal_job %}
+        {% else %}-{% endif %}
+    </td>
+</tr>
+</table>
+</div>
+{% endblock %}

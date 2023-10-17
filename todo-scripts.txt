@@ -1,5 +1,7 @@
 /scripts
-/about и тд
+1) какой UI?
+table vs columns vs
+
 
 scripts vs id, download, clone
 scripts vs backup

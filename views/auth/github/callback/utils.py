@@ -1,18 +1,15 @@
-from datetime import datetime
 import time
 
 from django.conf import settings
 import requests
 
 from base.apps.github.models import Token, User as GithubUser, User
+from base.apps.github.utils import get_api_timestamp
 from base.apps.user.models import User
 
 """
 https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
 """
-
-def get_datetime(string):
-    return datetime.strptime(string, "%Y-%m-%dT%H:%M:%SZ") if string else None
 
 def create_user(data):
     defaults = {'login':data['login']}
@@ -42,8 +39,8 @@ def create_github_user(data):
         'public_gists_count':data['public_gists'],
         'followers_count':data['followers'],
         'following_count':data['following'],
-        'created_at':int(get_datetime(data['created_at']).timestamp()),
-        'updated_at':int(get_datetime(data['updated_at']).timestamp())
+        'created_at':get_api_timestamp(data['created_at']),
+        'updated_at':get_api_timestamp(data['updated_at'])
     }
     GithubUser.objects.update_or_create(defaults,id=data['id'])
 

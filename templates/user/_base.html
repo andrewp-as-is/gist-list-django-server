@@ -47,7 +47,7 @@
             {% if gist %}
             {% if gist.fork %}
             <div class="note m-0">
-              Forked from <span class="color-text-secondary f6">forked from</span> <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">{{ gist.fork.name|truncatechars:70 }}</a>
+              Forked from <span class="color-text-secondary f6">forked from</span> <a class="f6" href="{{ gist.fork.get_absolute_url }}">{{ gist.fork_of.owner.login|truncatechars:70 }}/{{ gist.fork_of.filename_list.0|truncatechars:70 }}</a>
             </div>
             {% endif %}
             <div class="note m-0">

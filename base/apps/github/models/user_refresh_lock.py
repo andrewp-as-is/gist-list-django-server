@@ -15,12 +15,12 @@ class UserRefreshLock(models.Model):
     objects = Manager()
 
     user = models.OneToOneField('github.User', related_name='+',on_delete=models.DO_NOTHING)
-    authenticated = models.BooleanField()
+    secret = models.BooleanField()
     timestamp = models.IntegerField()
 
     class Meta:
         managed = False
-        unique_together = [('user', 'authenticated',)]
+        unique_together = [('user', 'secret',)]
 
     def get_seconds(self):
         return int(time.time())-self.timestamp

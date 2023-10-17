@@ -35,7 +35,6 @@ urlpatterns = [
     path('pricing', include('urls.pricing')),
     path('scripts', include('urls.scripts')),
     path('search', include('urls.search')),
-    path('healthcheck', include('urls.healthcheck')),
     path('status', include('urls.status')),
     path('token', include('urls.token')),
     path('users', include('urls.users')),

@@ -21,21 +21,8 @@
 {% include "_blocks/incident_list.html" %}
 </div>
 {% endif %}
-{% if request.GET.error %}
-<div class="flash flash-full flash-error">
-  <div class="px-2">
-    {{ request.GET.error|escape }}
-    <span class="sr-only">&nbsp;</span>
-  </div>
-</div>
-{% endif %}
-{% if request.GET.message %}
-<div class="flash flash-full flash-message">
-  <div class="px-2">
-    {{ request.GET.message|escape }}
-    <span class="sr-only">&nbsp;</span>
-  </div>
-</div>
+{% if messages %}
+{% include "_blocks/message_list.html" %}
 {% endif %}
 {% block content %}{% endblock %}
 {% block footer %}{% include "_blocks/footer.html" %}{% endblock %}

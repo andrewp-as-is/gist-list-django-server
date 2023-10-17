@@ -25,9 +25,7 @@
     <a class="f6 no-wrap text-mono" href="{{ gist.get_absolute_url }}#{{ gist.filenames.0 }}" title="{{ gist.filename_list|join:',' }}">
     {{ gist.filename_list.0|truncatechars:30 }}
   </a>
-    {% if not gist.public %}<span class="Label Label--outline">Secret</span>{% endif %}
-    {% if gist.fork %}<span class="color-text-secondary f6">forked from</span> <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">{{ gist.fork.name|truncatechars:70 }}</a>
-    {% endif %}
+      {% if not gist.public %}<span class="Label Label--outline">Secret</span>{% endif %}
   </td>
   <td class="px-1 width-full">
     <a class="f6 Link--muted mr-2" href="/{{ github_user.login }}/{{ gist.id }}">
@@ -37,19 +35,24 @@
     </a>
   </td>
   <td class="f6 no-wrap px-1">
-      {% for tag in gist.get_tags %}
-      <a class="f6 Link--muted" href="{{ request.path }}?tag={{ tag }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">#{{ tag }}</a>
-      {% endfor %}
-  </td>
+    {% if gist.fork_of %}<span class="color-fg-muted f6">forked from</span> <a class="f6" href="{{ gist.fork_of.get_absolute_url }}">{{ gist.fork_of.owner.login }}/{{ gist.fork_of.filename_list.0|truncatechars:70 }}</a>
+    {% endif %}
   <td class="f6 no-wrap px-1">
     {% for language in gist.get_language_list %}
     <a class="f6 Link--muted" href="{{ request.path }}?language={{ language.slug }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language.name }}</a>{% if not forloop.last %},{% endif %}
     {% endfor %}
   </td>
+  <td class="f6 no-wrap px-1">
+      {% for tag in gist.get_tag_list %}
+      <a class="f6 Link--muted" href="{{ request.path }}?tag={{ tag }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">#{{ tag }}</a>
+      {% endfor %}
+  </td>
   <td class="no-wrap px-1">
+    {% if gist.files_count %}
     <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank" title="{{ gist.filenames|join:"&#10;" }}">
     <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> {{ gist.files_count }} file{% if gist.files_count > 1 %}s{% endif %}
     </a>
+    {% endif %}
   </td>
   <td class="no-wrap px-1">
     {% if gist.stargazers_count %}

@@ -4,8 +4,16 @@
 <div class="page-content container-lg text-center">
     <h1>Token</h1>
     {% if token %}
+<div class="col-6 p-2 mx-auto">
+    <div class="clearfix">
+        <div class="float-left mx-2 text-left">
         {% include "token/_blocks/core.html" %}
+        </div>
+        <div class="float-left mx-2 text-left">
         {% include "token/_blocks/graphql.html" %}
+        </div>
+    </div>
+</div>
         {% include "token/_blocks/delete.html" %}
     {% else %}
         token not found. <a href="/logout">logout</a> and login again

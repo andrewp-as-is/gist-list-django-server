@@ -6,12 +6,15 @@ from django.shortcuts import redirect, render
 import requests
 
 from base.apps.github.models import Gist, User, User404, UserRefreshLock, UserRefreshTime
+from base.apps.github_modification_matview.models import MatviewTime
+from utils import get_gist_model, get_gist_language_model, get_gist_tag_model, get_user_model
 
 class UserMixin:
     def dispatch(self, *args, **kwargs):
         self.login = self.kwargs['login']
         # /ID -> /LOGIN/ID redirect
         self.refresh_time = None
+        self.modification_matview_time = None
         try:
             gist = Gist.objects.get(id=self.login)
             return redirect(gist.get_absolute_url())
@@ -33,9 +36,19 @@ class UserMixin:
                 )
             except UserRefreshTime.DoesNotExist:
                 pass
+            try:
+                self.modification_matview_time = MatviewTime.objects.get(
+                    user_id=self.github_user.id
+                )
+            except MatviewTime.DoesNotExist:
+                pass
         except User.DoesNotExist:
             self.github_user = None
             self.github_user_id = None
+        self.gist_model = get_gist_model(self.modification_matview_time)
+        self.gist_language_model = get_gist_language_model(self.modification_matview_time)
+        self.gist_tag_model = get_gist_tag_model(self.modification_matview_time)
+        #self.user_model = get_user_model(self.modification_matview_time)
         response = super().dispatch(*args, **kwargs)
         if response.status_code in [200,304] and self.refresh_time:
             response['ETag'] = self.refresh_time.timestamp
@@ -45,18 +58,13 @@ class UserMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['login'] = self.login
-        is_syncing = False
-        is_owner = False
         if hasattr(self,'github_user') and self.github_user:
             context['github_user'] = self.github_user
-            is_owner = self.request.user.is_authenticated and self.request.user.login == self.github_user.login
-            gists_count = self.github_user.public_gists_count or 0
-            forks_count = self.github_user.public_forks_count or 0
-            if self.request.user.is_authenticated and self.github_user.id == self.request.user.id:
-                gists_count+=(self.github_user.private_gists_count or 0)
-                forks_count+=(self.github_user.private_forks_count or 0)
-            context['gists_count'] = gists_count
-            context['forks_count'] = forks_count
+            qs = self.gist_model.objects.filter(owner_id=self.github_user.id)
+            if not self.request.user.is_authenticated or self.github_user.id != self.request.user.id:
+                qs = qs.filter(public=True)
+            context['gists_count'] = qs.count()
+            context['forks_count'] = qs.filter(fork=True).count()
             context['refresh_lock'] = self.refresh_lock
             context['refresh_time'] = self.refresh_time
         else:
@@ -65,8 +73,7 @@ class UserMixin:
             except User404.DoesNotExist:
                 pass
         context.update(
-            login = self.login,
-            is_owner = is_owner
+            login = self.login
         )
         return context
 

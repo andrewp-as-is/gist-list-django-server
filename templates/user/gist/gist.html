@@ -69,23 +69,36 @@
     <div class="ml-2">
       <a class="btn btn-sm" rel="nofollow" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}/archive/master.zip" target="_blank">Download ZIP</a>
     </div>
+
+  <div class="ml-2">
+  <a class="btn btn-sm btn-primary" {% if gist_refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if gist_refresh_lock %}Refreshing...{% else %}Refresh{% endif %}
+  </a>
   </div>
+  </div>
+
+
+
+
 </div>
 </div>
 {% endblock %}
 
 {% block container %}
 
-<div class="container-lg px-3 new-discussion-timeline">
-  <div class="repository-content gist-content">
-    <div>
-      <div itemprop="about" class="pb-4">
-        <a class="Link--muted" href="{{ gist.get_absolute_url }}/description">
-            {% if gist.description %}{{ gist.description|emoji_replace }}{% endif %} <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#pencil" /></svg>
-        </a>
-      </div>
-    <div>
-    <script src="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}.js"></script>
+<div class="container-lg px-3">
+    <div class="d-flex flex-justify-center">
+      <div class="">
+        <div itemprop="about" class="pb-4">
+          <a class="Link--muted" href="{{ gist.get_absolute_url }}/description">
+              {% if gist.description %}{{ gist.description|emoji_replace }}{% endif %}
+          </a>
+        </div>
+      <script src="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}.js"></script>
+    </div>
+    {% if gist.language_list %}
+    <div class="mx-4">{% include "user/gist/_blocks/language_list.html" %}</div>
+    {% endif %}
   </div>
 </div>
 

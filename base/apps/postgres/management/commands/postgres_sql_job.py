@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 from base.apps.postgres.models import SqlReport
 from base.apps.postgres.models import SqlJob as Job
-from base.utils import bulk_create, execute_sql
+from django_bulk_create import bulk_create
 
 class Command(BaseCommand):
 

@@ -4,8 +4,6 @@ from datetime import datetime
 
 from django.db import models
 
-from base.utils import get_timestamp
-
 """
 https://developer.github.com/v3/rate_limit/
 """
@@ -35,14 +33,6 @@ class Token(models.Model):
 
     class Meta:
         managed = False
-
-    def update(self,headers):
-        Token.objects.filter(id=self.id).update(
-            rate_remaining=int(headers.get('X-RateLimit-Remaining')),
-            rate_used=int(headers.get('X-RateLimit-Used')),
-            reset_at=datetime.utcfromtimestamp(int(headers.get('X-RateLimit-Reset'))),
-            updated_at=get_timestamp()
-        )
 
 """
 отзыв токена - revocation

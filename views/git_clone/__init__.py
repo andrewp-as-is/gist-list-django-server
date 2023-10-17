@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 
 from base.apps.github.models import User
-from views.utils import get_gist_model
+# from views.utils import get_gist_model
 
 class View(TemplateView):
     template_name = 'git-clone/git-clone.html'

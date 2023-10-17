@@ -1,11 +1,20 @@
 Django
 dj-database-url
-django-configurations-autoenv
-django-configurations-wsgi
+django_command_worker
+django_cron_command
 django-github-oauth
-django-github-colors
 django_passwordless_user
 django-passwordless-auth
+django-bulk-create
+django-bulk-delete
+django_installed_apps_generator
+django-postgres-database-size
+django_postgres_refresher
+django_postgres_rule
+django_exception
+django_pg_sequences
+django_pg_settings
+django_pg_tables
 
 django-emoji
 django-manifest-loader

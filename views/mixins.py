@@ -14,10 +14,3 @@ class PythonErrorMixin:
             raise e
             #response = render(self.request,'500.html', status=500)
            # return response
-
-class IncidentMixin:
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['incident_list'] = list(Incident.objects.order_by('-timestamp')[0:10])
-        return context

@@ -1,27 +1,27 @@
-from django.db.models import Q
-
-from base.apps.github.models import User, Follower
-from base.apps.github_matview.models import Follower
-
 from views.base import ListView
+from utils import get_follower_model
 from ..mixins import UserMixin
 
 class ListView(UserMixin,ListView):
     context_object_name = "follower_list"
     template_name = "user/followers/follower_list.html"
 
+    def get_model(self):
+        return get_follower_model(self.modification_matview_time)
+
     def get_queryset(self,**kwargs):
-        qs = Follower.objects.filter(user_id=self.github_user.id)
+        model = self.get_model()
+        print('model: %s' % model)
+        qs = model.objects.filter(user_id=self.github_user.id)
         q = self.request.GET.get('q','').strip()
         if q:
             qs = qs.filter(
-                Q(**{'login__icontains':q}) |
-                Q(**{'name__icontains':q}) |
-                Q(**{'company__icontains':q}) |
-                Q(**{'location__icontains':q})
+                Q(**{'follower__login__icontains':q}) |
+                Q(**{'follower__name__icontains':q}) |
+                Q(**{'follower__company__icontains':q}) |
+                Q(**{'follower__location__icontains':q})
             )
-        qs = qs.select_related('follower')
-        return qs
+        return qs.select_related('follower')
         # return qs.order_by(Lower('login'))
 
 

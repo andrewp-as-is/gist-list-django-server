@@ -2,6 +2,7 @@ import time
 
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 from base.apps.github.models import Gist, Token, User, UserRefreshLock, UserRefreshTime
 
@@ -15,14 +16,18 @@ class View(LoginRequiredMixin, UserMixin, View):
         url = '/'+self.login
         token = Token.objects.get(user_id=request.user.id)
         if token.core_ratelimit_remaining<100:
-            return redirect('/token?error=token ratelimit reached')
+            messages.success(self.request, 'token ratelimit reached')
+            return redirect(url)
         refresh_count = get_viewer_refresh_count(self.request.user.id)
         if refresh_count>=10:
             message = '%s users are currently refreshing' % refresh_count
-            return redirect('/%s?error=%s' % (self.login,message))
+            messages.warning(self.request, message)
+            return redirect(url)
         if self.github_user:
             if get_lock(self.github_user.id):
-                return redirect('/%s?error=already refreshing' % self.login)
+                message = '%s already refreshing' % self.login
+                messages.warning(self.request, message)
+                return redirect(url)
             if self.github_user.id==self.request.user.id: # authenticated user
                 refresh_user(self.github_user,token,priority=100)
             else: # other user
@@ -30,15 +35,20 @@ class View(LoginRequiredMixin, UserMixin, View):
                 # refresh_time = get_refresh_time(self.github_user.id)
                 # if not refresh_time or refresh_time.timestamp+60*60<int(time.time()):
                 refresh_user(self.github_user,token,priority=50)
-            return redirect('/'+self.login+'?message=refresh started')
+            message = 'refresh started'
+            messages.success(self.request, message)
+            return redirect(url)
         else: # unknown user
             url = 'https://api.github.com/users/%s' % self.login
             data = get_github_api_data(url,token.token)
             if data:
                 user = create_github_user(data)
-                refresh_user(user,token,priority=90)
-                return redirect('/%s?message=refresh started' % self.login)
+                message = 'refresh started'
+                messages.success(self.request, message)
+                return redirect(url)
             else: # 404
                 defaults = dict(timestamp=int(time.time()))
                 User404.objects.update_or_create(defaults,login=self.login)
-                return redirect('/%s?error=User Not Found' % self.login)
+                message = 'User Not Found'
+                messages.warning(self.request, message)
+                return redirect(url)

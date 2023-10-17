@@ -1,10 +1,8 @@
 from base.apps.tag.models import Tag
 
-from views.base import TemplateView
 from views.details import Details
-from views.user.mixins import UserMixin
-from views.user.gists.utils import get_queryset_base, get_tag_stat
-from utils import get_gist_tag_model
+from views.user.gists import View as ListView
+from views.user.gists.utils import get_tag_stat
 
 
 def get_tag_list(total_count,stat):
@@ -16,8 +14,9 @@ def get_tag_list(total_count,stat):
         tag.percent = round((tag.count/total_count)*100,1)
     return tag_list
 
+TODO: ListView
 
-class View(UserMixin,TemplateView):
+class View(ListView):
     template_name = "user/gists/tags/tag_list.html"
 
     def get_gist_queryset(self):
@@ -25,11 +24,9 @@ class View(UserMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        gist_queryset = self.get_gist_queryset()
-        total_count = gist_queryset.count()
-        gist_model = gist_queryset.model
-        gist_tag_model = get_gist_tag_model(gist_model._meta.app_label)
-        stat = get_tag_stat(gist_queryset,gist_tag_model)
+        qs = self.get_queryset_base()
+        total_count = qs.count()
+        stat = get_tag_stat(qs,self.gist_tag_model)
         tag_list = get_tag_list(total_count,stat)
         menu_item_list = [
             {'value':'count','text':'Most gists'},

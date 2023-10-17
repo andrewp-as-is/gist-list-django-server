@@ -1,10 +1,10 @@
 from base.apps.github.models import Language
 
-from views.base import TemplateView
+from django_postgres_database_size.models import DatabaseSize
 from views.details import Details
-from views.user.mixins import UserMixin
-from views.user.gists.utils import get_queryset_base, get_language_stat
-from utils import get_gist_language_model
+from views.user.gists import View as ListView
+from views.user.gists.utils import get_language_stat
+
 
 LANGUAGE_ID2LANGUAGE = {l.id:l for l in Language.objects.all()}
 
@@ -19,20 +19,18 @@ def get_language_list(total_count,stat):
             language_list+=[language]
     return language_list
 
-
-class View(UserMixin,TemplateView):
+class View(ListView):
     template_name = "user/gists/languages/language_list.html"
 
     def get_gist_queryset(self):
         return get_queryset_base(self.request,self.github_user)
 
     def get_context_data(self, **kwargs):
+        print(list(DatabaseSize.objects.all()))
         context = super().get_context_data(**kwargs)
-        gist_queryset = self.get_gist_queryset()
-        total_count = gist_queryset.count()
-        gist_model = gist_queryset.model
-        gist_language_model = get_gist_language_model(gist_model._meta.app_label)
-        stat = get_language_stat(gist_queryset,gist_language_model)
+        qs = self.get_queryset_base()
+        total_count = qs.count()
+        stat = get_language_stat(qs,self.gist_language_model)
         language_list = get_language_list(total_count,stat)
         menu_item_list = [
             {'value':'count','text':'Most gists'},

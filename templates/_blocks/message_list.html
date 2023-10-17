@@ -1,0 +1,9 @@
+{% for message in messages %}
+    <div class="flash flash-full {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}flash-error{% endif %}">
+  <div class="px-2">
+    {{ message|escape }}
+    {{ request.GET.error|escape }}
+    <span class="sr-only">&nbsp;</span>
+  </div>
+</div>
+{% endfor %}

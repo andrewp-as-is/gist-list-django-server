@@ -1,0 +1,6 @@
+refresh_time = modification тоже?
+---
+refresh_time тогда как etag, etc
+или...
+max тк изменения могут быть и без refresh :)
+max(filter(None,[]))

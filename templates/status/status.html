@@ -4,7 +4,13 @@
 
 {% block content %}
 <div class="page-content container-lg">
-<h3 class="text-center">Status</h3>
+<h3 class="text-center {% if status.success %}color-bg-success-emphasis color-fg-on-emphasis{% else %}color-bg-danger-emphasis color-fg-on-emphasis{% endif %}">
+{% if status.success %}
+<svg class="octicon mr-1 color-fg-on-emphasis v-align-middle mb-1" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
+{% else %}
+<svg class="octicon mr-1 color-fg-on-emphasis v-align-middle mb-1" style="width:16px;height:16px"><use xlink:href="#alert" /></svg>
+{% endif %}
+Status</h3>
 <table class="width-full">
 <tr class="Box-row Box-row--hover-gray">
     <td class="no-wrap p-1 text-bold">
@@ -12,7 +18,7 @@
     </td>
     <td class="p-1 text-bold">
         <a class="color-fg-muted" href="/healthcheck">
-        {% if healthcheck_success %}
+        {% if status.healthcheck_success %}
         <svg class="octicon mr-1 color-fg-success" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
         {% else %}
         <svg class="octicon mr-1 color-fg-danger" style="width:16px;height:16px"><use xlink:href="#alert" /></svg>
@@ -24,15 +30,7 @@
     <td class="no-wrap p-1 text-bold {% if incident_count %}color-fg-danger{% endif %}">
         <a class="color-fg-muted" href="/incident">incidents</a>
     </td>
-    <td class="p-1 text-bold {% if incident_count %}color-fg-danger{% endif %}">{% if incident_count %}{{ incident_count|format_count }}{% else %}-{% endif %}</td>
-</tr>
-<tr class="Box-row Box-row--hover-gray">
-    <td class="no-wrap p-1 text-bold">current user refreshes</td>
-    <td class="p-1 text-bold">{{ github_user_refresh_count|format_count }}</td>
-</tr>
-<tr class="Box-row Box-row--hover-gray">
-    <td class="no-wrap p-1 text-bold">current http requests</td>
-    <td class="p-1 text-bold">{{ http_request_count|format_count }}</td>
+    <td class="p-1 text-bold {% if status.incidents_count %}color-fg-danger{% endif %}">{% if incident_count %}{{ incident_count|format_count }}{% else %}-{% endif %}</td>
 </tr>
 </table>
 </div>

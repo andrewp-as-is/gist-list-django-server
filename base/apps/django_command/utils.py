@@ -1,6 +1,5 @@
 import os
 
-from .conf import DJANGO_COMMAND_DIRNAME
 from .models import Job
 
 

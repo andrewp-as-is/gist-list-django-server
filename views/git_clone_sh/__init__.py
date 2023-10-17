@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import View as _View
 from base.apps.github.models import User
-from views.utils import get_gist_model
+# from views.utils import get_gist_model
 
 FILENAME = 'gist-clone.sh'
 

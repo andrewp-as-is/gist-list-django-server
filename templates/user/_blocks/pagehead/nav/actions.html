@@ -2,7 +2,7 @@
 
 <span class="color-fg-muted">
 {% if refresh_lock %}
-  started {{ refresh_lock.get_seconds }} seconds ago
+  <a class="color-fg-muted" href="/{{ login  }}/status">started {{ refresh_lock.get_seconds }} seconds ago</a>
   {% else %}
   {% if refresh_time %}refreshed {{ refresh_time.timestamp|timestamp_timesince }}{% endif %}
 {% endif %}

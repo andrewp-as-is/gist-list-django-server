@@ -1,0 +1,4 @@
+<h2 class="mb-3 h4">Languages</h2>
+{% for language in gist.language_list %}
+<div><a href="{{ github_user.get_absolute_url }}?language={{ language }}">{{ language }}</a></div>
+{% endfor %}

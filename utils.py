@@ -3,39 +3,76 @@ from datetime import date, datetime, timedelta
 import time
 
 from django.apps import apps
+from django.conf import settings
 from django.db import transaction
 from django.utils.timesince import timesince as _timesince
 import requests
 
 from base.apps.github_matview.models import Gist as MatviewGist
-from base.apps.github_matview_new.models import Gist as NewMatviewGist
-from base.apps.github.models import UserRefreshLock, UserRefreshViewer
+from base.apps.github_modification_matview.models import Gist as NewMatviewGist
+from base.apps.github.models import GistRefreshLock, UserRefreshLock, UserRefreshViewer
 from base.apps.github.utils.graphql import get_user_followers_query, get_user_following_query, get_viewer_gists_query, get_user_gists_query
-from base.apps.github.utils.http_response import get_api_user_gists_pagination_page_relpath,get_api_viewer_gists_pagination_page_relpath, get_api_viewer_gists_starred_pagination_page_relpath, get_api_graphql_user_followers_pagination_page_relpath, get_api_graphql_user_following_pagination_page_relpath, get_api_graphql_viewer_gists_pagination_page_relpath, get_api_graphql_user_gists_pagination_page_relpath
-from base.apps.http_request.models import Job as RequestJob
-from base.utils import bulk_create
+# from base.apps.http_client.utils import get_disk_path
+from base.apps.github.utils.http_response import get_api_gists_gist_relpath, get_api_user_gists_pagination_page_relpath,get_api_viewer_gists_pagination_page_relpath, get_api_viewer_gists_starred_pagination_page_relpath, get_api_graphql_user_followers_pagination_page_relpath, get_api_graphql_user_following_pagination_page_relpath, get_api_graphql_viewer_gists_pagination_page_relpath, get_api_graphql_user_gists_pagination_page_relpath
+# from base.apps.http_request.models import Job as RequestJob
+from django_bulk_create import bulk_create
 
-def get_gist_model(user_id):
-    if not user_id:
-        return MatviewGist
-    if NewMatviewGist.objects.filter(owner_id=user_id).only('id').first():
-        return NewMatviewGist
-    return MatviewGist
+REGCLASS2MODEL = {}
 
-def iter_app_model_list(app_label):
-    for model in apps.get_models():
-        if model._meta.app_label==app_label:
-            yield model
-
-def get_gist_language_model(app_label):
-    for model in iter_app_model_list(app_label):
-        if 'language' in model.__name__.lower():
+def get_model(schemaname,relname):
+    global REGCLASS2MODEL
+    regclass = '"%s"."%s"' % (schemaname,relname)
+    model = REGCLASS2MODEL.get(regclass,None)
+    if model:
+        return model
+    for model in filter(lambda m:'.' in m._meta.db_table,apps.get_models()):
+        db_table = model._meta.db_table.replace('"','')
+        _schemaname = db_table.split('.')[0].replace('"','')
+        _relname = db_table.split('.')[1].replace('"','')
+        if schemaname==_schemaname and relname==_relname:
+            REGCLASS2MODEL[regclass] = model
             return model
 
-def get_gist_tag_model(app_label):
-    for model in iter_app_model_list(app_label):
-        if 'tag' in model.__name__.lower():
-            return model
+def get_matview_model(expired_at,matviewname):
+    schemaname = 'github_matview'
+    if (expired_at or 0)>int(time.time())+1:
+        schemaname = 'github_modification_matview'
+    return get_model(schemaname,matviewname)
+
+def get_follower_model(time):
+    matviewname = 'follower'
+    expired_at = time.follower_expired_at if time else 0
+    return get_matview_model(expired_at,matviewname)
+
+def get_following_model(time):
+    matviewname = 'follower'
+    expired_at = time.following_expired_at if time else 0
+    return get_matview_model(expired_at,matviewname)
+
+def get_gist_model(time):
+    matviewname = 'gist'
+    expired_at = time.gist_expired_at if time else 0
+    return get_matview_model(expired_at,matviewname)
+
+def get_starred_gist_model(time):
+    matviewname = 'starred_gist'
+    expired_at = time.gist_expired_at if time else 0
+    return get_matview_model(expired_at,matviewname)
+
+def get_gist_language_model(time):
+    matviewname = 'gist_language'
+    expired_at = time.gist_expired_at if time else 0
+    return get_matview_model(expired_at,matviewname)
+
+def get_gist_tag_model(time):
+    matviewname = 'gist_tag'
+    expired_at = time.gist_expired_at if time else 0
+    return get_matview_model(expired_at,matviewname)
+
+def get_user_model(time):
+    matviewname = 'user'
+    expired_at = time.gist_expired_at if time else 0
+    return get_matview_model(expired_at,matviewname)
 
 def get_github_api_data(url,token):
     headers = {"Authorization": "Bearer %s" % token}
@@ -51,11 +88,48 @@ def get_github_api_data(url,token):
             r.raise_for_status()
 
 
+def refresh_gist(gist,token,priority,**options):
+    url2relpath = {}
+    url2query = {}
+    headers = "\n".join([
+        "Authorization: Bearer %s" % token.token,
+        "X-GitHub-Api-Version: 2022-11-28"
+    ])
+    url = 'https://api.github.com/gists/%s' % gist.id
+    url2relpath[url] = get_api_gists_gist_relpath(gist.id)
+    create_list = []
+    for url,disk_relpath in url2relpath.items():
+        data = None
+        disk_path = get_disk_path(disk_relpath)
+        if 'github.com/graphql' in url:
+            query = url2query[url]
+            data = json.dumps({"query": query.replace('\n','')})
+            headers=headers+'\nContent-Type: application/json'
+        create_list+=[RequestJob(
+            domain = 'api.github.com',
+            url = url,
+            method='GET' if 'github.com/graphql' not in url else 'POST',
+            headers=headers,
+            data = data,
+            disk_path=disk_path,
+            priority=priority
+        )]
+        create_list+=[GistRefreshLock(
+            gist_id=gist.id,
+            timestamp=int(time.time())
+        )]
+    with transaction.atomic():
+        bulk_create(create_list)
+
 def refresh_user(user,token,priority,**options):
     # todo: priority based on user.id vs token.user_id
     # root = 'api.github.com/user/%s' % (user.id)
     url2relpath = {}
     url2query = {}
+    headers = "\n".join([
+        "Authorization: Bearer %s" % token.token,
+        "X-GitHub-Api-Version: 2022-11-28"
+    ])
     # todo: followers/following request
     """
     if user.followers_count:
@@ -69,14 +143,16 @@ def refresh_user(user,token,priority,**options):
     """
     url = 'https://api.github.com/user/%s' % user.id
     url2relpath[url] = 'api.github.com/user/%s/profile' % user.id
+    # graphql user followers
     url = 'https://api.github.com/graphql?schema=user.followers&user_id=%s' % user.id
     url2relpath[url] = get_api_graphql_user_followers_pagination_page_relpath(user.id,1)
     url2query[url] = get_user_followers_query(user.login)
+    # graphql user following
     url = 'https://api.github.com/graphql?schema=user.following&user_id=%s' % user.id
     url2relpath[url] = get_api_graphql_user_following_pagination_page_relpath(user.id,1)
     url2query[url] = get_user_following_query(user.login)
-    authenticated = user.id==token.user_id
-    if authenticated: # authenticated user (unknown pages count)
+    secret = user.id==token.user_id
+    if secret: # authenticated user (unknown pages count)
         # gists/starred api v3 only, graphql not supported
         url = 'https://api.github.com/gists/starred?user_id=%s&per_page=100&page=1' % user.id
         url2relpath[url] = get_api_viewer_gists_starred_pagination_page_relpath(user.id,1)
@@ -100,10 +176,6 @@ def refresh_user(user,token,priority,**options):
             url2query[url] = get_user_gists_query(user.login)
     create_list = []
     for url,response_relpath in url2relpath.items():
-        headers = "\n".join([
-            "Authorization: Bearer %s" % token.token,
-            "X-GitHub-Api-Version: 2022-11-28"
-        ])
         data = None
         if 'github.com/graphql' in url:
             query = url2query[url]
@@ -116,11 +188,11 @@ def refresh_user(user,token,priority,**options):
             headers=headers,
             data = data,
             response_relpath=response_relpath,
-            priority=priority if '/follow' not in url else 10
+            priority=priority
         )]
         create_list+=[UserRefreshLock(
             user_id=user.id,
-            authenticated=authenticated,
+            secret=secret,
             timestamp=int(time.time())
         )]
         create_list+=[UserRefreshViewer(
@@ -129,7 +201,6 @@ def refresh_user(user,token,priority,**options):
             timestamp=int(time.time())
         )]
     with transaction.atomic():
-        print('bulk_create: %s' % create_list)
         bulk_create(create_list)
 
 def timesince(d):

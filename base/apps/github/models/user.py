@@ -3,8 +3,6 @@ __all__ = ['AbstractUser','User',]
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
-from base.utils import execute_sql
-
 """
 https://developer.github.com/v3/users/
 """
@@ -33,7 +31,6 @@ class Manager(models.Manager):
                 ]
             )
         result = super().bulk_create(objs,**kwargs)
-        execute_sql('VACUUM github."user"')
         return result
 
 class AbstractUser(models.Model):
@@ -61,8 +58,12 @@ class AbstractUser(models.Model):
     created_at = models.IntegerField(null=True)
     updated_at = models.IntegerField(null=True)
 
-    language_list = ArrayField(models.TextField())
-    tag_slug_list = ArrayField(models.TextField())
+    # CUSTOM FIELDS
+    refreshed_at = models.IntegerField(null=True)
+    secret_refreshed_at = models.IntegerField(null=True)
+
+    language_list = ArrayField(models.TextField()) # language NAME list
+    tag_list = ArrayField(models.TextField()) # tag SLUG list
 
     class Meta:
         abstract = True

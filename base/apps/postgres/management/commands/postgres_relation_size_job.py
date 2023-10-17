@@ -3,10 +3,9 @@ import os
 from django.core.management.base import BaseCommand
 
 from base.apps.github.models import Token, User
-from base.apps.http_request.models import Job as RequestJob
 
 from base.apps.postgres.models import RelationSizeJob as Job
-from base.utils import bulk_create, execute_sql
+from django_bulk_create import bulk_create, execute_sql
 
 SQL = """
 INSERT INTO postgres.relation_size_capture(regclass,size)

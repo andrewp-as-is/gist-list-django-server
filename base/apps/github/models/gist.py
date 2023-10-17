@@ -7,6 +7,7 @@ from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 
 from base.apps.django_command.utils import create_job
+from base.apps.tag.utils import get_hashtag_list
 from .language import Language
 
 
@@ -26,8 +27,7 @@ class GistMixin:
 class AbstractGist(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
 
-    # fork = models.ForeignKey('Gist', null=True,on_delete=models.DO_NOTHING)
-    # is_fork = models.BooleanField(default=False)
+    fork_of = models.ForeignKey('Gist', null=True,on_delete=models.DO_NOTHING)
 
     public = models.BooleanField(default=True)
     fork = models.BooleanField(default=False)
@@ -62,11 +62,20 @@ class AbstractGist(models.Model):
                 language_list+=[language]
         return language_list
 
+    def get_tag_list(self):
+        return list(map(
+            lambda s:s.replace('#',''),
+            get_hashtag_list(self.description)
+        ))
+
     def get_download_url(self):
         if self.version:
             return 'https://gist.github.com/%s/%s/archive/%s.zip' % (self.owner.login,self.id,self.version,)
 
 class Gist(AbstractGist):
+    id = models.CharField(max_length=100, primary_key=True)
+
+    fork_of = models.ForeignKey('Gist', null=True,on_delete=models.DO_NOTHING)
     owner = models.ForeignKey('github.User',related_name='+',on_delete=models.DO_NOTHING)
 
     class Meta:
