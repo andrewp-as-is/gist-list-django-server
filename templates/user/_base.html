@@ -31,7 +31,7 @@
             </h1>
             {% if not gist and github_user %}
             <div class="note m-0">
-              {% if refresh_time %}
+              {% if refreshed_at %}
               <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/followers">
                 <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#people" /></svg>
                     <span class="text-bold color-fg-default">{{ github_user.followers_count|format_count }}</span> followers
@@ -71,7 +71,7 @@
   </div>
 </div>
 {% if github_user %}
-  {% if refresh_time %}
+  {% if refreshed_at %}
     {% block container %}{% endblock %}
   {% else %}
     {% include "user/_blocks/unknown.html" %}

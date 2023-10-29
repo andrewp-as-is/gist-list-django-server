@@ -4,7 +4,8 @@ import requests
 
 from base.apps.github.models import User
 from base.apps.github.utils import get_api_timestamp
-from base.apps.github.models import UserRefreshViewer, UserRefreshLock, UserRefreshTime
+from base.apps.github.models import UserRefreshViewer, UserRefreshLock
+
 
 def get_lock(user_id):
     try:
@@ -12,50 +13,47 @@ def get_lock(user_id):
     except UserRefreshLock.DoesNotExist:
         pass
 
+
 def get_github_user(user_id):
     try:
         return User.objects.get(id=user_id)
     except User.DoesNotExist:
         pass
 
+
 def get_viewer_refresh_count(viewer_id):
     return UserRefreshViewer.objects.filter(viewer_id=viewer_id).count()
 
 
-def get_refresh_time(user_id):
-    try:
-        return UserRefreshTime.objects.get(user_id=user_id)
-    except UserRefreshTime.DoesNotExist:
-        pass
-
 def create_github_user(data):
     defaults = {
-        'login':data['login'],
-        'name':data['name'],
-        'blog':data['blog'],
-        'location':data['location'],
-        'twitter_username':data['twitter_username'],
-        'public_gists_count':data['public_gists'],
-        'followers_count':data['followers'],
-        'following_count':data['following'],
-        'created_at':get_api_timestamp(data['created_at']),
-        'updated_at':get_api_timestamp(data['updated_at'])
+        "login": data["login"],
+        "name": data["name"],
+        "blog": data["blog"],
+        "location": data["location"],
+        "twitter_username": data["twitter_username"],
+        "public_gists_count": data["public_gists"],
+        "followers_count": data["followers"],
+        "following_count": data["following"],
+        "created_at": get_api_timestamp(data["created_at"]),
+        "updated_at": get_api_timestamp(data["updated_at"]),
     }
-    user, created = User.objects.get_or_create(defaults,id=data['id'])
+    user, created = User.objects.get_or_create(defaults, id=data["id"])
     return user
 
-def get_github_user_data(login,token):
-    attempts_count=0
-    url = 'https://api.github.com/users/%s' % login
+
+def get_github_user_data(login, token):
+    attempts_count = 0
+    url = "https://api.github.com/users/%s" % login
     headers = {"Authorization": "Bearer %s" % access_token}
-    attempts_count=0
+    attempts_count = 0
     while True:
-        attempts_count+=1
-        r = requests.get(url,headers=headers,timeout=10)
-        if r.status_code==200:
+        attempts_count += 1
+        r = requests.get(url, headers=headers, timeout=10)
+        if r.status_code == 200:
             return r.json()
         else:
-            if attempts_count>3:
+            if attempts_count > 3:
                 r.raise_for_status()
 
 

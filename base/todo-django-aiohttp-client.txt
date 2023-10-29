@@ -1,0 +1,10 @@
+
+retries count... по идее нужна статистика чтоб определить как часто всякие ошибки. по идее конечно shit happens тк http между серверами, а не транзакции на 1 компе
+---
+retry может быть оч продвинутым
+https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html
+retries_count можно развернуть
+connnection_errors_count
+server_5xx_errors_count и тд 100500 вариантов
++ по каждому хосту еще отдельно тк github/pypi safe trusted
+---

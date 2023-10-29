@@ -1,11 +1,12 @@
-__all__ = ['User',]
+__all__ = [
+    "User",
+]
 
 from django.db import models
 
 from base.apps.github.models import AbstractUser
 
-class User(AbstractUser):
-    refresh_timestamp = models.IntegerField()
 
+class User(AbstractUser):
     class Meta:
         managed = False

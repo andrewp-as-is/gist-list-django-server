@@ -1,0 +1,8 @@
+options
+priority и тд в options
+admin с учетом method without hardcoded path
+response page
+и тд
+---
+client exception
+url vs request_info

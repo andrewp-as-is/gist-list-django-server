@@ -51,8 +51,8 @@
         {% endif %}
     </td>
     <td class="color-fg-muted no-wrap p-1 text-left">
-      {% if user.refresh_timestamp %}
-        {{ user.refresh_timestamp|timestamp_timesince }}
+      {% if user.refreshed_at %}
+        {{ user.refreshed_at|timestamp_timesince }}
         {% endif %}
     </td>
     <td class="color-fg-muted no-wrap p-1 text-left">

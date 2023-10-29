@@ -1,7 +1,6 @@
 Django
 dj-database-url
 django_command_worker
-django_cron_command
 django-github-oauth
 django_passwordless_user
 django-passwordless-auth
@@ -15,6 +14,7 @@ django_exception
 django_pg_sequences
 django_pg_settings
 django_pg_tables
+django_sql_executor
 
 django-emoji
 django-manifest-loader
