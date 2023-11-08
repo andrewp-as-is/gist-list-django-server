@@ -20,7 +20,6 @@ from base.apps.github.utils.graphql import (
 )
 from base.conf import HTTP_CLIENT_DIR
 
-# from base.apps.http_client.utils import get_disk_path
 from base.apps.github.utils.http_response import (
     get_api_gists_gist_disk_path,
     get_api_user_gists_pagination_page_disk_path,
@@ -125,13 +124,15 @@ def refresh_gist(gist, token, priority, **options):
     url = "https://api.github.com/gists/%s" % gist.id
     url2relpath[url] = get_api_gists_gist_disk_path(gist.id)
     create_list = []
-    for url, disk_disk_path in url2relpath.items():
+    for url, disk_path in url2relpath.items():
         data = None
-        disk_path = get_disk_path(disk_disk_path)
         if "github.com/graphql" in url:
             query = url2query[url]
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
+        print("url: %s" % url)
+        print("headers: %s" % headers)
+        print("data: %s" % data)
         create_list += [
             Request(
                 host="api.github.com",
@@ -171,13 +172,19 @@ def refresh_user(user, token, priority, **options):
     url = "https://api.github.com/user/%s" % user.id
     url2relpath[url] = "api.github.com/user/%s/profile" % user.id
     # graphql user followers
-    url = "https://api.github.com/graphql?schema=user.followers&user_id=%s" % user.id
+    url = (
+        "https://api.github.com/graphql?schema=user.followers&user_id=%s&page=1"
+        % user.id
+    )
     url2relpath[url] = get_api_graphql_user_followers_pagination_page_disk_path(
         user.id, 1
     )
     url2query[url] = get_user_followers_query(user.login)
     # graphql user following
-    url = "https://api.github.com/graphql?schema=user.following&user_id=%s" % user.id
+    url = (
+        "https://api.github.com/graphql?schema=user.following&user_id=%s&page=1"
+        % user.id
+    )
     url2relpath[url] = get_api_graphql_user_following_pagination_page_disk_path(
         user.id, 1
     )
@@ -197,7 +204,10 @@ def refresh_user(user, token, priority, **options):
         url = "https://api.github.com/gists?user_id=%s&per_page=100&page=1" % (user.id)
         url2relpath[url] = get_api_viewer_gists_pagination_page_disk_path(user.id, 1)
         # graphql viewer gists - `files` `language` not supported
-        url = "https://api.github.com/graphql?schema=viewer.gists&user_id=%s" % user.id
+        url = (
+            "https://api.github.com/graphql?schema=viewer.gists&user_id=%s&page=1"
+            % user.id
+        )
         url2relpath[url] = get_api_graphql_viewer_gists_pagination_page_disk_path(
             user.id, 1
         )
@@ -227,6 +237,9 @@ def refresh_user(user, token, priority, **options):
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
         disk_path = os.path.join(HTTP_CLIENT_DIR, disk_disk_path)
+        print("url: %s" % url)
+        print("headers: %s" % headers)
+        print("data: %s" % data)
         create_list += [
             Request(
                 host="api.github.com",
