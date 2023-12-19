@@ -28,7 +28,10 @@ query {
         updatedAt
       }
       pageInfo {
+        startCursor
         endCursor
+        hasNextPage
+        hasPreviousPage
       }
     }
   }
@@ -68,7 +71,10 @@ query {
         updatedAt
       }
       pageInfo {
+        startCursor
         endCursor
+        hasNextPage
+        hasPreviousPage
       }
     }
   }
@@ -79,7 +85,7 @@ def get_user_gists_query(login,after=None):
     return """
 query {
   user(login: \"%s\") {
-    gists (first: 100, after: %s, orderBy: {field: CREATED_AT, direction: DESC} ) {
+    gists (first: 100, after: %s, orderBy: {field: CREATED_AT, direction: DESC}) {
         nodes {
           description
           name
@@ -97,7 +103,10 @@ query {
           }
         }
       pageInfo {
+        startCursor
         endCursor
+        hasNextPage
+        hasPreviousPage
       }
     }
   }
@@ -108,7 +117,7 @@ def get_viewer_gists_query(after=None):
     return """
 query {
   viewer {
-    gists (first: 100, privacy:ALL, after: %s, orderBy: {field: CREATED_AT, direction: DESC} ) {
+    gists (first: 100, privacy:ALL, after: %s, orderBy: {field: CREATED_AT, direction: DESC}) {
         nodes {
           description
           name
@@ -129,7 +138,10 @@ query {
           }
         }
         pageInfo {
+          startCursor
           endCursor
+          hasNextPage
+          hasPreviousPage
         }
     }
   }

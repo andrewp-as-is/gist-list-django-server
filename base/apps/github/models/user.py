@@ -7,35 +7,7 @@ from django.db import models
 https://developer.github.com/v3/users/
 """
 
-class Manager(models.Manager):
-    def bulk_create(self, objs, **kwargs):
-        if not kwargs:
-            kwargs = dict(
-                update_conflicts=True,
-                unique_fields = ['id'],
-                update_fields = [
-                    'login',
-                    'type',
-                    'name',
-                    'company',
-                    'blog',
-                    'location',
-                    'bio',
-                    'email',
-                    'twitter_username',
-                    'public_gists_count',
-                    'followers_count',
-                    'following_count',
-                    'created_at',
-                    'updated_at'
-                ]
-            )
-        result = super().bulk_create(objs,**kwargs)
-        return result
-
 class AbstractUser(models.Model):
-    objects = Manager()
-
     login = models.CharField(max_length=39,unique=True)
     type = models.CharField(max_length=100)
     name = models.TextField(null=True)
@@ -75,20 +47,5 @@ class AbstractUser(models.Model):
         return 'https://github.com/%s.png' % (self.login,)
 
 class User(AbstractUser):
-    objects = Manager()
-
     class Meta:
         managed = False
-
-
-class Manager(models.Manager):
-    def bulk_create(self, objs, **kwargs):
-        if not kwargs:
-            kwargs = dict(
-                update_conflicts=True,
-                unique_fields = ['id'],
-                update_fields = [
-                    'login',
-                ]
-            )
-        return super().bulk_create(objs,**kwargs)

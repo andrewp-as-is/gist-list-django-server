@@ -9,7 +9,7 @@ from base.apps.github.models import (
     Gist,
     User,
     User404,
-    UserRefreshLock,
+    UserLock,
 )
 from base.apps.github_modification_matview.models import MatviewTime
 from utils import (
@@ -40,10 +40,10 @@ class UserMixin:
             if authenticated:
                 self.refreshed_at = self.github_user.secret_refreshed_at
             try:
-                self.refresh_lock = UserRefreshLock.objects.get(
+                self.refresh_lock = UserLock.objects.get(
                     user_id=self.github_user.id
                 )
-            except UserRefreshLock.DoesNotExist:
+            except UserLock.DoesNotExist:
                 self.refresh_lock = None
             try:
                 self.modification_matview_time = MatviewTime.objects.get(

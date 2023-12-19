@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
-from base.apps.github.models import Gist, Token, GistRefreshLock
+from base.apps.github.models import Gist, Token, GistLock
 
 from views.base import View
 from views.user.gist.mixins import GistMixin

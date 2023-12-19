@@ -18,10 +18,10 @@ class MatviewAdmin(admin.ModelAdmin):
     ]
 
     def time(self,obj):
-        return datetime.fromtimestamp(obj.timestamp).strftime('%Y-%m-%d %H:%M:%S')
+        return datetime.fromtimestamp(obj.created_at).strftime('%Y-%m-%d %H:%M:%S')
 
     def timesince(self,obj):
-        return '%s ago' % timesince(datetime.fromtimestamp(obj.timestamp))
+        return '%s ago' % timesince(datetime.fromtimestamp(obj.created_at))
 
     def has_add_permission(self, request, obj=None):
         return False

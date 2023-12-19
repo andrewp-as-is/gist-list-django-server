@@ -4,8 +4,8 @@ from django.db import models
 
 class Incident(models.Model):
     message = models.CharField(max_length=255)
-    timestamp = models.IntegerField()
+    created_at = models.IntegerField()
 
     class Meta:
         managed = False
-        ordering = ('-timestamp', )
+        ordering = ('-created_at', )

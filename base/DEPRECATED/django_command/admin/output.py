@@ -29,11 +29,11 @@ class OutputAdmin(admin.ModelAdmin):
         return open(path).read() if os.path.exists(path) else None
 
     def time(self,obj):
-        return datetime.fromtimestamp(obj.timestamp)
+        return datetime.fromtimestamp(obj.created_at)
     time.short_description = "time"
 
     def timesince(self,obj):
-        return '%s ago' % timesince(datetime.fromtimestamp(obj.timestamp))
+        return '%s ago' % timesince(datetime.fromtimestamp(obj.created_at))
     timesince.short_description = "timesince"
 
     def has_add_permission(self, request, obj=None):

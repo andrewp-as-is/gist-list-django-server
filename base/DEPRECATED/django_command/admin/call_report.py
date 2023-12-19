@@ -20,10 +20,10 @@ class CallReportAdmin(admin.ModelAdmin):
     ]
 
     def time(self,obj):
-        return datetime.fromtimestamp(obj.timestamp)
+        return datetime.fromtimestamp(obj.created_at)
 
     def timesince(self,obj):
-        return '%s ago' % timesince(datetime.fromtimestamp(obj.timestamp))
+        return '%s ago' % timesince(datetime.fromtimestamp(obj.created_at))
 
     def has_add_permission(self, request, obj=None):
         return False

@@ -1,145 +1,53 @@
 import os
+import re
+from urllib.parse import parse_qs, urlparse
+
+from linkheader_parser import parse
 
 from base.conf import HTTP_CLIENT_DIR
 
 
-def get_disk_path(relpath):
-    return os.path.join(HTTP_CLIENT_DIR, relpath)
-
-
-# api.github.com/gists/gist/ID
-
-
-def get_api_gists_disk_path(gist_id):
-    relpath = "api.github.com/gists/gist/%s" % gist_id
-    return get_disk_path(relpath)
-
-
-# api.github.com/user/ID user profile
-
-
-def get_api_user_profile_disk_path(user_id):
-    relpath = "api.github.com/user/%s/profile" % user_id
-    return get_disk_path(relpath)
-
-
-# api.github.com/user/ID/gists user gists
-
-
-def get_api_user_gists_pagination_disk_path(user_id):
-    relpath = "api.github.com/user/%s/gists" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_user_gists_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_user_gists_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-# api.github.com/gists authenticated user gists
-
-
-def get_api_viewer_gists_pagination_disk_path(user_id):
-    relpath = "api.github.com/viewer/%s/gists/" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_viewer_gists_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_viewer_gists_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-def get_api_gists_gist_disk_path(gist_id):
-    relpath = "api.github.com/gists/gist/%s" % gist_id
-    return get_disk_path(relpath)
-
-
-# api.github.com/gists/starred authenticated user stars
-
-
-def get_api_viewer_gists_starred_pagination_disk_path(user_id):
-    relpath = "api.github.com/viewer/%s/gists_starred" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_viewer_gists_starred_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_viewer_gists_starred_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-# user/ID/followers
-
-
-def get_api_user_followers_pagination_disk_path(user_id):
-    relpath = "api.github.com/user/%s/followers" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_user_followers_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_user_followers_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-# user/ID/following
-
-
-def get_api_user_following_pagination_disk_path(user_id):
-    relpath = "api.github.com/user/%s/following" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_user_following_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_user_following_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-# api.github.com/graphql user followers
-
-
-def get_api_graphql_user_followers_pagination_disk_path(user_id):
-    relpath = "api.github.com/graphql/user/%s/followers" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_graphql_user_followers_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_graphql_user_followers_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-# api.github.com/graphql user following
-
-
-def get_api_graphql_user_following_pagination_disk_path(user_id):
-    relpath = "api.github.com/graphql/user/%s/following" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_graphql_user_following_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_graphql_user_following_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-# api.github.com/graphql user gists
-
-
-def get_api_graphql_user_gists_pagination_disk_path(user_id):
-    relpath = "api.github.com/graphql/user/%s/gists" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_graphql_user_gists_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_graphql_user_gists_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
-
-
-# api.github.com/graphql gists
-
-
-def get_api_graphql_viewer_gists_pagination_disk_path(user_id):
-    relpath = "api.github.com/graphql/viewer/%s/gists" % user_id
-    return get_disk_path(relpath)
-
-
-def get_api_graphql_viewer_gists_pagination_page_disk_path(user_id, page):
-    pagination_disk_path = get_api_graphql_viewer_gists_pagination_disk_path(user_id)
-    return os.path.join(pagination_disk_path, str(page))
+PATTERN2TEMPLATE = {
+    'gists/gist/[\w]+':"gists/gist/{gist_id}",
+    'user/[\d]+/profile':"user/{user_id}/profile",
+    'user/[\d]+/gists?+':"user/{user_id}/gists/{page}",
+    'user/[\d]+/followers?+':"user/{user_id}/followers/{page}",
+    'user/[\d]+/following?+':"user/{user_id}/following/{page}",
+    'gists?+':"viewer/{user_id}/gists/{page}",
+    'gists/starred?+':"viewer/{user_id}/gists_starred/{page}",
+}
+REGEX2TEMPLATE = {re.compile(p):f for p,f in PATTERN2TEMPLATE.items()}
+
+def get_page(url):
+    parsed_url = urlparse(url)
+    return int(parse_qs(parsed_url.query)["page"][0])
+
+
+def get_user_id(url):
+    if "user_id" in url:
+        parsed_url = urlparse(url)
+        return int(parse_qs(parsed_url.query)["user_id"][0])
+    if "https://api.github.com/user/" in url:
+        return int(url.replace("https://api.github.com/user/", "").split("/")[0])
+
+def get_params(url):
+    return {'user_id':get_user_id(url),'page':get_page(url)}
+
+def get_disk_path(url):
+    for regex,template in REGEX2TEMPLATE.items():
+        if regex.match(url.replace('https://api.github.com/','')):
+            disk_relpath = template.format(**get_params(url))
+            return os.path.join('HTTP_CLIENT_DIR','api.github.com',disk_relpath)
+
+
+def get_graphql_api_graphql_user_followers_disk_relpath(user_id, page):
+    return "graphql/user/%s/followers/%s" % (user_id, page)
+
+def get_graphql_api_graphql_user_following_disk_relpath(user_id, page):
+    return "graphql/user/%s/following/%s" % (user_id, page)
+
+def get_graphql_api_graphql_user_gists_disk_relpath(user_id, page):
+    return "graphql/user/%s/gists/%s" % (user_id, page)
+
+def get_graphql_api_graphql_viewer_gists_disk_relpath(user_id, page):
+    return "graphql/user/%s/viewer/%s" % (user_id, page)

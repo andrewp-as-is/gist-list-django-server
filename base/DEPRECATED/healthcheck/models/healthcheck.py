@@ -19,7 +19,7 @@ class Healthcheck(models.Model):
     name = models.TextField(unique=True)
     success = models.BooleanField()
     message = models.TextField()
-    timestamp = models.IntegerField()
+    created_at = models.IntegerField()
 
     class Meta:
         managed = False

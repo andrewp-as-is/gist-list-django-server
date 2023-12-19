@@ -5,7 +5,7 @@ from django.db import models
 class Status(models.Model):
     healthcheck_success = models.BooleanField()
     incidents_count = models.IntegerField()
-    timestamp = models.IntegerField()
+    created_at = models.IntegerField()
 
     class Meta:
         managed = False

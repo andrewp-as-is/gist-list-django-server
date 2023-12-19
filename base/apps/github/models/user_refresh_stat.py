@@ -10,7 +10,7 @@ class UserRefreshStat(models.Model):
     avg_duration = models.FloatField()
     min_duration = models.FloatField()
     max_duration = models.FloatField()
-    timestamp = models.IntegerField()
+    created_at = models.IntegerField()
 
     class Meta:
         managed = False

@@ -8,7 +8,7 @@ class VacuumFullReport(models.Model):
     duration = models.FloatField()
     size_before = models.TextField()
     size_after = models.TextField()
-    timestamp = models.TextField()
+    created_at = models.TextField()
 
     class Meta:
         managed = False

@@ -14,7 +14,8 @@ class Manager(models.Manager):
 class GistStarOrderJob(models.Model):
     objects = Manager()
 
-    user_id = models.TextField(unique=True)
+    user_id = models.IntegerField(unique=True)
 
     class Meta:
+        db_table = 'github"."%s' % __name__.split(".")[-1]
         managed = False

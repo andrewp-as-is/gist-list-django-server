@@ -30,7 +30,7 @@ class VacuumFullReportAdmin(admin.ModelAdmin):
         return filesizeformat(obj.size_after_pretty)
 
     def time(self,obj):
-        return datetime.fromtimestamp(obj.timestamp)
+        return datetime.fromtimestamp(obj.created_at)
 
     def timesince(self,obj):
         return timesince(datetime.fromtimestamp(self.timestamp))

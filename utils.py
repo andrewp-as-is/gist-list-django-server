@@ -11,25 +11,15 @@ import requests
 
 from base.apps.github_matview.models import Gist as MatviewGist
 from base.apps.github_modification_matview.models import Gist as NewMatviewGist
-from base.apps.github.models import GistRefreshLock, UserRefreshLock, UserRefreshViewer
+from base.apps.github.models import GistLock, UserLock, UserRefreshViewer
 from base.apps.github.utils.graphql import (
     get_user_followers_query,
     get_user_following_query,
     get_viewer_gists_query,
     get_user_gists_query,
 )
-from base.conf import HTTP_CLIENT_DIR
 
-from base.apps.github.utils.http_response import (
-    get_api_gists_gist_disk_path,
-    get_api_user_gists_pagination_page_disk_path,
-    get_api_viewer_gists_pagination_page_disk_path,
-    get_api_viewer_gists_starred_pagination_page_disk_path,
-    get_api_graphql_user_followers_pagination_page_disk_path,
-    get_api_graphql_user_following_pagination_page_disk_path,
-    get_api_graphql_viewer_gists_pagination_page_disk_path,
-    get_api_graphql_user_gists_pagination_page_disk_path,
-)
+from base.apps.github.utils import get_disk_path
 from django_bulk_create import bulk_create
 from django_http_client.models import Request
 
@@ -115,7 +105,7 @@ def get_github_api_data(url, token):
 
 
 def refresh_gist(gist, token, priority, **options):
-    url2relpath = {}
+    url_list = []
     url2query = {}
     headers = {
         "Authorization": "Bearer %s" % token.token,
@@ -124,15 +114,12 @@ def refresh_gist(gist, token, priority, **options):
     url = "https://api.github.com/gists/%s" % gist.id
     url2relpath[url] = get_api_gists_gist_disk_path(gist.id)
     create_list = []
-    for url, disk_path in url2relpath.items():
+    for url in url_list:
         data = None
         if "github.com/graphql" in url:
             query = url2query[url]
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
-        print("url: %s" % url)
-        print("headers: %s" % headers)
-        print("data: %s" % data)
         create_list += [
             Request(
                 host="api.github.com",
@@ -140,11 +127,11 @@ def refresh_gist(gist, token, priority, **options):
                 method="GET" if "github.com/graphql" not in url else "POST",
                 headers=json.dumps(headers),
                 data=data,
-                disk_path=disk_path,
+                disk_path=get_disk_path(url),
                 priority=priority,
             )
         ]
-        create_list += [GistRefreshLock(gist_id=gist.id, timestamp=int(time.time()))]
+        create_list += [GistLock(gist_id=gist.id, timestamp=int(time.time()))]
     with transaction.atomic():
         bulk_create(create_list)
 
@@ -152,7 +139,7 @@ def refresh_gist(gist, token, priority, **options):
 def refresh_user(user, token, priority, **options):
     # todo: priority based on user.id vs token.user_id
     # root = 'api.github.com/user/%s' % (user.id)
-    url2relpath = {}
+    url_list = []
     url2query = {}
     headers = {
         "Authorization": "Bearer %s" % token.token,
@@ -170,24 +157,20 @@ def refresh_user(user, token, priority, **options):
             url2relpath[url] = 'following/%s' % page
     """
     url = "https://api.github.com/user/%s" % user.id
-    url2relpath[url] = "api.github.com/user/%s/profile" % user.id
+    url_list+=[url]
     # graphql user followers
     url = (
         "https://api.github.com/graphql?schema=user.followers&user_id=%s&page=1"
         % user.id
     )
-    url2relpath[url] = get_api_graphql_user_followers_pagination_page_disk_path(
-        user.id, 1
-    )
+    url_list+=[url]
     url2query[url] = get_user_followers_query(user.login)
     # graphql user following
     url = (
         "https://api.github.com/graphql?schema=user.following&user_id=%s&page=1"
         % user.id
     )
-    url2relpath[url] = get_api_graphql_user_following_pagination_page_disk_path(
-        user.id, 1
-    )
+    url_list+=[url]
     url2query[url] = get_user_following_query(user.login)
     secret = user.id == token.user_id
     if secret:  # authenticated user (unknown pages count)
@@ -196,21 +179,17 @@ def refresh_user(user, token, priority, **options):
             "https://api.github.com/gists/starred?user_id=%s&per_page=100&page=1"
             % user.id
         )
-        url2relpath[url] = get_api_viewer_gists_starred_pagination_page_disk_path(
-            user.id, 1
-        )
+        url_list+=[url]
         # authenticated user gists
         # api v3 authenticated user gists (`files` with `language` )
         url = "https://api.github.com/gists?user_id=%s&per_page=100&page=1" % (user.id)
-        url2relpath[url] = get_api_viewer_gists_pagination_page_disk_path(user.id, 1)
+        url_list+=[url]
         # graphql viewer gists - `files` `language` not supported
         url = (
             "https://api.github.com/graphql?schema=viewer.gists&user_id=%s&page=1"
             % user.id
         )
-        url2relpath[url] = get_api_graphql_viewer_gists_pagination_page_disk_path(
-            user.id, 1
-        )
+        url_list+=[url]
         url2query[url] = get_viewer_gists_query()
     else:  # public user
         # todo: etag. no need all requests if no changes. where to check?
@@ -220,26 +199,21 @@ def refresh_user(user, token, priority, **options):
                 user.id,
                 1,
             )
-            url2relpath[url] = get_api_user_gists_pagination_page_disk_path(user.id, 1)
+            url_list+=[url]
             # graphql user gists - `files` `language` not supported
             url = (
                 "https://api.github.com/graphql?schema=user.gists&user_id=%s" % user.id
             )
-            url2relpath[url] = get_api_graphql_user_gists_pagination_page_disk_path(
-                user.id, 1
-            )
+            url_list+=[url]
             url2query[url] = get_user_gists_query(user.login)
+    timestamp = round(time.time(),3)
     create_list = []
-    for url, disk_disk_path in url2relpath.items():
+    for url in url_list:
         data = None
         if "github.com/graphql" in url:
             query = url2query[url]
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
-        disk_path = os.path.join(HTTP_CLIENT_DIR, disk_disk_path)
-        print("url: %s" % url)
-        print("headers: %s" % headers)
-        print("data: %s" % data)
         create_list += [
             Request(
                 host="api.github.com",
@@ -247,16 +221,12 @@ def refresh_user(user, token, priority, **options):
                 method="GET" if "github.com/graphql" not in url else "POST",
                 headers=json.dumps(headers),
                 data=data,
-                disk_path=disk_path,
+                disk_path=get_disk_path(url),
                 priority=priority,
-            )
-        ]
-        create_list += [
-            UserRefreshLock(user_id=user.id, secret=secret, timestamp=int(time.time()))
-        ]
-        create_list += [
+            ),
+            UserLock(user_id=user.id, secret=secret, timestamp=timestamp),
             UserRefreshViewer(
-                user_id=user.id, viewer_id=token.user_id, timestamp=int(time.time())
+                user_id=user.id, viewer_id=token.user_id, timestamp=timestamp
             )
         ]
     with transaction.atomic():

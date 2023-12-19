@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from base.apps.github.models import Gist, GistRefreshLock
+from base.apps.github.models import Gist, GistLock
 from views.user.mixins import UserMixin
 
 
@@ -13,6 +13,6 @@ class GistMixin(UserMixin):
         context = super().get_context_data(**kwargs)
         context["gist"] = self.gist
         context["gist_refresh_lock"] = (
-            GistRefreshLock.objects.filter(gist_id=self.gist.id).count() > 0
+            GistLock.objects.filter(gist_id=self.gist.id).count() > 0
         )
         return context

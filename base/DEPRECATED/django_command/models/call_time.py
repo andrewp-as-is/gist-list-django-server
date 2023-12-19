@@ -17,7 +17,7 @@ class CallTime(models.Model):
     objects = Manager()
 
     name = models.CharField(unique=True,max_length=255)
-    timestamp = models.IntegerField()
+    created_at = models.IntegerField()
 
     class Meta:
         managed = False

@@ -22,17 +22,17 @@ class OutputLatestAdmin(admin.ModelAdmin):
     ]
 
     def path(self,obj):
-        return get_output_path(obj.name,obj.timestamp)
+        return get_output_path(obj.name,obj.created_at)
 
     def output(self,obj):
         return open(path).read() if os.path.exists(path) else None
 
     def time(self,obj):
-        return datetime.fromtimestamp(obj.timestamp)
+        return datetime.fromtimestamp(obj.created_at)
     time.short_description = "time"
 
     def timesince(self,obj):
-        return '%s ago' % timesince(datetime.fromtimestamp(obj.timestamp))
+        return '%s ago' % timesince(datetime.fromtimestamp(obj.created_at))
     timesince.short_description = "timesince"
 
     def has_add_permission(self, request, obj=None):

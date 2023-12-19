@@ -18,7 +18,7 @@ class Matview(models.Model):
 
     schemaname = models.TextField()
     matviewname = models.TextField()
-    timestamp = models.IntegerField()
+    created_at = models.IntegerField()
 
     class Meta:
         managed = False
