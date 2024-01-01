@@ -7,10 +7,10 @@ class ListView(UserMixin,ListView):
     template_name = "user/followers/follower_list.html"
 
     def get_model(self):
-        return get_follower_model(self.modification_matview_time)
+        return self.follower_model
 
     def get_queryset(self,**kwargs):
-        model = self.get_model()
+        model = self.follower_model
         print('model: %s' % model)
         qs = model.objects.filter(user_id=self.github_user.id)
         q = self.request.GET.get('q','').strip()

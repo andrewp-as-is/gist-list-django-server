@@ -4,6 +4,7 @@ from django.db import models
 
 
 class ApiFileListJob(models.Model):
+    id = models.IntegerField(primary_key=True)
     url = models.TextField(unique=True)
 
     class Meta:

@@ -18,3 +18,4 @@ from .user_lock import *
 from .user_refresh_report import *
 from .user_refresh_stat import *
 from .user_refresh_viewer import *
+from .user_table_modification import *

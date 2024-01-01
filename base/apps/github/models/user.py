@@ -8,6 +8,7 @@ https://developer.github.com/v3/users/
 """
 
 class AbstractUser(models.Model):
+    id = models.IntegerField(primary_key=True)
     login = models.CharField(max_length=39,unique=True)
     type = models.CharField(max_length=100)
     name = models.TextField(null=True)
@@ -47,5 +48,6 @@ class AbstractUser(models.Model):
         return 'https://github.com/%s.png' % (self.login,)
 
 class User(AbstractUser):
+    id = models.IntegerField(primary_key=True)
     class Meta:
         managed = False

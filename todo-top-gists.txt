@@ -5,7 +5,7 @@
 у топовых куча forks
 ----
 search
-color|language|count
+color|language|
 ----
 search
 tag|count

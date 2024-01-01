@@ -11,7 +11,7 @@ from django.views.generic.base import TemplateView
 import requests
 
 from base.apps.github.models import Gist, Token
-from base.apps.github.utils.http_response import get_api_gists_gist_disk_path
+from base.apps.github.utils.http_response import get_disk_path
 
 # from base.apps.http_request.models import Job as RequestJob
 
@@ -45,7 +45,7 @@ class View(LoginRequiredMixin, TemplateView):
                     "X-GitHub-Api-Version: 2022-11-28",
                 ]
             )
-            response_disk_path = get_api_gists_gist_disk_path(data["id"])
+            response_disk_path = get_disk_path(url)
             defaults = dict(
                 domain="api.github.com",
                 method="GET",

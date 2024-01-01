@@ -8,7 +8,6 @@ django.contrib.staticfiles
 django_command_worker
 django_exception
 django_github_oauth
-django_http_client
 django_migrations_admin
 django_pg_sequences
 django_pg_settings
@@ -18,7 +17,6 @@ django_postgres_refresher
 django_postgres_rule
 django_sql_executor
 django_stdout
-django_truncate_model
 
 emoji
 manifest_loader

@@ -10,7 +10,7 @@ from django.utils.timesince import timesince as _timesince
 import requests
 
 from base.apps.github_matview.models import Gist as MatviewGist
-from base.apps.github_modification_matview.models import Gist as NewMatviewGist
+from base.apps.github_live_matview.models import Gist as NewMatviewGist
 from base.apps.github.models import GistLock, UserLock, UserRefreshViewer
 from base.apps.github.utils.graphql import (
     get_user_followers_query,
@@ -19,76 +19,9 @@ from base.apps.github.utils.graphql import (
     get_user_gists_query,
 )
 
-from base.apps.github.utils import get_disk_path
+from base.apps.github.utils.http_response import get_disk_path
+from base.apps.http_client.models import Request
 from django_bulk_create import bulk_create
-from django_http_client.models import Request
-
-REGCLASS2MODEL = {}
-
-
-def get_model(schemaname, relname):
-    global REGCLASS2MODEL
-    regclass = '"%s"."%s"' % (schemaname, relname)
-    model = REGCLASS2MODEL.get(regclass, None)
-    if model:
-        return model
-    for model in filter(lambda m: "." in m._meta.db_table, apps.get_models()):
-        db_table = model._meta.db_table.replace('"', "")
-        _schemaname = db_table.split(".")[0].replace('"', "")
-        _relname = db_table.split(".")[1].replace('"', "")
-        if schemaname == _schemaname and relname == _relname:
-            REGCLASS2MODEL[regclass] = model
-            return model
-
-
-def get_matview_model(expired_at, matviewname):
-    schemaname = "github_matview"
-    if (expired_at or 0) > int(time.time()) + 1:
-        schemaname = "github_modification_matview"
-    return get_model(schemaname, matviewname)
-
-
-def get_follower_model(time):
-    matviewname = "follower"
-    expired_at = time.follower_expired_at if time else 0
-    return get_matview_model(expired_at, matviewname)
-
-
-def get_following_model(time):
-    matviewname = "follower"
-    expired_at = time.following_expired_at if time else 0
-    return get_matview_model(expired_at, matviewname)
-
-
-def get_gist_model(time):
-    matviewname = "gist"
-    expired_at = time.gist_expired_at if time else 0
-    return get_matview_model(expired_at, matviewname)
-
-
-def get_starred_gist_model(time):
-    matviewname = "starred_gist"
-    expired_at = time.gist_expired_at if time else 0
-    return get_matview_model(expired_at, matviewname)
-
-
-def get_gist_language_model(time):
-    matviewname = "gist_language"
-    expired_at = time.gist_expired_at if time else 0
-    return get_matview_model(expired_at, matviewname)
-
-
-def get_gist_tag_model(time):
-    matviewname = "gist_tag"
-    expired_at = time.gist_expired_at if time else 0
-    return get_matview_model(expired_at, matviewname)
-
-
-def get_user_model(time):
-    matviewname = "user"
-    expired_at = time.gist_expired_at if time else 0
-    return get_matview_model(expired_at, matviewname)
-
 
 def get_github_api_data(url, token):
     headers = {"Authorization": "Bearer %s" % token}

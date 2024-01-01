@@ -9,6 +9,7 @@ from .mixins import RequestInfoMixin
 
 
 class AbstractException(RequestInfoMixin, models.Model):
+    id = models.IntegerField(primary_key=True)
     request_info = models.TextField()
     exc_class = models.TextField()
     exc_message = models.TextField()
@@ -19,5 +20,6 @@ class AbstractException(RequestInfoMixin, models.Model):
 
 
 class ExceptionModel(AbstractException):
+
     class Meta:
         managed = False

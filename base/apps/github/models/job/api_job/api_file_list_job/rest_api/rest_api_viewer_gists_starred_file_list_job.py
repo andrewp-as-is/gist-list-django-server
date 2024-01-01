@@ -7,6 +7,7 @@ from django.db import models
 
 
 class ApiViewerGistsStarredFileListJob(models.Model):
+    id = models.IntegerField(primary_key=True)
     user_id = models.IntegerField(unique=True)
     path_list = ArrayField(models.TextField())
 

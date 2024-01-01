@@ -4,6 +4,7 @@ from django.db import models
 
 
 class RestApiLinkHeaderJob(models.Model):
+    id = models.IntegerField(primary_key=True)
     request = models.ForeignKey('http_client.Request', related_name='+',on_delete=models.DO_NOTHING)
     response = models.OneToOneField('http_client.Response', related_name='+',on_delete=models.DO_NOTHING)
 

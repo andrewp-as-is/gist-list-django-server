@@ -5,7 +5,7 @@ import time
 from django.db import models
 
 class UserRefreshReport(models.Model):
-
+    id = models.IntegerField(primary_key=True)
     user = models.OneToOneField('github.User', related_name='+',on_delete=models.DO_NOTHING)
     viewer = models.OneToOneField('github.User', related_name='+',on_delete=models.DO_NOTHING)
     duration = models.FloatField()

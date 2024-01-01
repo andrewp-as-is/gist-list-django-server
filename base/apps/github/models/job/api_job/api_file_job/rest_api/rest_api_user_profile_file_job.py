@@ -4,6 +4,7 @@ from django.db import models
 
 
 class RestApiUserProfileFileJob(models.Model):
+    id = models.IntegerField(primary_key=True)
     path = models.TextField(unique=True)
 
     class Meta:

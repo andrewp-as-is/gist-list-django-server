@@ -7,6 +7,7 @@ from base.apps.github.models import AbstractGist
 
 
 class AbstractGist(AbstractGist):
+    id = models.IntegerField(primary_key=True)
     id_order = models.IntegerField()
     description_order = models.IntegerField()
     filename_order = models.IntegerField()

@@ -11,13 +11,14 @@ from base.apps.github.models import (
     User404,
     UserLock,
 )
-from base.apps.github_modification_matview.models import MatviewTime
-from utils import (
-    get_gist_model,
-    get_gist_language_model,
-    get_gist_tag_model,
-    get_user_model,
-)
+from base.apps.github_live_matview.models import UserStatus
+from base.apps.github_live_matview.utils import get_model as get_live_matview_model
+from base.apps.github_matview.utils import get_model as get_matview_model
+
+def get_model(tablename,live_matview_list):
+    if tablename in live_matview_list:
+        return get_live_matview_model(tablename)
+    return get_matview_model(tablename)
 
 
 class UserMixin:
@@ -25,12 +26,17 @@ class UserMixin:
         self.login = self.kwargs["login"]
         # /ID -> /LOGIN/ID redirect
         self.refreshed_at = None
-        self.modification_matview_time = None
+        self.user_meta = None
         try:
             gist = Gist.objects.get(id=self.login)
             return redirect(gist.get_absolute_url())
         except Gist.DoesNotExist:
             pass
+        try:
+            user_status = UserStatus.objects.get(user_id=)
+            self.live_matview_list = user_status.matview_list
+        except UserStatus.DoesNotExist:
+            self.live_matview_list = []
         try:
             User.objects.get(login=self.login)
             self.github_user = User.objects.get(login=self.kwargs["login"])
@@ -45,21 +51,16 @@ class UserMixin:
                 )
             except UserLock.DoesNotExist:
                 self.refresh_lock = None
-            try:
-                self.modification_matview_time = MatviewTime.objects.get(
-                    user_id=self.github_user.id
-                )
-            except MatviewTime.DoesNotExist:
-                pass
         except User.DoesNotExist:
             self.github_user = None
             self.github_user_id = None
-        self.gist_model = get_gist_model(self.modification_matview_time)
-        self.gist_language_model = get_gist_language_model(
-            self.modification_matview_time
-        )
-        self.gist_tag_model = get_gist_tag_model(self.modification_matview_time)
-        # self.user_model = get_user_model(self.modification_matview_time)
+        self.follower_model = get_model('follower')
+        self.following_model = get_model('following')
+        self.gist_model = get_model('gist')
+        self.gist_language_model = get_model('gist_language')
+        self.gist_star_model = get_model('gist_star')
+        self.gist_tag_model = get_model('gist_tag')
+        self.user_model = get_model('user')
         response = super().dispatch(*args, **kwargs)
         if response.status_code in [200, 304] and self.refreshed_at:
             response["ETag"] = self.refreshed_at

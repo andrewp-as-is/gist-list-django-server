@@ -4,6 +4,7 @@ from django.db import models
 
 
 class Api404Job(models.Model):
+    id = models.IntegerField(primary_key=True)
     url = models.TextField()
 
     class Meta:

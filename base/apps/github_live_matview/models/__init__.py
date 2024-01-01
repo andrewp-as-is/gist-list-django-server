@@ -4,4 +4,6 @@ from .gist import *
 from .gist_language import *
 from .gist_star import *
 from .gist_tag import *
+from .refresh_job import *
 from .user import *
+from .user_status import *

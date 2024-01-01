@@ -1,10 +1,9 @@
 from views.user.gists import View as ListView
-from utils import get_starred_gist_model
 
 class View(ListView):
 
     def get_model(self):
-        return get_starred_gist_model(self.modification_matview_time)
+        return self.gist_star_model
 
     def get_queryset_base(self):
         model = self.get_model()

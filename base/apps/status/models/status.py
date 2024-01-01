@@ -3,6 +3,7 @@ __all__ = ['Status',]
 from django.db import models
 
 class Status(models.Model):
+    id = models.IntegerField(primary_key=True)
     healthcheck_success = models.BooleanField()
     incidents_count = models.IntegerField()
     created_at = models.IntegerField()

@@ -4,6 +4,7 @@ from django.db import models
 
 
 class RestApiViewerGistsStarredFileJob(models.Model):
+    id = models.IntegerField(primary_key=True)
     user_id = models.IntegerField(unique=True)
     path = models.TextField()
 
