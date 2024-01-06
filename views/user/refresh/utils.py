@@ -4,13 +4,13 @@ import requests
 
 from base.apps.github.models import User
 from base.apps.github.utils import get_api_timestamp
-from base.apps.github.models import UserRefreshViewer, UserLock
+from base.apps.github.models import UserRefreshViewer, UserRefresh
 
 
 def get_lock(user_id):
     try:
-        return UserLock.objects.get(user_id=user_id)
-    except UserLock.DoesNotExist:
+        return UserRefresh.objects.get(user_id=user_id)
+    except UserRefresh.DoesNotExist:
         pass
 
 

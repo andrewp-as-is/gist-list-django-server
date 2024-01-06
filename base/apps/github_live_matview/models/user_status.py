@@ -6,7 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
-class UserStatus(AbstractUser):
+class UserStatus(models.Model):
     id = models.IntegerField(primary_key=True)
     user_id  = models.IntegerField(unique=True)
     matview_list  = ArrayField(models.IntegerField())

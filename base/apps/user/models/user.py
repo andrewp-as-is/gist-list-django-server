@@ -1,3 +1,5 @@
+__all__ = ['User',]
+
 # from django.contrib.auth.base_user import AbstractBaseUser
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser

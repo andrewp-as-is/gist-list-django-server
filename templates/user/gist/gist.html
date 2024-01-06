@@ -71,8 +71,8 @@
     </div>
 
   <div class="ml-2">
-  <a class="btn btn-sm btn-primary" {% if gist_refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
-    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if gist_refresh_lock %}Refreshing...{% else %}Refresh{% endif %}
+  <a class="btn btn-sm btn-primary" {% if gist_user_refresh %}aria-disabled="true"{% endif %} rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if gist_user_refresh %}Refreshing...{% else %}Refresh{% endif %}
   </a>
   </div>
   </div>

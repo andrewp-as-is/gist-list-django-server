@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
-from base.apps.github.models import Gist, Token, User, UserLock
+from base.apps.github.models import Gist, Token, User, UserRefresh
 
 from views.base import View
 from views.user.mixins import UserMixin
@@ -35,10 +35,9 @@ class View(LoginRequiredMixin, UserMixin, View):
                 messages.warning(self.request, message)
                 return redirect(url)
             if self.github_user.id == self.request.user.id:  # authenticated user
-                refresh_user(self.github_user, token, priority=100)
+                refresh_user(self.request,self.github_user, priority=100)
             else:  # other user
-                # self.refreshed_at
-                refresh_user(self.github_user, token, priority=50)
+                refresh_user(self.request,self.github_user, priority=50)
             message = "refresh started"
             messages.success(self.request, message)
             return redirect(url)

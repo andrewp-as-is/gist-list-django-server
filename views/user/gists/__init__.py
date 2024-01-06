@@ -76,7 +76,7 @@ class View(UserMixin, ListView):
         if (
             not hasattr(self, "github_user")
             or not self.github_user
-            or not self.refreshed_at
+            or not self.github_user_refresh
         ):
             return self.gist_model.objects.none()
         qs = self.gist_model.objects.filter(owner_id=self.github_user.id)
@@ -92,7 +92,7 @@ class View(UserMixin, ListView):
         if (
             not hasattr(self, "github_user")
             or not self.github_user
-            or not self.refreshed_at
+            or not self.github_user_refresh
         ):
             return self.gist_model.objects.none()
         prefix = "gist__" if self.request.path.split("/")[-1] == "starred" else ""

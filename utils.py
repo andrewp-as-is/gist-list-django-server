@@ -11,7 +11,8 @@ import requests
 
 from base.apps.github_matview.models import Gist as MatviewGist
 from base.apps.github_live_matview.models import Gist as NewMatviewGist
-from base.apps.github.models import GistLock, UserLock, UserRefreshViewer
+# from base.apps.user.models import GithubGistRefresh,
+from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
 from base.apps.github.utils.graphql import (
     get_user_followers_query,
     get_user_following_query,
@@ -64,16 +65,17 @@ def refresh_gist(gist, token, priority, **options):
                 priority=priority,
             )
         ]
-        create_list += [GistLock(gist_id=gist.id, timestamp=int(time.time()))]
+        create_list += [GistRefresh(gist_id=gist.id, timestamp=int(time.time()))]
     with transaction.atomic():
         bulk_create(create_list)
 
 
-def refresh_user(user, token, priority, **options):
+def refresh_user(request,github_user, priority):
     # todo: priority based on user.id vs token.user_id
     # root = 'api.github.com/user/%s' % (user.id)
     url_list = []
     url2query = {}
+    token = request.user.token
     headers = {
         "Authorization": "Bearer %s" % token.token,
         "X-GitHub-Api-Version": "2022-11-28",
@@ -89,56 +91,56 @@ def refresh_user(user, token, priority, **options):
             url = 'https://api.github.com/user/%s/following?per_page=100&page=%s' % (user.id,page)
             url2relpath[url] = 'following/%s' % page
     """
-    url = "https://api.github.com/user/%s" % user.id
+    url = "https://api.github.com/user/%s" % github_user.id
     url_list+=[url]
     # graphql user followers
     url = (
         "https://api.github.com/graphql?schema=user.followers&user_id=%s&page=1"
-        % user.id
+        % github_user.id
     )
     url_list+=[url]
-    url2query[url] = get_user_followers_query(user.login)
+    url2query[url] = get_user_followers_query(github_user.login)
     # graphql user following
     url = (
         "https://api.github.com/graphql?schema=user.following&user_id=%s&page=1"
-        % user.id
+        % github_user.id
     )
     url_list+=[url]
-    url2query[url] = get_user_following_query(user.login)
-    secret = user.id == token.user_id
+    url2query[url] = get_user_following_query(github_user.login)
+    secret = github_user.id == token.user_id
     if secret:  # authenticated user (unknown pages count)
         # gists/starred api v3 only, graphql not supported
         url = (
             "https://api.github.com/gists/starred?user_id=%s&per_page=100&page=1"
-            % user.id
+            % github_user.id
         )
         url_list+=[url]
         # authenticated user gists
         # api v3 authenticated user gists (`files` with `language` )
-        url = "https://api.github.com/gists?user_id=%s&per_page=100&page=1" % (user.id)
+        url = "https://api.github.com/gists?user_id=%s&per_page=100&page=1" % (github_user.id)
         url_list+=[url]
         # graphql viewer gists - `files` `language` not supported
         url = (
             "https://api.github.com/graphql?schema=viewer.gists&user_id=%s&page=1"
-            % user.id
+            % github_user.id
         )
         url_list+=[url]
         url2query[url] = get_viewer_gists_query()
     else:  # public user
         # todo: etag. no need all requests if no changes. where to check?
-        if user.public_gists_count:
+        if github_user.public_gists_count:
             # &page=1 request only (etag check)
             url = "https://api.github.com/user/%s/gists?per_page=100&page=%s" % (
-                user.id,
+                github_user.id,
                 1,
             )
             url_list+=[url]
             # graphql user gists - `files` `language` not supported
             url = (
-                "https://api.github.com/graphql?schema=user.gists&user_id=%s" % user.id
+                "https://api.github.com/graphql?schema=user.gists&user_id=%s" % github_user.id
             )
             url_list+=[url]
-            url2query[url] = get_user_gists_query(user.login)
+            url2query[url] = get_user_gists_query(github_user.login)
     timestamp = round(time.time(),3)
     create_list = []
     for url in url_list:
@@ -157,9 +159,15 @@ def refresh_user(user, token, priority, **options):
                 disk_path=get_disk_path(url),
                 priority=priority,
             ),
-            UserLock(user_id=user.id, secret=secret, timestamp=timestamp),
-            UserRefreshViewer(
-                user_id=user.id, viewer_id=token.user_id, timestamp=timestamp
+            GithubUserRefresh(
+                user_id=request.user.id,
+                github_user_id=github_user.id,
+                started_at=timestamp
+            ),
+            GithubUserRefreshLock(
+                user_id=request.user.id,
+                github_user_id=github_user.id,
+                created_at=timestamp
             )
         ]
     with transaction.atomic():

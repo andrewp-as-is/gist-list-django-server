@@ -1,5 +1,4 @@
 from views.base import ListView
-from utils import get_follower_model
 from ..mixins import UserMixin
 
 class ListView(UserMixin,ListView):

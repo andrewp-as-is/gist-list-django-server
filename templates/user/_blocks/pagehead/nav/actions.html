@@ -1,12 +1,12 @@
 {% load timestamp_timesince %}
 
 <span class="color-fg-muted">
-{% if refresh_lock %}
-  <a class="color-fg-muted" href="/{{ login  }}/status">started {{ refresh_lock.get_seconds }} seconds ago</a>
+{% if github_user_refresh %}
+  <a class="color-fg-muted" href="/{{ login  }}/status">started {{ github_user_refresh.get_seconds }} seconds ago</a>
   {% else %}
-  {% if refreshed_at %}refreshed {{ refreshed_at|timestamp_timesince }}{% endif %}
+  {% if github_user_refresh.finished_at %}refreshed {{ github_user_refresh.finished_at|timestamp_timesince }}{% endif %}
 {% endif %}
 </span>
-<a class="btn btn-sm btn-primary" {% if refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="/{{ login  }}/refresh">
-  <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if refresh_lock %}Refreshing...{% else %}Refresh{% endif %}
+<a class="btn btn-sm btn-primary" {% if github_user_refresh %}aria-disabled="true"{% endif %} rel="nofollow" href="/{{ login }}/refresh">
+  <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if github_user_refresh %}Refreshing...{% else %}Refresh{% endif %}
 </a>

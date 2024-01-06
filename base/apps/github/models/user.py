@@ -32,9 +32,6 @@ class AbstractUser(models.Model):
     updated_at = models.IntegerField(null=True)
 
     # CUSTOM FIELDS
-    refreshed_at = models.IntegerField(null=True)
-    secret_refreshed_at = models.IntegerField(null=True)
-
     language_list = ArrayField(models.TextField()) # language NAME list
     tag_list = ArrayField(models.TextField()) # tag SLUG list
 

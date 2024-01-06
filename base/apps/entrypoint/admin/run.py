@@ -6,7 +6,8 @@ from ..models import Run
 class RunAdmin(admin.ModelAdmin):
     list_display = [
         "name",
-        "created_at",
+        "started_at",
+        "finished_at",
     ]
 
     def has_add_permission(self, request, obj=None):
