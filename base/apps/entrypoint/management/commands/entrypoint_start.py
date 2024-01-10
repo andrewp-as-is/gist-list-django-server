@@ -1,3 +1,13 @@
+"""
+entrypoint.sh
+
+export ENTRYPOINT_NAME="NAME"
+
+python3 -u manage.py entrypoint_start
+...
+python3 -u manage.py entrypoint_exit
+"""
+
 from datetime import datetime
 import os
 import time

@@ -4,7 +4,7 @@ from django.db import models
 
 
 class GistLanguageJob(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     gist_id = models.TextField(unique=True)
 
     class Meta:

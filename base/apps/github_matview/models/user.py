@@ -8,7 +8,7 @@ from base.apps.github.models import AbstractUser
 
 
 class User(AbstractUser):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     refreshed_at = models.IntegerField(null=True)
     secret_refreshed_at = models.IntegerField(null=True)
 

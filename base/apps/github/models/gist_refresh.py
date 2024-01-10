@@ -3,7 +3,7 @@ __all__ = ['GistRefresh']
 from django.db import models
 
 class GistRefresh(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     gist = models.OneToOneField('github.Gist', related_name='+',on_delete=models.DO_NOTHING)
     started_at = models.FloatField()
     finished_at = models.FloatField(null=True)

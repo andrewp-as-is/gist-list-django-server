@@ -1,6 +1,5 @@
 from .job import *
 
-from .api_response_time import *
 from .follower import *
 from .following import *
 from .gist import *
@@ -14,8 +13,4 @@ from .language import *
 from .token import *
 from .user import *
 from .user404 import *
-from .user_refresh import *
-from .user_refresh_report import *
-from .user_refresh_stat import *
-from .user_refresh_viewer import *
 from .user_table_modification import *

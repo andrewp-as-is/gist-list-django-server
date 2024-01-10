@@ -10,8 +10,8 @@ https://developer.github.com/v3/rate_limit/
 
 
 class Token(models.Model):
-    id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey('user.User', related_name='+',on_delete=models.DO_NOTHING)
+    id = models.AutoField(primary_key=True)
+    user = models.OneToOneField('user.User', related_name='token',on_delete=models.DO_NOTHING)
     token = models.TextField(unique=True)
 
     core_ratelimit_limit = models.IntegerField(null=True) # 5000/hour

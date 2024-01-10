@@ -3,7 +3,7 @@ __all__ = ['AbstractFollowing','Following']
 from django.db import models
 
 class AbstractFollowing(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey('User', related_name='+',on_delete=models.DO_NOTHING)
     follower = models.ForeignKey('User', related_name='+',on_delete=models.DO_NOTHING)
 

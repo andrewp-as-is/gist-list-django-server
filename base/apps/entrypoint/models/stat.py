@@ -3,7 +3,7 @@ __all__ = ['Stat',]
 from django.db import models
 
 class Stat(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.TextField(unique=True)
     count = models.IntegerField()
     avg_duration = models.IntegerField()

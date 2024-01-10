@@ -1,3 +1,4 @@
+from urllib.parse import parse_qs, urlparse
 
 # todo: sort order. wut with etag?
 
@@ -147,3 +148,17 @@ query {
   }
 }
 """ % ('"%s"' % after if after else 'null')
+
+def get_login(url):
+    parsed_url = urlparse(url)
+    return parse_qs(parsed_url.query)["login"][0]
+
+def get_query(url,after=None):
+    if 'user.followers' in url:
+        return get_user_followers_query(get_login(url),after)
+    if 'user.following' in url:
+        return get_user_following_query(get_login(url),after)
+    if 'user.gists' in url:
+        return get_user_gists_query(get_login(url),after)
+    if 'viewer.gists' in url:
+        return get_viewer_gists_query(get_login(url),after)

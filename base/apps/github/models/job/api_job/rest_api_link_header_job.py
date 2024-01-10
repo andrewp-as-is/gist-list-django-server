@@ -4,13 +4,13 @@ from django.db import models
 
 
 class RestApiLinkHeaderJob(models.Model):
-    id = models.IntegerField(primary_key=True)
-    request = models.ForeignKey('http_client.Request', related_name='+',on_delete=models.DO_NOTHING)
+    id = models.AutoField(primary_key=True)
     response = models.OneToOneField('http_client.Response', related_name='+',on_delete=models.DO_NOTHING)
 
     class Meta:
         db_table = 'github"."%s' % __name__.split(".")[-1]
         managed = False
 
-    def response_match(self,response):
-        return 'api.github.com/graphql/' not in response.request.url
+    @staticmethod
+    def response_match(response):
+        return 'api.github.com/graphql/' not in response.url

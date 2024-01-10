@@ -1,0 +1,3 @@
+    # TypeError: RestApiLinkHeaderJob() got unexpected keyword arguments: 'user_id'
+как быть с url где user_id /user/ID
+get_user_id()

@@ -4,13 +4,13 @@ import requests
 
 from base.apps.github.models import User
 from base.apps.github.utils import get_api_timestamp
-from base.apps.github.models import UserRefreshViewer, UserRefresh
+from base.apps.user.models import GithubUserRefreshLock
 
 
-def get_lock(user_id):
+def get_github_user_lock(github_user_id):
     try:
-        return UserRefresh.objects.get(user_id=user_id)
-    except UserRefresh.DoesNotExist:
+        return GithubUserRefreshLock.objects.get(github_user_id=github_user_id)
+    except GithubUserRefreshLock.DoesNotExist:
         pass
 
 
@@ -21,8 +21,8 @@ def get_github_user(user_id):
         pass
 
 
-def get_viewer_refresh_count(viewer_id):
-    return UserRefreshViewer.objects.filter(viewer_id=viewer_id).count()
+def get_locks_count(user_id):
+    return GithubUserRefreshLock.objects.filter(user_id=user_id).count()
 
 
 def create_github_user(data):

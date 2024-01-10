@@ -8,7 +8,7 @@ from django.db import models
 from django_passwordless_user.models import AbstractBaseUser
 
 class User(AbstractBaseUser):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     login = models.CharField(max_length=39,unique=True)
     joined_at = models.DateTimeField(auto_now_add=True)
     # django.contrib.admin required

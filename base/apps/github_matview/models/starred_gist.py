@@ -5,7 +5,7 @@ from django.db import models
 from base.apps.github.models import AbstractGist
 
 class StarredGist(AbstractGist):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     stargazer = models.ForeignKey('User',related_name='github_gist_star_matview_stargazer',on_delete=models.DO_NOTHING)
     owner = models.ForeignKey('User',related_name='github_gist_star_matview_owner',on_delete=models.DO_NOTHING)
 

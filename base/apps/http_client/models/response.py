@@ -10,30 +10,24 @@ import shutil
 
 from django.db import models
 
-from ..utils import get_headers, get_timestamp
 from .mixins import HeadersMixin
 
 
 class AbstractResponse(HeadersMixin, models.Model):
     id = models.BigAutoField(primary_key=True)
-    request = models.ForeignKey('Request', related_name='+',on_delete=models.DO_NOTHING)
-    host = models.CharField(max_length=255) # todo: remove?
-    url = models.CharField(max_length=255) # todo: remove?
+    url = models.CharField(max_length=255)
     status = models.IntegerField()
+    request_headers = models.TextField(null=True)
     headers = models.TextField(null=True)
-    created_at = models.FloatField(default=get_timestamp)
+    disk_path = models.TextField(null=True)
+    created_at = models.FloatField()
 
     class Meta:
         abstract = True
 
     def get_content(self):
-        disk_path_list = [
-            self.disk_path,
-            os.path.join(str(self.disk_path), "content"),
-        ]
-        for disk_path in disk_path_list:
-            if os.path.exists(str(disk_path)):
-                return open(disk_path).read()
+        if os.path.exists(str(self.disk_path)):
+            return open(self.disk_path).read()
 
     def get_content_data(self):
         content = self.get_content()

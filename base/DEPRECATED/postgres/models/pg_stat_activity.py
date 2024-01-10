@@ -4,7 +4,7 @@ from django.db import models
 
 
 class PgStatActivity(models.Model):
-    pid = models.IntegerField(primary_key=True)
+    pid = models.AutoField(primary_key=True)
     application_name = models.TextField()
     backend_start = models.DateTimeField()
     backend_type = models.TextField()

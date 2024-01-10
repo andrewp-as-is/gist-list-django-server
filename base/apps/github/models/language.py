@@ -16,7 +16,7 @@ class AbstractLanguage(models.Model):
         abstract = True
 
 class Language(AbstractLanguage):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False

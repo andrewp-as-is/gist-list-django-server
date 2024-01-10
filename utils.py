@@ -21,7 +21,7 @@ from base.apps.github.utils.graphql import (
 )
 
 from base.apps.github.utils.http_response import get_disk_path
-from base.apps.http_client.models import Request
+from base.apps.http_client.models import RequestJob
 from django_bulk_create import bulk_create
 
 def get_github_api_data(url, token):
@@ -55,7 +55,7 @@ def refresh_gist(gist, token, priority, **options):
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
         create_list += [
-            Request(
+            RequestJob(
                 host="api.github.com",
                 url=url,
                 method="GET" if "github.com/graphql" not in url else "POST",
@@ -95,15 +95,15 @@ def refresh_user(request,github_user, priority):
     url_list+=[url]
     # graphql user followers
     url = (
-        "https://api.github.com/graphql?schema=user.followers&user_id=%s&page=1"
-        % github_user.id
+        "https://api.github.com/graphql?schema=user.followers&user_id=%s&login=%s&page=1"
+        % (github_user.id,github_user.login)
     )
     url_list+=[url]
     url2query[url] = get_user_followers_query(github_user.login)
     # graphql user following
     url = (
-        "https://api.github.com/graphql?schema=user.following&user_id=%s&page=1"
-        % github_user.id
+        "https://api.github.com/graphql?schema=user.following&user_id=%s&login=%s&page=1"
+        % (github_user.id,github_user.login)
     )
     url_list+=[url]
     url2query[url] = get_user_following_query(github_user.login)
@@ -111,18 +111,18 @@ def refresh_user(request,github_user, priority):
     if secret:  # authenticated user (unknown pages count)
         # gists/starred api v3 only, graphql not supported
         url = (
-            "https://api.github.com/gists/starred?user_id=%s&per_page=100&page=1"
-            % github_user.id
+            "https://api.github.com/gists/starred?user_id=%s&login=%s&per_page=100&page=1"
+            % (github_user.id,github_user.login)
         )
         url_list+=[url]
         # authenticated user gists
         # api v3 authenticated user gists (`files` with `language` )
-        url = "https://api.github.com/gists?user_id=%s&per_page=100&page=1" % (github_user.id)
+        url = "https://api.github.com/gists?user_id=%s&login=%s&per_page=100&page=1" % (github_user.id,github_user.login)
         url_list+=[url]
         # graphql viewer gists - `files` `language` not supported
         url = (
-            "https://api.github.com/graphql?schema=viewer.gists&user_id=%s&page=1"
-            % github_user.id
+            "https://api.github.com/graphql?schema=viewer.gists&user_id=%s&login=%s&page=1"
+            % (github_user.id,github_user.login)
         )
         url_list+=[url]
         url2query[url] = get_viewer_gists_query()
@@ -130,14 +130,15 @@ def refresh_user(request,github_user, priority):
         # todo: etag. no need all requests if no changes. where to check?
         if github_user.public_gists_count:
             # &page=1 request only (etag check)
-            url = "https://api.github.com/user/%s/gists?per_page=100&page=%s" % (
+            url = "https://api.github.com/user/%s/gists?login=%s&per_page=100&page=%s" % (
                 github_user.id,
+                github_user.login,
                 1,
             )
             url_list+=[url]
             # graphql user gists - `files` `language` not supported
             url = (
-                "https://api.github.com/graphql?schema=user.gists&user_id=%s" % github_user.id
+                "https://api.github.com/graphql?schema=user.gists&user_id=%slogin=%s" % (github_user.id,github_user.login,)
             )
             url_list+=[url]
             url2query[url] = get_user_gists_query(github_user.login)
@@ -150,13 +151,16 @@ def refresh_user(request,github_user, priority):
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
         create_list += [
-            Request(
+            RequestJob(
                 host="api.github.com",
                 url=url,
                 method="GET" if "github.com/graphql" not in url else "POST",
                 headers=json.dumps(headers),
                 data=data,
                 disk_path=get_disk_path(url),
+                redirects_limit=4,
+                retries_limit=5,
+                timeout=10,
                 priority=priority,
             ),
             GithubUserRefresh(
@@ -170,8 +174,12 @@ def refresh_user(request,github_user, priority):
                 created_at=timestamp
             )
         ]
+    model2kwargs = {
+        GithubUserRefresh:dict(ignore_conflicts=True),
+        GithubUserRefreshLock:dict(ignore_conflicts=True),
+    }
     with transaction.atomic():
-        bulk_create(create_list)
+        bulk_create(create_list,model2kwargs)
 
 
 def timesince(d):

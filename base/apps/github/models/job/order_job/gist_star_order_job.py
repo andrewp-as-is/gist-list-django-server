@@ -4,7 +4,7 @@ from django.db import models
 
 
 class GistStarOrderJob(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(unique=True)
 
     class Meta:
