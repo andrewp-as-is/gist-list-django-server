@@ -31,11 +31,13 @@
             </h1>
             {% if not gist and github_user %}
             <div class="note m-0">
-              {% if refreshed_at %}
+              {% if github_user.followers_count >= 0 %}
               <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/followers">
                 <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#people" /></svg>
                     <span class="text-bold color-fg-default">{{ github_user.followers_count|format_count }}</span> followers
               </a>
+              {% endif %}
+              {% if github_user.following_count >= 0 %}
               <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/following">
                     <span class="text-bold color-fg-default">{{ github_user.following_count|format_count }}</span> following
               </a>
@@ -71,11 +73,7 @@
   </div>
 </div>
 {% if github_user %}
-  {% if refreshed_at %}
     {% block container %}{% endblock %}
-  {% else %}
-    {% include "user/_blocks/unknown.html" %}
-  {% endif %}
 {% else %}
     {% if user404 %}
       {% include "user/_blocks/404.html" %}

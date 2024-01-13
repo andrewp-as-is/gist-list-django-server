@@ -1,3 +1,3 @@
 <div class="blankslate">
-    <h3 class="mb-1">{{ login }} doesn’t have any public gists yet.</h3>
+    <h3 class="mb-1">{% if '/secret' in request.path %}You don’t have any secret gists yet.{% else %}{{ login }} doesn’t have any public gists yet.{% endif %}</h3>
 </div>

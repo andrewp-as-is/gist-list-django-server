@@ -10,3 +10,4 @@ system_check.py для каждого container
 1) time.sleep(60) чтоб не было постоянных рестартов
 2) sys.exit(1)
 startup_check.py вместо system_check
+dddd

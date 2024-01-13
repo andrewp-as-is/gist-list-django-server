@@ -1,16 +1,14 @@
 __all__ = [
-    "AbstractException",
-    "ExceptionModel",
+    "AbstractReqestException",
+    "ReqestException",
 ]
 
 from django.db import models
 
-from .mixins import RequestInfoMixin
 
-
-class AbstractException(RequestInfoMixin, models.Model):
+class AbstractReqestException(models.Model):
     id = models.AutoField(primary_key=True)
-    request_info = models.TextField()
+    url = models.TextField()
     exc_class = models.TextField()
     exc_message = models.TextField()
     created_at = models.FloatField()
@@ -19,7 +17,7 @@ class AbstractException(RequestInfoMixin, models.Model):
         abstract = True
 
 
-class ExceptionModel(AbstractException):
+class ReqestException(AbstractReqestException):
 
     class Meta:
         managed = False

@@ -13,4 +13,4 @@ class GraphqlApiCursorJob(models.Model):
 
     @staticmethod
     def response_match(response):
-        return 'api.github.com/graphql/' in response.url
+        return 'api.github.com/graphql' in response.url

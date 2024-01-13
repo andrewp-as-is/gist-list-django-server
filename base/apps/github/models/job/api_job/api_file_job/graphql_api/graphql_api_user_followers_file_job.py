@@ -14,4 +14,4 @@ class GraphqlApiUserFollowersFileJob(models.Model):
 
     @staticmethod
     def response_match(response):
-        return response.status==200 and 'api.github.com/graphql/' in response.url and 'followers' in response.url
+        return response.status==200 and 'api.github.com/graphql' in response.url and 'followers' in response.url

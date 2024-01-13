@@ -2,14 +2,10 @@ __all__ = ["GistStar"]
 
 from django.db import models
 
+from base.apps.github.models import AbstractGistStar
 
-class GistStar(models.Model):
-    id = models.AutoField(primary_key=True)
-    gist = models.ForeignKey("Gist", related_name="+", on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(
-        "github.User", related_name="+", on_delete=models.DO_NOTHING
-    )
-    starred_order = models.IntegerField()
+
+class GistStar(AbstractGistStar):
 
     class Meta:
         managed = False

@@ -10,7 +10,6 @@ class ListView(UserMixin,ListView):
 
     def get_queryset(self,**kwargs):
         model = self.follower_model
-        print('model: %s' % model)
         qs = model.objects.filter(user_id=self.github_user.id)
         q = self.request.GET.get('q','').strip()
         if q:

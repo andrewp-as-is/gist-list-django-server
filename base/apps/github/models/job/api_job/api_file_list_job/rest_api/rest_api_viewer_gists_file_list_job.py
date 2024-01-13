@@ -1,4 +1,4 @@
-__all__ = ["ApiViewerGistsFileListJob"]
+__all__ = ["RestApiViewerGistsFileListJob"]
 
 import re
 
@@ -6,7 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
-class ApiViewerGistsFileListJob(models.Model):
+class RestApiViewerGistsFileListJob(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(unique=True)
     path_list = ArrayField(models.TextField())

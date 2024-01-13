@@ -44,6 +44,9 @@ class AbstractUser(models.Model):
     def get_avatar_url(self):
         return 'https://github.com/%s.png' % (self.login,)
 
+    def __str__(self):
+        return self.login
+
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     class Meta:

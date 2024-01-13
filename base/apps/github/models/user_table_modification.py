@@ -5,7 +5,7 @@ from django.db import models
 class UserTableModification(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField('github.User', related_name='+',on_delete=models.DO_NOTHING)
-    tablename = models.FloatField()
+    tablename = models.CharField(max_length=256)
     modified_at = models.FloatField()
 
     class Meta:

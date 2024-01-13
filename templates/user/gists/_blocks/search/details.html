@@ -1,5 +1,13 @@
 {% include "_blocks/details.html" with summary=type_details.get_summary menu=type_details.get_menu %}
+{% if language_details %}
 {% include "_blocks/details.html" with summary=language_details.get_summary menu=language_details.get_menu %}
+{% endif %}
+{% if tag_details %}
 {% include "_blocks/details.html" with summary=tag_details.get_summary menu=tag_details.get_menu %}
+{% endif %}
+{% if sort_details %}
 {% include "_blocks/details.html" with summary=sort_details.get_summary menu=sort_details.get_menu %}
+{% endif %}
+{% if sort_details and view_details %}
 {% include "_blocks/details.html" with summary=view_details.get_summary menu=view_details.get_menu %}
+{% endif %}

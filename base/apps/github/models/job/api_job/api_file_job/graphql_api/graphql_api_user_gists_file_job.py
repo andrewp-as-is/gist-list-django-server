@@ -14,4 +14,4 @@ class GraphqlApiUserGistsFileJob(models.Model):
 
     @staticmethod
     def response_match(response):
-        return response.status==200 and 'api.github.com/graphql/' in response.url and 'user.gists' in response.url
+        return response.status==200 and 'api.github.com/graphql' in response.url and 'user.gists' in response.url

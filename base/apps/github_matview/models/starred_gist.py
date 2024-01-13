@@ -1,18 +1,23 @@
-__all__ = ['StarredGist']
+__all__ = ['AbstractStarredGist','StarredGist']
 
 from django.db import models
-
 from base.apps.github.models import AbstractGist
 
-class StarredGist(AbstractGist):
+
+class AbstractStarredGist(AbstractGist):
     id = models.AutoField(primary_key=True)
-    stargazer = models.ForeignKey('User',related_name='github_gist_star_matview_stargazer',on_delete=models.DO_NOTHING)
-    owner = models.ForeignKey('User',related_name='github_gist_star_matview_owner',on_delete=models.DO_NOTHING)
-
     starred_order = models.IntegerField()
+    description_order = models.IntegerField()
+    filename_order = models.IntegerField()
+    forks_order = models.IntegerField()
+    stars_order = models.IntegerField()
+    updated_order = models.IntegerField()
 
-    #language_m2m = models.ManyToManyField('Language',through='GistLanguage',related_name='github_matview_starred_gist_languages')
-    #tag_m2m = models.ManyToManyField('tag.Tag',through='GistTag',related_name='github_matview_starred_gist_tags')
+    class Meta:
+        abstract = True
+
+class StarredGist(AbstractStarredGist):
+    owner = models.ForeignKey('github.User',related_name='github_matview_starred_gist_owner',on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = False

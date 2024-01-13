@@ -2,8 +2,6 @@ import os
 import re
 from urllib.parse import parse_qs, urlparse
 
-from linkheader_parser import parse
-
 from base.conf import HTTP_CLIENT_DIR
 
 
@@ -16,10 +14,10 @@ PATTERN2TEMPLATE = {
     'user/[\d]+/following\?+':"user/{user_id}/following/{page}",
     'gists\?+':"viewer/{user_id}/gists/{page}",
     'gists/starred\?+':"viewer/{user_id}/gists_starred/{page}",
-    'graphql\?schema=user.followers+':'graphql/user/%s/followers/{page}',
-    'graphql\?schema=user.following+':'graphql/user/%s/following/{page}',
-    'graphql\?schema=user.gists+':'graphql/user/%s/gists/{page}',
-    'graphql\?schema=viewer.gists+':'graphql/viewer/%s/gists/{page}',
+    'graphql\?schema=user.followers+':'graphql/user/{user_id}/followers/{page}',
+    'graphql\?schema=user.following+':'graphql/user/{user_id}/following/{page}',
+    'graphql\?schema=user.gists+':'graphql/user/{user_id}/gists/{page}',
+    'graphql\?schema=viewer.gists+':'graphql/viewer/{user_id}/gists/{page}',
 }
 REGEX2TEMPLATE = {re.compile(p):f for p,f in PATTERN2TEMPLATE.items()}
 

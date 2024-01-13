@@ -20,7 +20,7 @@ METHOD_LIST = []
 
 
 MODEL_LIST = list(filter(
-    lambda m:m!=ResponseModelJob and '_job' in m._meta.db_table,
+    lambda m:hasattr(m,'response_match'),
     apps.get_models()
 ))
 
@@ -31,13 +31,10 @@ def get_user_id(url):
     if "https://api.github.com/user/" in url:
         return int(url.replace("https://api.github.com/user/", "").split("/")[0])
 
-def get_model(response):
+def iter_model(response):
     for model in MODEL_LIST:
-        if hasattr(model,'response_match'):
-            print('%s: %s' % (model,response.url))
-            if model.response_match(response):
-                return model
-    print('UNKNOWN MODEL: %s' % (response.url))
+        if model.response_match(response):
+            yield model
 
 def get_model_kwargs(model,response):
     kwargs = {}
@@ -47,18 +44,14 @@ def get_model_kwargs(model,response):
         kwargs['url'] = response.url
     if hasattr(model,'response_id'):
         kwargs['response_id'] = response.id
-    user_id = get_user_id(response.url)
-    if hasattr(model,'user_id') and user_id:
-        kwargs['user_id'] = user_id
+    if hasattr(model,'user_id'):
+        kwargs['user_id'] = get_user_id(response.url)
     return kwargs
 
 class Command(JobCommand):
 
     def do_job(self, job):
-        model = get_model(job.response)
-        if model:
+        for model in iter_model(job.response):
             kwargs = get_model_kwargs(model,job.response)
             self.create(model(**kwargs))
             self.MODEL2BULK_CREATE_KWARGS[model] = dict(ignore_conflicts=True)
-        else:
-            print('UNKNOWN MODEL: %s' % job.response.url)

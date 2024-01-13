@@ -1,0 +1,6 @@
+{% if github_user %}
+  {% if refreshed_at %}
+---
+refreshed_at в github_matview.user, github_live_matview.user
+refreshed_at только total/unlock
+а что-то может обновиться раньше

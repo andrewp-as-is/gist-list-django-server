@@ -5,13 +5,13 @@
     {% if github_user.is_restricted %}
       {% include "user/gists/_blocks/restricted.html" %}
     {% else %}
-      {% if not queryset_count %}
-        {% include "user/gists/_blocks/blankslate.html" %}
-      {% else %}
         {% include "user/gists/_blocks/search.html" %}
         {% include "_blocks/search/results.html" %}
-        {% include "user/gists/_blocks/table.html" %}
-      {% endif %}
+        {% if not queryset_count %}
+          {% include "user/gists/_blocks/blankslate.html" %}
+        {% else %}
+          {% include "user/gists/_blocks/table.html" %}
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %}

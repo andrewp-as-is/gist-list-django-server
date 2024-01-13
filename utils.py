@@ -9,6 +9,7 @@ from django.db import transaction
 from django.utils.timesince import timesince as _timesince
 import requests
 
+from django_command_worker.models import Queue
 from base.apps.github_matview.models import Gist as MatviewGist
 from base.apps.github_live_matview.models import Gist as NewMatviewGist
 # from base.apps.user.models import GithubGistRefresh,
@@ -180,6 +181,7 @@ def refresh_user(request,github_user, priority):
     }
     with transaction.atomic():
         bulk_create(create_list,model2kwargs)
+        Queue.objects.get_or_create(name='github_user_refresh_unlock')
 
 
 def timesince(d):

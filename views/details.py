@@ -57,13 +57,17 @@ class Details(dict):
         if self.request.GET.get(key,''):
             text = self.get_menu_item_list()[0]['text']
         for item in self.get_menu_item_list():
-            if item['selected'] and self.request.GET.get(key,''):
+            # if item['selected'] and self.request.GET.get(key,''):
+            if item['selected']:
                 text = item['text']
         return {
             'name':self.name or type(self).__name__,
             'text':text,
             'css_class':self.summary_css_class
         }
+
+    def __bool__(self):
+        return len(self.get_menu_item_list())>0
 
 
 class View(Details):

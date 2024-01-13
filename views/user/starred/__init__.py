@@ -3,13 +3,15 @@ from views.user.gists import View as ListView
 class View(ListView):
 
     def get_model(self):
-        return self.gist_star_model
+        return self.starred_gist_model
 
     def get_queryset_base(self):
         model = self.get_model()
         if not hasattr(self,'github_user') or not self.github_user:
             return model.objects.none()
-        qs = model.objects.filter(stargazer_id=self.github_user.id)
+        qs = model.objects.filter(
+            id__in=self.gist_star_model.objects.filter(user_id=self.github_user.id).values_list('gist_id',flat=True)
+        )
         return qs
 
     def get_queryset(self, **kwargs):

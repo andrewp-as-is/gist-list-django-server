@@ -4,7 +4,7 @@
 <table class="width-full">
 {% for gist in gist_list %}
 <tr class="Box-row Box-row--hover-gray">
-  {% if request.user.id == github_user.id and '/starred' not in request.path%}
+  {% if request.user.id == github_user.id and '/starred' not in request.path %}
   <td class="no-wrap px-1 text-left text-mono">
     <a class="Link--muted" href="{{ gist.get_absolute_url }}" title="{{ gist.id }}">
       {{ gist.id|slice:2 }}…{{ gist.id|slice:"-2:" }}
