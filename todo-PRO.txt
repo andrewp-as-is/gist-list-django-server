@@ -1,0 +1,12 @@
+1) request priority
+2) git_trash storage interval
+3) refresh limit
+4) auto refresh
+---
+1) проверки себя с максимальный priority
+2) проверки хер знает кого с кучей followers/following логично снизить приоритет
+3) низкий приоритет если проверяется N users и тд
+4) снижающийся приоритет если не pro
+---
+если 100500 requests то логично показывать пользователю что много requests, upgrade your plan
+---

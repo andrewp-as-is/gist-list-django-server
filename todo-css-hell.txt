@@ -1,0 +1,13 @@
+http://127.0.0.1:8000/andrewp-as-is/eb49e63dbbb5133cbf433200e3e92b19#
+---
+да тут во всем css hell тк это ж custom на deprecated :)
+---
+парсить css из url типа https://github.githubassets.com/assets/primer-6b3d1b701ef1.css
+---
+print primer.style version from local node
+---
+npm '@primer/css' get version
+---
+details как часть form? и тогда не надо Details класс тк url args = form args
+---
+как вариант еще на уровне pagehead выше кнопки сделать как у gist star

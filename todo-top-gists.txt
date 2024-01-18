@@ -1,3 +1,6 @@
+все зависит от BIG DATA Карл
+
+
 теоретически можно сделать top gists, languages, tags
 1) top users
 2) github gist event
@@ -9,3 +12,4 @@ color|language|
 ----
 search
 tag|count
+----

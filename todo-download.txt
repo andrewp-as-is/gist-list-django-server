@@ -1,2 +1,30 @@
-refresh btn
-и message только 1 что где-то нет version
+todo
+download filename.txt
+download id.zip а зачем? если 100500 zip которые еще надо распаковать
+download script
+---
+download filename.txt в TABLE?
+---
+download filename.txt по идее одноразовое действие как и clone
+---
+options
+ID/filename
+curl/wget
+---
+public vs secret
+----
+download raw_url_list ?
+что даст? только если 1 filename в gist тогда норм
+да, тогда можно в цикле все сделать
+но аналогично можно и с gists.json сделать
+---
+filename.txt download TABLE without 100500 fields?
+сомнительно
+---
+зачем вообще download если есть backup?
+---
+script для скачивания 100500 файлов это дичь
+надо самому генерировать gists.tar.gz
+да, но пусть это будет pro plan
+скрипт сгенерировать можно бесплатно
+а вот xxx.tar.gz это pro уже

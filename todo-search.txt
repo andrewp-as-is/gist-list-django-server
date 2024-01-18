@@ -1,3 +1,6 @@
+все зависит от BIG DATA Карл
+
+
 search страница
 ----
 search gist
@@ -6,3 +9,8 @@ search gist
 значит search только для redirect to user page
 ----
 homepage search остается
+---
+зачем search username если можно войти с помощью github и попадешь на свою страницу
+---
+но... это не очевидно
+

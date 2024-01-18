@@ -5,9 +5,12 @@
 {% block container %}
 <div class="page-content container-lg text-center">
 
+<div class="Subhead border-bottom-0 mb-0">
+    <h2 class="Subhead-heading">Languages</h2>
+</div>
 <table align="center" class="Box">
 <tr class="Box-header">
-  <td class="Box-title f5 px-1 text-left" colspan="3">{{ languages_count }} languages</td>
+  <td class="Box-title f5 px-1 text-left" colspan="3"></td>
   <td>{% include "_blocks/details.html" with summary=sort_details.get_summary menu=sort_details.get_menu %}</td>
 </tr>
 {% for language in language_list %}

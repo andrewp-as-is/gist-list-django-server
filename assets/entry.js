@@ -9,6 +9,8 @@ import '@primer/css/dist/box.css';
 import '@primer/css/dist/breadcrumb.css';
 import '@primer/css/dist/buttons.css';
 import '@primer/css/dist/color-modes.css';
+import '@primer/css/dist/core.css';
+import '@primer/css/dist/dropdown.css';
 import '@primer/css/dist/forms.css';
 import '@primer/css/dist/header.css';
 import '@primer/css/dist/labels.css';
@@ -19,6 +21,7 @@ import '@primer/css/dist/loaders.css';
 import '@primer/css/dist/markdown.css';
 import '@primer/css/dist/navigation.css';
 import '@primer/css/dist/pagination.css';
+import '@primer/css/dist/select-menu.css';
 import '@primer/css/dist/subhead.css';
 import '@primer/css/dist/tooltips.css';
 import '@primer/css/dist/utilities.css';
@@ -51,9 +54,11 @@ import '@primer/css/utilities/margin.scss';
 //import './css/markdown.css';
 */
 
-import './css/github/build.css';
+//import './css/github/build.css';
+//import './css/github/SelectMenu.css';
 
 //import "github-syntax-light/lib/github-light.css";
+import './css/github/repo-language-color.css';
 import './css/custom.css';
 
 import './js/clipboard-copy.js';

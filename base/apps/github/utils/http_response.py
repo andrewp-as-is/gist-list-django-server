@@ -2,11 +2,11 @@ import os
 import re
 from urllib.parse import parse_qs, urlparse
 
-from base.conf import HTTP_CLIENT_DIR
+from base.apps.http_client.utils import get_disk_path as _get_disk_path
 
 
 PATTERN2TEMPLATE = {
-    'gists/gist/[\w]+':"gists/gist/{gist_id}",
+    'gists/[\w]+':"gists/{gist_id}",
     'user/[\d]+$':"user/{user_id}/profile",
     'user/[\d]+\?+':"user/{user_id}/profile",
     'user/[\d]+/gists\?+':"user/{user_id}/gists/{page}",
@@ -35,12 +35,16 @@ def get_user_id(url):
         return int(url.replace("https://api.github.com/user/", "").split("/")[0])
 
 def get_params(url):
-    return {'user_id':get_user_id(url),'page':get_page(url)}
+    return {
+        'gist_id':url.split('/')[-1],
+        'user_id':get_user_id(url),
+        'page':get_page(url)
+    }
 
 def get_disk_path(url):
     for regex,template in REGEX2TEMPLATE.items():
         if regex.match(url.replace('https://api.github.com/','')):
             disk_relpath = template.format(**get_params(url))
-            return os.path.join(HTTP_CLIENT_DIR,'api.github.com',disk_relpath)
+            return _get_disk_path(os.path.join('api.github.com',disk_relpath))
     raise ValueError(url)
 

@@ -88,12 +88,12 @@ def get_language_item_list(data):
     for language_id,count in data.items():
         language = ID2LANGUAGE.get(language_id,None)
         if language:
-            item_list+=[{
+            language_stat_list+=[{
                 'value':language.slug,
                 'text':language.name,
                 'count':count
             }]
-    item_list+=list(sorted(language_stat_list,key=lambda l:l['count']))
+    item_list+=list(sorted(language_stat_list,key=lambda l:l['value']))
     return item_list
 
 def get_tag_item_list(data):

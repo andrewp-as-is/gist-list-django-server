@@ -12,7 +12,7 @@ class Sort(Details):
         {'value':'comments','text':'Most comments'},
         {'value':'-created','text':'Least recently created'},
         {'value':'-updated','text':'Least recently updated'},
-        {'value':'name','text':'Name'},
+        {'value':'filename','text':'Filename'},
         {'value':'description','text':'Description'},
         {'value':'id','text':'ID'},
     ]

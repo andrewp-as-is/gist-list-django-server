@@ -1,0 +1,58 @@
+{% extends "user/_base.html" %}
+
+{% load emoji_tags %}
+
+{% block pagehead_actions %}
+todo: block file
+<ul class="d-md-flex d-none pagehead-actions float-none">
+    {% if github_user.login == request.user.login %}
+    <li>
+        <a class="btn btn-sm" aria-label="Edit this Gist" rel="nofollow" href="{{ gist.get_absolute_url }}/edit">
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#pencil" /></svg> Edit</a>
+    </li>
+    <li>
+        <a class="btn-danger btn btn-sm" rel="nofollow" href="{{ gist.get_absolute_url }}/delete" onclick="return confirm('Are you positive you want to delete this Gist?');">
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#trash" /></svg> Delete</a>
+    </li>
+    {% endif %}
+    <li>
+        {% if starred_gist %}
+        <a class="btn btn-sm btn-with-count" rel="nofollow" href="{{ gist.get_absolute_url }}/unstar">
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star-fill" /></svg> Unstar
+        {% else %}
+        <a class="btn btn-sm btn-with-count" rel="nofollow" href="{{ gist.get_absolute_url }}/star">
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star" /></svg> Star
+        {% endif %}
+        </a>
+        <a class="social-count" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}" target="_blank">{% if gist.stargazers_count != None %}{{ gist.stargazers_count }}{% else %}?{% endif %}</a>
+    </li>
+    {% if github_user.login != request.user.login %}
+    <li>
+      <a class="btn btn-sm btn-with-count" rel="nofollow" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}" target="_blank">
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg> Fork
+      </a>
+        <span class="social-count">{% if gist.forks_count >= 0 %}{{ gist.forks_count }}{% else %}?{% endif %}</span>
+    </li>
+    {% endif %}
+</ul>
+
+{% endblock %}
+
+{% block pagehead_nav %}
+  <div class="flex-md-order-1 flex-order-2 flex-auto">
+    {% include "user/gist/_blocks/pagehead/nav.html" %}
+  </div>
+  <div class="d-md-flex d-none flex-items-center flex-md-order-2 flex-order-1 file-navigation-options" data-multiple="">
+    <div class="ml-2">
+      <a class="btn btn-sm Link--muted text-bold {% if '/clone' in request.path %}selected{% endif %}" rel="nofollow" href="{{ gist.get_absolute_url }}/clone"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#git-pull-request" /></svg> Clone</a>
+    </div>
+    <div class="ml-2">
+      <a class="btn btn-sm btn-primary" {% if gist_user_refresh %}aria-disabled="true"{% endif %} rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
+        <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if gist_user_refresh %}Refreshing...{% else %}Refresh{% endif %}
+      </a>
+    </div>
+  </div>
+{% endblock %}
+
+{% block container %}
+{% endblock %}

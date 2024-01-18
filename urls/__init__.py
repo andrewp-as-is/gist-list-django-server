@@ -19,21 +19,9 @@ urlpatterns = [
         next_page=(getattr(settings,'LOGOUT_REDIRECT_URL','/') or '/')
     )),
 
-    # path('clone', include('urls.clone')),
-
     path('download', include('urls.download')),
-    path('download.txt', include('urls.download_txt')),
-
-    path('git-clone.sh', include('urls.git_clone_sh')),
-    path('git-clone', include('urls.git_clone')),
-
-    path('gist-id', include('urls.gist_id')),
-    path('gist-id.txt', include('urls.gist_id_txt')),
-
-    path('new', include('urls.new')),
     path('incident', include('urls.incident')),
     path('pricing', include('urls.pricing')),
-    path('scripts', include('urls.scripts')),
     path('search', include('urls.search')),
     path('status', include('urls.status')),
     path('token', include('urls.token')),

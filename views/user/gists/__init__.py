@@ -23,6 +23,9 @@ class View(UserMixin, ListView):
     context_object_name = "gist_list"
     template_name = "user/gists/gist_list.html"
 
+    def get_model(self):
+        return self.gist_model
+
     def get(self, request, *args, **kwargs):
         login = self.kwargs.get("login")
         if request.path == "/%s/" % login:
@@ -37,13 +40,13 @@ class View(UserMixin, ListView):
                 self.request.user.is_authenticated
                 and self.request.user.login == self.github_user.login
             )
-            if is_owner:
-                context["blankslate"] = (
-                    not self.github_user.public_gists_count
-                    and not self.github_user.private_gists_count
-                )
-            else:
-                context["blankslate"] = not self.github_user.public_gists_count
+           # if is_owner:
+           #     context["blankslate"] = (
+           #         not self.github_user.public_gists_count
+           #         and not self.github_user.private_gists_count
+           ##     )
+           # else:
+            #    context["blankslate"] = not self.github_user.public_gists_count
             count = self.get_queryset_base().count()
             context["queryset_count"] = count
             if count:
@@ -88,13 +91,13 @@ class View(UserMixin, ListView):
         return qs
 
     def get_queryset(self, **kwargs):
-        model = self.gist_model
+        model = self.get_model()
         if (
             not hasattr(self, "github_user")
             or not self.github_user
             or not self.github_user_refresh
         ):
-            return self.gist_model.objects.none()
+            return model.objects.none()
         prefix = "gist__" if self.request.path.split("/")[-1] == "starred" else ""
         qs = self.get_queryset_base()
         qs = qs.exclude(
@@ -138,7 +141,7 @@ class View(UserMixin, ListView):
             if tag_slug == "none":
                 # qs = qs.filter(tag_m2m=None)
                 qs = qs.exclude(
-                    id__in=gist_tag_model.objects.filter(
+                    id__in=self.gist_tag_model.objects.filter(
                         gist_id__in=self.get_queryset_base().values_list(
                             "id", flat=True
                         )
@@ -146,8 +149,18 @@ class View(UserMixin, ListView):
                 )
         q = self.request.GET.get("q", "").strip()
         if q:
+            # todo: check q = gist ID (0-9A-F)
+            # todo: check q = language. index?
+            # language: xml = must search gists with "xml property list" language
+            # 1) find language
+            # 2) find gists with language__in=
+            # todo: filename. make index
+            # todo: description (if tsv not works)
+            # todo: tsv
+            # todo: tags
+            # todo: preload filenames and compare in memory?
             qs = qs.filter(
-                Q(**{"id__icontains": q})
+                Q(**{"id": q})
                 | Q(**{"description__icontains": q})
                 # Q(**{'filename__icontains':q})
                 # Q(**{'languages__icontains':q})

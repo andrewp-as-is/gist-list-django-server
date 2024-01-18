@@ -5,3 +5,7 @@
 per page/template
 templates/NAME/_blocks/octicons.html
 templates/NAME/name.html
+---
+{% block octicons %}
+include path/to/_block/octicons.html
+{% endblock %}

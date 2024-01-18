@@ -5,7 +5,7 @@ import os
 import time
 
 from django.conf import settings
-
+from base.conf import HTTP_CLIENT_DIR
 http.client._MAXHEADERS = 1000
 
 
@@ -14,7 +14,7 @@ def get_timestamp():
 
 
 def get_disk_path(relpath):
-    return os.path.join(settings.HTTP_CLIENT_DIR, relpath)
+    return os.path.join(HTTP_CLIENT_DIR, relpath)
 
 
 def get_headers(value):

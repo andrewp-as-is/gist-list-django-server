@@ -1,14 +1,9 @@
 {% load timesince %}
 
-<ul class="pagehead-actions">
-    <li>
-{% if is_syncing %}
-<a class="Label bg-blue mt-3 tooltipped tooltipped-w"><span>Syncing</span><span class="AnimatedEllipsis"></span></a>
-{% else %}
-<a class="btn btn-sm btn-primary {% if github_user.synced_at %}tooltipped tooltipped-w{% endif %}" href="/{{ github_user.login }}/refresh?next={{ request.get_full_path }}" role="button" {% if github_user.synced_at %}aria-label="synced {{ github_user.synced_at|timesince }} ago
-{{ github_user.synced_at|date:'Y-m-d H:i' }} UTC"{% endif %}>
-<svg class="octicon octicon-sync" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10.24 7.4a4.15 4.15 0 0 1-1.2 3.6 4.346 4.346 0 0 1-5.41.54L4.8 10.4.5 9.8l.6 4.2 1.31-1.26c2.36 1.74 5.7 1.57 7.84-.54a5.876 5.876 0 0 0 1.74-4.46l-1.75-.34zM2.96 5a4.346 4.346 0 0 1 5.41-.54L7.2 5.6l4.3.6-.6-4.2-1.31 1.26c-2.36-1.74-5.7-1.57-7.85.54C.5 5.03-.06 6.65.01 8.26l1.75.35A4.17 4.17 0 0 1 2.96 5z"></path></svg> Sync
+<ul class="d-md-flex d-none pagehead-actions float-none">
+<li class="mr-1" style="list-style-type:none">
+<a class="btn btn-sm Link--muted" {% if github_user_refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="/{{ login }}/refresh">
+  <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refresh{% if github_user_refresh_lock %}ing...{% endif %}
 </a>
-{% endif %}
-  </li>
+    </li>
 </ul>

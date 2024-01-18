@@ -1,0 +1,48 @@
+{% extends "user/_base.html" %}
+
+{% block extra_head %}
+{#
+https://cdnjs.com/libraries/codemirror
+#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" />
+{% endblock %}
+
+{% block container %}
+<div class="page-content container-lg clearfix">
+<form action="{{ request.path }}" accept-charset="UTF-8" method="post">
+  {% csrf_token %}
+  <div>
+    <div id="gists" class="js-gist-files">
+      <input type="text" class="form-control input-block input-contrast mb-1" name="gist[description]" value="" aria-label="Gist description" placeholder="Gist description…" autocomplete="off">
+    <input type="text" class="form-control input-block input-contrast mb-1" aria-label="Filename including extension…" name="gist[contents][][name]" value="" placeholder="Filename including extension…" data-default-value="gistfile1.txt" data-language-detection-url="/detect_language" autofocus="">
+      <div class="border my-3">
+        <div class="bg-gray px-2 py-1">
+<div class="file-header  d-flex flex-items-center pr-0">
+  <div class="input-group gist-filename-input">
+    <input type="hidden" name="gist[contents][][oid]" value="">
+    <input type="hidden" name="new_filename" class="js-new-filename-field" value="" data-default-value="">
+    <span class="input-group-button">
+      <button aria-label="Remove file" type="button" class="js-remove-gist-file tooltipped tooltipped-e btn-danger btn d-none">
+    </button>
+    </span>
+  </div>
+</div>
+        </div>
+
+        <textarea class="form-control file-editor-textarea js-blob-contents js-code-textarea" id="code_1" name="gist[contents][][value]"></textarea>
+        <script>
+          myTextarea = document.getElementById("code_1");
+          var editor = CodeMirror.fromTextArea(myTextarea, {
+            lineNumbers: true
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+
+  {% include "user/new/_blocks/form/actions.html" %}
+</form>
+</div>
+{% endblock %}
+

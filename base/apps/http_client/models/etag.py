@@ -9,7 +9,6 @@ class Etag(models.Model):
     id = models.AutoField(primary_key=True)
     url = models.TextField()
     etag = models.TextField()
-    created_at = models.FloatField()
 
     class Meta:
         managed = False

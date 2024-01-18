@@ -13,7 +13,7 @@
 {% block content %}
 <div class="pagehead bg-gray-light pb-0 pt-3 mb-4">
   <div class="px-0">
-    <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+    <div class="mb-3 d-flex px-3 px-md-3 px-lg-2">
       <div class="flex-auto min-width-0 width-fit mr-3">
         <div class="d-flex">
           <div class="d-none d-md-block">
@@ -31,6 +31,10 @@
             </h1>
             {% if not gist and github_user %}
             <div class="note m-0">
+              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}">
+                  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
+                  <span class="text-bold color-fg-default">{{ github_user_stat.gists_count }}</span> gists
+              </a>
               {% if github_user.followers_count >= 0 %}
               <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/followers">
                 <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#people" /></svg>
@@ -42,6 +46,13 @@
                     <span class="text-bold color-fg-default">{{ github_user.following_count|format_count }}</span> following
               </a>
               {% endif %}
+              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/languages">
+                  <span class="text-bold color-fg-default">{{ github_user_stat.languages_count }}</span> languages
+              </a>
+              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/tags">
+                  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#tag" /></svg>
+                  <span class="text-bold color-fg-default">{{ github_user_stat.tags_count }}</span> tags
+              </a>
               <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
               <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ login }}" href="https://gist.github.com/{{ login }}">gist.github.com/{{ login }}</a>
             </div>
@@ -61,9 +72,11 @@
           </div>
         </div>
       </div>
-      {% block pagehead_actions %}{% endblock %}
+      {% block pagehead_actions %}
+        {% include "user/_blocks/pagehead/actions.html" %}
+      {% endblock %}
     </div>
-    <div class="d-flex flex-md-row flex-column px-0 pr-md-3 px-lg-5">
+    <div class="d-flex flex-md-row flex-column px-0 pr-md-3 px-lg-2">
       {% block pagehead_nav %}
       <div class="flex-md-order-1 flex-order-2 flex-auto">
         {% include "user/_blocks/pagehead/nav.html" %}

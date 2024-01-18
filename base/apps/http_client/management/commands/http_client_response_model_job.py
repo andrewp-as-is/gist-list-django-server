@@ -31,6 +31,11 @@ def get_user_id(url):
     if "https://api.github.com/user/" in url:
         return int(url.replace("https://api.github.com/user/", "").split("/")[0])
 
+def get_token_id(url):
+    if "token_id" in url:
+        parsed_url = urlparse(url)
+        return int(parse_qs(parsed_url.query)["token_id"][0])
+
 def iter_model(response):
     for model in MODEL_LIST:
         if model.response_match(response):
@@ -46,6 +51,8 @@ def get_model_kwargs(model,response):
         kwargs['response_id'] = response.id
     if hasattr(model,'user_id'):
         kwargs['user_id'] = get_user_id(response.url)
+    if hasattr(model,'token_id'):
+        kwargs['token_id'] = get_token_id(response.url)
     return kwargs
 
 class Command(JobCommand):

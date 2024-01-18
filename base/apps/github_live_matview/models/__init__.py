@@ -6,4 +6,5 @@ from .gist_star import *
 from .gist_tag import *
 from .starred_gist import *
 from .user import *
-from .user_status import *
+from .user_stat import *
+

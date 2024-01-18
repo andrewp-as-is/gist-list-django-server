@@ -1,0 +1,14 @@
+1) download filename
+2) download zip
+3) download script?
+4) backup gist only?
+---
+/USER/GIST/download можно запускать request gist info
+---
+сгенерировать .zip на сайте?
+---
+как минимум 1 раз надо сгенерировать backup даже для free user
+для демонстрации
+---
+скачивать все и предлагать id.zip когда все скачано?
+---

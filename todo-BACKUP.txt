@@ -1,0 +1,64 @@
+gist_trash /USER/deleted
+---
+download VS backup
+---
+как вариант платно?
+---
+backup в github repo?
+backup в multiple github repo? xxx-date
+backup scripts
+gists-backup-2023-12-31_230000.tar.gz download
+---
+главная фишка - создание backup для себя
+лучше если много вариантов+скрипты
+---
+можно на сайте список backups
+на backup можно лимиты ставить
+1) cron если были изменения
+2) вручную. create backup
+но показывать limit
+----
+/backup
+table
+filename gists_count filesize created_at timesince
+---
+download all backups (scripts)
+---
+github repo аналогично, но... там вопрос в size
+---
+backup creation - command worker?
+но как технически если 100500 files. download all files one by one?
+check backup until created?
+----
+download filename select
+1) gists.tag.gz
+2) gists-2023-12-31_230000.tar.gz
+---
+backup structure
+ID/filename.txt
+если надо filename.txt/filename.txt, filename2.txt то пиши скрипт
+---
+code переименования можно прицепить
+gists_id2filename_rename.sh
+if [ -e "$filename" ] && { echo "ERROR: $filename/ ALREADY EXISTS" && exit 1; }
+---
+как хранить backup на сервере?
+/backup/USER_ID/timestamp.tar.gz
+---
+gist-backup.com
+github-backup.com
+---
+gist-backup.com
+gist-explorer.com
+gist-manager.com
+---
+backup серьезно усложняет проект. не лучше ли добавить позже?
+---
+автоматически создавать backup при регистрации пользователя
+---
+priority/plan важен для скорости backup
+----
+ID/filename.txt можно тк backup = snapshot, не предполагается добавление новых gists не надо ничего сравнивать
+---
+как минимум 1 раз надо сгенерировать backup даже для free user
+для демонстрации

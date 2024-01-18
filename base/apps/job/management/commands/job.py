@@ -1,7 +1,7 @@
 from django.apps import apps
 
 from django_command_worker.models import Queue
-from management.base import BaseCommand
+from base.management.base import BaseCommand
 
 
 MODEL_LIST = list(filter(

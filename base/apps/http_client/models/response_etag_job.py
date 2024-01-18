@@ -10,3 +10,7 @@ class ResponseEtagJob(models.Model):
 
     class Meta:
         managed = False
+
+    @staticmethod
+    def response_match(response):
+        return '&etag=' not in response.url

@@ -1,3 +1,8 @@
+"""
+https://docs.github.com/en/rest/reference/gists#unstar-a-gist
+required scope: star_gist (undocumented)
+"""
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
 from django.shortcuts import redirect
@@ -10,12 +15,9 @@ from views.base import View as _View
 
 from ..utils import update_user_stars
 
-"""
-https://docs.github.com/en/rest/reference/gists#unstar-a-gist
-required scope: star_gist (undocumented)
-"""
 
-class UnstarView(LoginRequiredMixin,GistMixin,_View):
+
+class View(LoginRequiredMixin,GistMixin,_View):
     def get(self, request,*args,**kwargs):
         gist_id = self.kwargs['pk']
         user_id = self.request.user.id

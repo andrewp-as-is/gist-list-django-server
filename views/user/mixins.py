@@ -36,6 +36,7 @@ class UserMixin:
         live_matview_list = []
         self.github_user_refresh = None
         self.github_user_refresh_lock = None
+        self.github_user_stat = None
         try:
             self.github_user = User.objects.get(login=self.kwargs["login"])
             authenticated = self.request.user.id == self.github_user.id
@@ -50,12 +51,13 @@ class UserMixin:
                 if modified_at and refreshed_at>modified_at:
                     live_matview_list+=[matviewname]
             try:
+                self.github_user_refresh = UserRefresh.objects.get(user_id=self.github_user.id)
+            except UserRefresh.DoesNotExist:
+                pass
+            try:
                 self.github_user_refresh_lock = GithubUserRefreshLock.objects.get(github_user_id=self.github_user.id)
             except GithubUserRefreshLock.DoesNotExist:
-                try:
-                    self.github_user_refresh = UserRefresh.objects.get(user_id=self.github_user.id)
-                except UserRefresh.DoesNotExist:
-                    pass
+                pass
         except User.DoesNotExist:
             self.github_user = None
 
@@ -67,9 +69,14 @@ class UserMixin:
         self.gist_tag_model = get_model('gist_tag',live_matview_list)
         self.starred_gist_model = get_model('starred_gist',live_matview_list)
         self.user_model = get_model('user',live_matview_list)
-        print('self.gist_star_model: %s' % self.gist_star_model)
+        self.user_stat_model = get_model('user_stat',live_matview_list)
         if settings.DEBUG:
             print('github_live_matview (%s): %s' % (len(live_matview_list),','.join(live_matview_list)))
+        try:
+            if self.github_user:
+                self.github_user_stat = self.user_stat_model.objects.get(user_id=self.github_user.id)
+        except self.user_stat_model.DoesNotExist:
+            pass
         response = super().dispatch(*args, **kwargs)
         #if response.status_code in [200, 304] and self.refreshed_at:
        #     response["ETag"] = self.refreshed_at
@@ -89,9 +96,21 @@ class UserMixin:
                 or self.github_user.id != self.request.user.id
             ):
                 qs = qs.filter(public=True)
-            context["gists_count"] = qs.count()
-            context["forks_count"] = qs.filter(fork=True).count()
-            context["github_user_refresh"] = self.github_user_refresh
+            if self.github_user_stat:
+                gists_count = self.github_user_stat.public_gists_count
+                forks_count = self.github_user_stat.public_forks_count
+                if self.github_user.id==self.request.user.id:
+                    if gists_count:
+                        gists_count+=self.github_user_stat.secret_gists_count or 0
+                    if forks_count:
+                        forks_count+=self.github_user_stat.secret_forks_count or 0
+                context["github_user_stat"] = dict(
+                    gists_count=gists_count,
+                    forks_count=forks_count,
+                    stars_count=self.github_user_stat.stars_count,
+                    languages_count=len(self.github_user_stat.language_list),
+                    tags_count=len(self.github_user_stat.tag_list),
+                )
         else:
             try:
                 context["user404"] = User404.objects.get(login=self.login)

@@ -48,9 +48,9 @@
       {% endfor %}
   </td>
   <td class="no-wrap px-1">
-    {% if gist.files_count %}
+    {% if gist.filename_list %}
     <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank" title="{{ gist.filenames|join:"&#10;" }}">
-    <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> {{ gist.files_count }} file{% if gist.files_count > 1 %}s{% endif %}
+    <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> {{ gist.filename_list|length }} file{% if gist.filename_list|length > 1 %}s{% endif %}
     </a>
     {% endif %}
   </td>
@@ -79,6 +79,15 @@
     <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">
     {% if gist.updated_at %}last active {{ gist.updated_at|timestamp_timesince }}{% else %}created {{ gist.created_at|timestamp_timesince }}{% endif %}</a>
   </td>
+  {% if '/download' in request.path %}
+  <td class="no-wrap px-1" style="width: 1%;">
+  {% for filename,raw_url in gist.filename2raw_url.items %}
+  <a class="btn btn-sm Link--muted px-1 py-0" href="/download?gist={{ gist.id }}&filename={{ filename }}" title="{{ filename }}">
+  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#download" /></svg> {{ filename|truncatechars:30 }}
+  </a>
+  {% endfor %}
+  </td>
+  {% endif %}
 </tr>
 {% endfor %}
 </table>

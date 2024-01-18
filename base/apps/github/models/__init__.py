@@ -7,11 +7,13 @@ from .gist_language import *
 from .gist_refresh import *
 from .gist_star import *
 from .gist_tag import *
-from .gist_trash import *
 from .gist_tsv import *
 from .language import *
 from .token import *
+from .trash import *
 from .user import *
 from .user404 import *
+from .user_api_etag import *
 from .user_refresh import *
+from .user_stat import *
 from .user_table_modification import *

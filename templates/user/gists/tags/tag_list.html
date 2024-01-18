@@ -4,10 +4,12 @@
 
 {% block container %}
 <div class="page-content container-lg text-center">
-
+<div class="Subhead border-bottom-0 mb-0">
+    <h2 class="Subhead-heading">Tags</h2>
+</div>
 <table align="center" class="Box">
 <tr class="Box-header">
-  <td class="Box-title f5 px-1 text-left">{{ tags_count }} tags</td>
+  <td class="Box-title f5 px-1 text-left"></td>
   <td></td>
   <td>{% include "_blocks/details.html" with summary=sort_details.get_summary menu=sort_details.get_menu %}</td>
 </tr>

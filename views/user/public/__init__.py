@@ -6,7 +6,5 @@ class View(_View):
         self.gist_model
         if not hasattr(self,'github_user') or not self.github_user:
             return self.gist_model.objects.none()
-        qs = self.gist_model.objects.filter(owner_id=self.github_user.id)
-        if not self.request.user.is_authenticated or self.github_user.login != self.request.user.login:
-            qs = qs.filter(public=True)
+        qs = self.gist_model.objects.filter(owner_id=self.github_user.id).filter(public=True)
         return qs

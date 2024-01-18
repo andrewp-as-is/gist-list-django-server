@@ -1,4 +1,4 @@
-__all__ = ['Token',]
+__all__ = ['Token','TokenBase']
 
 from datetime import datetime
 
@@ -31,6 +31,14 @@ class Token(models.Model):
 
     created_at = models.IntegerField(null=True)
     updated_at = models.IntegerField(null=True)
+
+    class Meta:
+        managed = False
+
+
+class TokenBase(models.Model):
+    id = models.AutoField(primary_key=True)
+    token = models.TextField(unique=True)
 
     class Meta:
         managed = False

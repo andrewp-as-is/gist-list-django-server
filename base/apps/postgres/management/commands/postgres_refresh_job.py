@@ -1,7 +1,7 @@
 import time
 
 from base.apps.postgres.models import Matview
-from management.base import JobCommand
+from base.apps.job.management.base import JobCommand
 
 class Command(JobCommand):
 

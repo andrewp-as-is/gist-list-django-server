@@ -1,6 +1,5 @@
 __all__ = ['AbstractUser','User',]
 
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 """
@@ -21,19 +20,11 @@ class AbstractUser(models.Model):
 
     followers_count = models.IntegerField(null=True)
     following_count = models.IntegerField(null=True)
-
     public_gists_count = models.IntegerField(null=True)
-    private_gists_count = models.IntegerField(null=True)
-    stars_count = models.IntegerField(null=True)
-    public_forks_count = models.IntegerField(null=True)
-    private_forks_count = models.IntegerField(null=True)
 
     created_at = models.IntegerField(null=True)
     updated_at = models.IntegerField(null=True)
 
-    # CUSTOM FIELDS
-    language_list = ArrayField(models.TextField()) # language NAME list
-    tag_list = ArrayField(models.TextField()) # tag SLUG list
 
     class Meta:
         abstract = True
@@ -49,5 +40,6 @@ class AbstractUser(models.Model):
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
+
     class Meta:
         managed = False

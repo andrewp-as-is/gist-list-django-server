@@ -1,9 +1,0 @@
-github.gist_star (user_id,gist_id)
-
-
-xxx_matview.starred_gist (user_id,...) ?
-или where gist_id in
-xxx_matview.gist_star в таком случае тоже для where gist_id in=
-
-github_matview.starred_gist (user_id,gist_id)
-github_live_matview.starred_gist (user_id,gist_id)

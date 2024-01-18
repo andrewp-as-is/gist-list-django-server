@@ -12,7 +12,7 @@ import requests
 from django_command_worker.models import Queue
 from base.apps.github_matview.models import Gist as MatviewGist
 from base.apps.github_live_matview.models import Gist as NewMatviewGist
-# from base.apps.user.models import GithubGistRefresh,
+from base.apps.github.models import UserApiEtag
 from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
 from base.apps.github.utils.graphql import (
     get_user_followers_query,
@@ -72,10 +72,10 @@ def refresh_gist(gist, token, priority, **options):
 
 
 def refresh_user(request,github_user, priority):
-    # todo: priority based on user.id vs token.user_id
-    # root = 'api.github.com/user/%s' % (user.id)
     url_list = []
     url2query = {}
+    user_api_etag_list = list(UserApiEtag.objects.filter(user_id=github_user.id))
+    url2etag = {e.url:e.etag for e in user_api_etag_list}
     token = request.user.token
     headers = {
         "Authorization": "Bearer %s" % token.token,
@@ -96,15 +96,15 @@ def refresh_user(request,github_user, priority):
     url_list+=[url]
     # graphql user followers
     url = (
-        "https://api.github.com/graphql?schema=user.followers&user_id=%s&login=%s&page=1"
-        % (github_user.id,github_user.login)
+        "https://api.github.com/graphql?schema=user.followers&page=1&user_id=%s"
+        % (github_user.id)
     )
     url_list+=[url]
     url2query[url] = get_user_followers_query(github_user.login)
     # graphql user following
     url = (
-        "https://api.github.com/graphql?schema=user.following&user_id=%s&login=%s&page=1"
-        % (github_user.id,github_user.login)
+        "https://api.github.com/graphql?schema=user.following&page=1&user_id=%s"
+        % (github_user.id)
     )
     url_list+=[url]
     url2query[url] = get_user_following_query(github_user.login)
@@ -112,35 +112,26 @@ def refresh_user(request,github_user, priority):
     if secret:  # authenticated user (unknown pages count)
         # gists/starred api v3 only, graphql not supported
         url = (
-            "https://api.github.com/gists/starred?user_id=%s&login=%s&per_page=100&page=1"
-            % (github_user.id,github_user.login)
+            "https://api.github.com/gists/starred?per_page=100&page=1&user_id=%s"
+            % (github_user.id)
         )
         url_list+=[url]
         # authenticated user gists
         # api v3 authenticated user gists (`files` with `language` )
-        url = "https://api.github.com/gists?user_id=%s&login=%s&per_page=100&page=1" % (github_user.id,github_user.login)
+        url = "https://api.github.com/gists?per_page=100&page=1&user_id=%s" % github_user.id
         url_list+=[url]
         # graphql viewer gists - `files` `language` not supported
-        url = (
-            "https://api.github.com/graphql?schema=viewer.gists&user_id=%s&login=%s&page=1"
-            % (github_user.id,github_user.login)
-        )
+        url = "https://api.github.com/graphql?schema=viewer.gists&page=1&user_id=%s" % github_user.id
         url_list+=[url]
         url2query[url] = get_viewer_gists_query()
     else:  # public user
         # todo: etag. no need all requests if no changes. where to check?
         if github_user.public_gists_count:
             # &page=1 request only (etag check)
-            url = "https://api.github.com/user/%s/gists?login=%s&per_page=100&page=%s" % (
-                github_user.id,
-                github_user.login,
-                1,
-            )
+            url = "https://api.github.com/user/%s/gists?per_page=100&page=1" % github_user.id
             url_list+=[url]
             # graphql user gists - `files` `language` not supported
-            url = (
-                "https://api.github.com/graphql?schema=user.gists&user_id=%slogin=%s" % (github_user.id,github_user.login,)
-            )
+            url = "https://api.github.com/graphql?schema=user.gists&page=1&user_id=%s" % github_user.id
             url_list+=[url]
             url2query[url] = get_user_gists_query(github_user.login)
     timestamp = round(time.time(),3)
@@ -151,6 +142,20 @@ def refresh_user(request,github_user, priority):
             query = url2query[url]
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
+            if url in url2etag:
+                headers["Etag"] = url2etag[url]
+        if '?' not in url:
+            url=url+'?'
+        key2value = dict(
+            user_id=github_user.id,
+            token_id=token.id,
+            login=github_user.login,
+            priority=priority,
+            etag=''
+        )
+        for key,value in key2value.items():
+            if key not in url:
+                url=url+'&%s=%s' % (key,value)
         create_list += [
             RequestJob(
                 host="api.github.com",
@@ -176,6 +181,7 @@ def refresh_user(request,github_user, priority):
             )
         ]
     model2kwargs = {
+        RequestJob:dict(ignore_conflicts=True),
         GithubUserRefresh:dict(ignore_conflicts=True),
         GithubUserRefreshLock:dict(ignore_conflicts=True),
     }

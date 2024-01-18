@@ -10,7 +10,7 @@ import requests
 from base.apps.github.models import Gist
 from views.user.gist.mixins import GistMixin
 
-class DescriptionView(LoginRequiredMixin,GistMixin,TemplateView):
+class View(LoginRequiredMixin,GistMixin,TemplateView):
     template_name = 'user/gist/description/edit.html'
 
     def post(self, request,*args,**kwargs):

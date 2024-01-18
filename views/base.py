@@ -6,12 +6,12 @@ from django.views.generic.list import ListView
 
 from . import details
 
-# from .mixins import PythonErrorMixin
+from .mixins import Mixin #, PythonErrorMixin
 # from django_error.mixins import ViewErrorMixin
 
 
 # class ListView(ViewErrorMixin, ListView):
-class ListView(ListView):
+class ListView(Mixin,ListView):
     paginate_by = None
 
     def get_paginate_by(self, request):
@@ -30,9 +30,9 @@ class ListView(ListView):
         return context
 
 
-class TemplateView(TemplateView):
+class TemplateView(Mixin,TemplateView):
     pass
 
 
-class View(View):
+class View(Mixin,View):
     pass

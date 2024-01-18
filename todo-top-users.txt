@@ -1,3 +1,5 @@
+все зависит от BIG DATA Карл
+
 1) алгоритм (stars sum/etc)
 2) request что сложнее
 3) просто так top user list не нужно, как минимум еще нужно gist list, followers, following

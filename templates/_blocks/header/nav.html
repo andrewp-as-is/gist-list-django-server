@@ -1,3 +1,6 @@
 <nav class="d-flex mx-1">
+  {% if request.user.is_superuser %}
+  <a href="/admin" class="Header-link py-lg-3 mr-3">admin</a>
+  {% endif %}
   <a href="/pricing" class="Header-link py-lg-3 mr-3">Pricing</a>
 </nav>

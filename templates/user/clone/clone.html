@@ -1,33 +1,16 @@
 {% extends "user/_base.html" %}
 
+{% block extra_head %}
+{% include "_blocks/script.html" %}
+{% endblock %}
+
 {% block container %}
 <div class="page-content container-lg">
-  <h3 class="mb-2 text-center text-mono">git clone</h3>
-  <div class="py-3">
-    <strong>IDs</strong> text file
-    <hr />
-    <p><a href="/{{ github_user.login }}/id.txt">https://domain.com/{{ github_user.login }}/id.txt</a></p>
-  </div>
-  <div class="py-3">
-  <strong>URLs</strong> text file
-  <hr />
-  <table class="width-full">
-    <thead>
-      <th class="px-1 text-left">url</th>
-      <th class="px-1 text-left">format</th>
-    </thead>
-  <tr class="Box-row Box-row--hover-gray">
-    <td class="p-1"><a href="/{{ github_user.login }}/clone.txt?protocol=ssh">https://domain.com/{{ github_user.login }}/clone.txt?protocol=ssh</a></td>
-    <td class="color-bg-subtle px-1 text-mono">
-    git@gist.github.com:&lt;ID&gt;.git</td>
-  </tr>
-  <tr class="Box-row Box-row--hover-gray">
-    <td class="p-1"><a href="/{{ github_user.login }}/clone.txt?protocol=https">https://domain.com/{{ github_user.login }}/clone.txt?protocol=https</a></td>
-    <td class="color-bg-subtle px-1 text-mono">
-      https://gist.github.com/&lt;ID&gt;.git
-    </td>
-  </tr>
-  </table>
-  </div>
+    {% include "_blocks/clone/options.html" %}
+    <div class="py-1">
+      <button class="btn" type="button" onclick="download('gists-clone.sh')"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#download" /></svg> gists-clone.sh</button>
+      <button class="btn" id="clipboard_btn" onclick="copy2clipboard()"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#copy" /></svg> copy to clipboard</button>
+    </div>
+    {% include "user/clone/_blocks/textarea.html" %}
 </div>
 {% endblock %}

@@ -15,7 +15,7 @@ from views.user.gist.mixins import GistMixin
 https://docs.github.com/en/rest/reference/gists#update-a-gist
 """
 
-class EditView(LoginRequiredMixin,GistMixin,TemplateView):
+class View(LoginRequiredMixin,GistMixin,TemplateView):
     template_name = 'user/gist/edit/edit.html'
 
     def dispatch(self, request, *args, **kwargs):

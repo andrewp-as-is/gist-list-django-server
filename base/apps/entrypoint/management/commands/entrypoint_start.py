@@ -12,7 +12,7 @@ from datetime import datetime
 import os
 import time
 
-from django.core.management.base import BaseCommand
+from base.management.base import BaseCommand
 
 from ...models import Run
 

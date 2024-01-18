@@ -1,0 +1,103 @@
+как вариант еще N top features /top, /users и тд
+---
+privacy
+security
+
+расписать про tokens, backups
+---
+pro/mode/etc
+---
+changelog/label/xxx
+---
+footer categories
+
+https://github.blog
+https://support.github.com
+
+Social
+icons?
+github icon at least :)
+
+github+discord+telegram
+
+follow ... but follow в любой соц сети
+---
+features?
+features лучше about тк можно расписать все ссылками просто
+/USER/languages
+/USER/tags
+/USER/backup
+/USER/clone
+/USER/download
+так даже лучше тк отдельно api пункт не оч уместен это если не первичный источник и не огромный api как у github/etc
+scripts как вариант вполне
+scripts: clone, download
+backup... круто но по идее кому надо. только тем кто будет edit/delete да и то не всем
+
+News - может быть в About/
+
+GitHub Blog
+Changelog
+Status
+Features
+
+Changelog можно просто ссылкой на repo/changelog.md
+Contact тоже
+--
+donate
+pricing
+sponsors
+free/actions
+
+https://support.github.com/
+News
+
+GitHub Blog
+Changelog
+Status
+---
+Support - /support как вариант где все расписано. аналогично /about и тд
+Links - /support
+Feedback не очевидно что именно. лучше в виде ссылки в /support
+
+/support links
+github/user/repo
+github/repo
+discord.gg/
+telegram
+etc
+
+Subscribe - NO  немного не то тк обычно = email Subscriptions
+---
+Demo/Examples
+----
+/follow вполне можно как коллекцию ссылок
+github/user/repo
+github/repo
+discord.gg/
+telegram
+etc
+
+
+News
+Changelog
+Follow
+Roadmap
+----
+Pricing куда
+или вообще отдельно какие-то ссылки
+Pricing в About логично
+
+About
+Features
+Pricing
+Security
+---
+/community
+/discussions (not support по идее)
+feedback
+/discord
+/telegram
+...
+---
+help/faq?

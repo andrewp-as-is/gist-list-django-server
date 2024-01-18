@@ -30,22 +30,23 @@ class AbstractGist(models.Model):
     fork_of = models.ForeignKey("Gist", null=True, on_delete=models.DO_NOTHING)
 
     public = models.BooleanField(default=True)
-    fork = models.BooleanField(default=False)
+    fork = models.BooleanField(default=False) # GraphQL api only
 
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
     language_list = ArrayField(models.TextField())  # language name list
+    raw_url_list = ArrayField(models.TextField())
 
     version = models.TextField(null=True)
 
+    size = models.IntegerField(default=0) # REST api only
     comments_count = models.IntegerField(default=0)
-    files_count = models.IntegerField()
-    forks_count = models.IntegerField(null=True)
-    stargazers_count = models.IntegerField(null=True)  # graphql only
+    forks_count = models.IntegerField(null=True) # GraphQL api only
+    stargazers_count = models.IntegerField(null=True) # GraphQL api only
     revisions_count = models.IntegerField(null=True)
 
     created_at = models.IntegerField(null=True)
-    pushed_at = models.IntegerField(null=True)
+    pushed_at = models.IntegerField(null=True) # GraphQL api only
     updated_at = models.IntegerField(null=True)
 
     class Meta:
@@ -70,13 +71,10 @@ class AbstractGist(models.Model):
             map(lambda s: s.replace("#", ""), get_hashtag_list(self.description))
         )
 
-    def get_download_url(self):
-        if self.version:
-            return "https://gist.github.com/%s/%s/archive/%s.zip" % (
-                self.owner.login,
-                self.id,
-                self.version,
-            )
+    @property
+    def filename2raw_url(self):
+        if len(self.filename_list or [])==len(self.raw_url_list or []):
+            return dict(map(lambda i,j:(i,j),self.filename_list,self.raw_url_list))
 
 
 class Gist(AbstractGist):

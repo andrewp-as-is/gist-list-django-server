@@ -37,13 +37,6 @@ class JobCommand(BaseCommand):
                     return model
         raise ValueError('Uknown job model for command %s' % name)
 
-    def get_job_snapshot_model(self):
-        module_name = type(self).__module__
-        job_model = self.get_job_model()
-        db_table = job_model._meta.db_table+'_snapshot'
-        for model in apps.get_models():
-            if model._meta.db_table==db_table:
-                return model
 
     def refresh_snapshot(self):
         snapshot_model = self.get_job_snapshot_model()

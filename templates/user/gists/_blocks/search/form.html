@@ -1,5 +1,5 @@
 <form action="{{ request.path }}" method="get">
-    <input type="search" id="filter" name="q" class="form-control width-full js-autosearch-field" placeholder="Find a gist…" autocomplete="off" aria-label="Find a gist…" value="{% if q %}{{ q }}{% endif %}">
+    <input type="search" id="filter" name="q" class="form-control width-full" placeholder="Find a gist…" autocomplete="off" aria-label="Find a gist…" value="{% if q %}{{ q }}{% endif %}">
     {% if request.GET.columns %}
     <input type="hidden" name="columns" value="{{ request.GET.columns }}" />
     {% endif %}

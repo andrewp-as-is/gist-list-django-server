@@ -1,0 +1,7 @@
+public_gists_languages_count
+public_gists_tags_count
+secret_gists_languages_count
+secret_gists_tags_count
+
+stars_languages_count
+stars_tags_count

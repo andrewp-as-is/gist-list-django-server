@@ -1,0 +1,7 @@
+custom message system на основе Mixin
+message_list
+1) token limit
+2) github 5xx
+3) github RetryAfter
+4) refresh/backup limit
+5) backup finished/etc notification

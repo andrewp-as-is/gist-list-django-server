@@ -17,7 +17,6 @@ class AbstractResponse(HeadersMixin, models.Model):
     id = models.BigAutoField(primary_key=True)
     url = models.CharField(max_length=255)
     status = models.IntegerField()
-    request_headers = models.TextField(null=True)
     headers = models.TextField(null=True)
     disk_path = models.TextField(null=True)
     created_at = models.FloatField()

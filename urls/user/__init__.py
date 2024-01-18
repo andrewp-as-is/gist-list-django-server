@@ -5,8 +5,12 @@ from views import user as views
 app_name = 'user'
 
 urlpatterns = [
+    path('/api', include('urls.user.api')),
     path('/clone', include('urls.user.clone')),
+    path('/download', include('urls.user.download')),
     path('/forked', include('urls.user.forked')),
+    path('/gists.json', include('urls.user.gists_json')),
+    path('new', include('urls.user.new')),
     path('/public', include('urls.user.public')),
     path('/secret', include('urls.user.secret')),
     path('/starred', include('urls.user.starred')),

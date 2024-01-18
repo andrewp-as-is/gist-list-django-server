@@ -7,6 +7,7 @@ class View(ListView):
 
     def get_queryset_base(self):
         model = self.get_model()
+        print('model: %s' % model)
         if not hasattr(self,'github_user') or not self.github_user:
             return model.objects.none()
         qs = model.objects.filter(
@@ -15,6 +16,7 @@ class View(ListView):
         return qs
 
     def get_queryset(self, **kwargs):
+        model = self.get_model()
         qs = super().get_queryset(**kwargs)
        # if hasattr(model,'starred_order'):
         #    qs = qs.select_related('owner')

@@ -1,0 +1,16 @@
+{% extends "user/_base.html" %}
+
+{% block extra_head %}
+{% include "_blocks/script.html" %}
+{% endblock %}
+
+{% block container %}
+<div class="page-content container-lg">
+    {% include "_blocks/download/options.html" %}
+    <div class="py-1">
+      <button class="btn" type="button" onclick="download('gists-clone.sh')"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#download" /></svg> gists-clone.sh</button>
+      <button class="btn" id="clipboard_btn" onclick="copy2clipboard()"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#copy" /></svg> copy to clipboard</button>
+    </div>
+    {% include "user/clone/_blocks/textarea.html" %}
+</div>
+{% endblock %}

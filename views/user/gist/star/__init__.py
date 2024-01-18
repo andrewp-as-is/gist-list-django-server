@@ -16,7 +16,7 @@ https://docs.github.com/en/rest/reference/gists#star-a-gist
 required scope: star_gist (undocumented)
 """
 
-class StarView(LoginRequiredMixin,GistMixin,_View):
+class View(LoginRequiredMixin,GistMixin,_View):
     def get(self, request,*args,**kwargs):
         gist_id = self.kwargs['pk']
         user_id = self.request.user.id
