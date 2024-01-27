@@ -6,7 +6,7 @@ import requests
 from base.apps.github.models import Gist
 from views.base import View as _View
 
-class GistTrashView(LoginRequiredMixin,_View):
+class TrashView(LoginRequiredMixin,_View):
     def get(self, request,pk):
         headers = {"Authorization": "Bearer %s" % request.user.token}
         r = requests.delete('https://api.github.com/gists/%s' % pk,headers=headers)

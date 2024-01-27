@@ -3,6 +3,7 @@ from django.urls import include, path
 from views.user import gist as views
 
 urlpatterns = [
+    path('/backup', include('urls.user.gist.backup')),
     path('/clone', include('urls.user.gist.clone')),
     path('/delete', include('urls.user.gist.delete')),
     path('/description', include('urls.user.gist.description')),

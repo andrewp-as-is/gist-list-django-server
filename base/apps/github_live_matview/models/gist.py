@@ -2,7 +2,7 @@ __all__ = ['Gist']
 
 from django.db import models
 
-from base.apps.github_matview.models import AbstractGist
+from base.apps.github_default_matview.models import AbstractGist
 
 class Gist(AbstractGist):
     id = models.AutoField(primary_key=True)

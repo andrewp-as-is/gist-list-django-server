@@ -17,7 +17,7 @@ class AbstractStarredGist(AbstractGist):
         abstract = True
 
 class StarredGist(AbstractStarredGist):
-    owner = models.ForeignKey('github.User',related_name='github_matview_starred_gist_owner',on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey('github.User',related_name='github_default_matview_starred_gist_owner',on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = False

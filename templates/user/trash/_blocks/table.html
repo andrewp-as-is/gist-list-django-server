@@ -1,0 +1,44 @@
+{% load timestamp_timesince %}
+{% load emoji_tags %}
+
+<table class="width-full">
+{% for trash in trash_list %}
+<tr class="Box-row Box-row--hover-gray">
+  <td class="no-wrap px-1 text-left text-mono">
+    <a class="Link--muted" href="{{ trash.get_absolute_url }}" title="{{ trash.gist_id }}">
+      {{ trash.gist_id|slice:2 }}…{{ trash.gist_id|slice:"-2:" }}
+    </a>
+  </td>
+  <td class="px-1 width-full">
+    <a class="f6 Link--muted mr-2" href="/{{ github_user.login }}/{{ trash.gist_id }}">
+    {% if trash.description %}
+        {{ trash.description|truncatechars:150|emoji_replace }}
+    {% endif %}
+    </a>
+  </td>
+  <td class="f6 no-wrap px-1">
+    {% if gist.fork_of %}<span class="color-fg-muted f6">forked from</span> <a class="f6" href="{{ gist.fork_of.get_absolute_url }}">{{ gist.fork_of.owner.login }}/{{ gist.fork_of.filename_list.0|truncatechars:70 }}</a>
+    {% endif %}
+  <td class="f6 no-wrap px-1">
+    {% for language_name in trash.language_list %}
+    <a class="f6 Link--muted" href="{{ request.path }}?language={{ language_name }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language_name }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </td>
+  <td class="f6 no-wrap px-1">
+      {% for tag in trash.get_tag_list %}
+      <a class="f6 Link--muted" href="{{ request.path }}?tag={{ tag }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">#{{ tag }}</a>
+      {% endfor %}
+  </td>
+  <td class="no-wrap px-1">
+    {% if trash.filename_list %}
+    <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> {{ trash.filename_list|length }} file{% if trash.filename_list|length > 1 %}s{% endif %}
+    </a>
+    {% endif %}
+  </td>
+  <td class="f6 px-1" nowrap>
+    deleted {{ trash.deleted_at|timestamp_timesince }}
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% include "_blocks/pagination.html" %}

@@ -1,9 +1,11 @@
 __all__ = ['Trash']
 
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 class Trash(models.Model):
     id = models.AutoField(primary_key=True)
+    gist_id = models.TextField(unique=True)
 
     fork_of = models.ForeignKey("Gist", null=True, on_delete=models.DO_NOTHING)
     owner = models.ForeignKey(

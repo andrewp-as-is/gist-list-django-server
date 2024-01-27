@@ -3,6 +3,7 @@ from .job import *
 from .follower import *
 from .following import *
 from .gist import *
+from .gist_file_backup import *
 from .gist_language import *
 from .gist_refresh import *
 from .gist_star import *

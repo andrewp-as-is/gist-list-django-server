@@ -21,10 +21,10 @@ class AbstractGist(AbstractGist):
         abstract = True
 
 class Gist(AbstractGist):
-    owner = models.ForeignKey('github.User',related_name='github_matview_gist_owner',on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey('github.User',related_name='github_default_matview_gist_owner',on_delete=models.DO_NOTHING)
 
-    #language_m2m = models.ManyToManyField('Language',through='GistLanguage',related_name='github_matview_gist_languages')
-    #tag_m2m = models.ManyToManyField('tag.Tag',through='GistTag',related_name='github_matview_gist_tags')
+    #language_m2m = models.ManyToManyField('Language',through='GistLanguage',related_name='github_default_matview_gist_languages')
+    #tag_m2m = models.ManyToManyField('tag.Tag',through='GistTag',related_name='github_default_matview_gist_tags')
 
 
     class Meta:

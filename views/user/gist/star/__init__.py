@@ -7,7 +7,7 @@ import requests
 
 from base.apps.github.models import GistStar
 from views.base import View as _View
-from views.user.gist.mixins import GistMixin
+from ..mixins import GistMixin
 
 from ..utils import update_user_stars
 

@@ -8,7 +8,7 @@ from django.views.generic.base import TemplateView
 import requests
 
 from base.apps.github.models import Gist
-from views.user.gist.mixins import GistMixin
+from ..mixins import GistMixin
 
 class View(LoginRequiredMixin,GistMixin,TemplateView):
     template_name = 'user/gist/description/edit.html'

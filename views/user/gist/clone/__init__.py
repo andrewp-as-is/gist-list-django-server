@@ -1,5 +1,5 @@
 from views.base import TemplateView
-from views.user.gist.mixins import GistMixin
+from ..mixins import GistMixin
 
 
 class View(GistMixin,TemplateView):

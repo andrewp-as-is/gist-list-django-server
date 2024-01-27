@@ -8,7 +8,7 @@ from django.views.generic.base import TemplateView
 import requests
 
 from base.apps.github.models import Gist, Token
-from views.user.gist.mixins import GistMixin
+from ..mixins import GistMixin
 # from utils import get_kwargs, sync_gist
 
 """

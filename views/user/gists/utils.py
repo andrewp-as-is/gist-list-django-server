@@ -4,7 +4,7 @@ from django.db.models import Count, Q
 
 from base.apps.github.models import Language
 
-from base.apps.github.models import Gist, GistTrash
+from base.apps.github.models import Gist, Trash
 from base.apps.tag.models import Tag
 
 LANGUAGE_LIST = list(Language.objects.all())
@@ -20,7 +20,7 @@ SLUG2TAG = {tag.slug:tag for tag in TAG_LIST}
 def get_language_stat(queryset,gist_language_model):
     print('gist_language_model: %s' % gist_language_model)
     gist_id_qs = queryset.values_list('id',flat=True)
-    gist_delete_qs = GistTrash.objects.values_list('gist_id',flat=True)  # live gists only
+    gist_delete_qs = Trash.objects.values_list('gist_id',flat=True)  # live gists only
     data = {r['language_id']:r['count'] for r in gist_language_model.objects.filter(
         gist__in=gist_id_qs
     ).values('language_id').annotate(count=Count('language_id'))}
@@ -35,7 +35,7 @@ def get_language_stat(queryset,gist_language_model):
 
 def get_tag_stat(queryset,gist_tag_model):
     gist_id_qs = queryset.values_list('id',flat=True)
-    gist_delete_qs = GistTrash.objects.values_list('gist_id',flat=True)  # live gists only
+    gist_delete_qs = Trash.objects.values_list('gist_id',flat=True)  # live gists only
     data = {r['tag_id']:r['count'] for r in gist_tag_model.objects.filter(
         gist__in=gist_id_qs
     ).values('tag_id').annotate(count=Count('tag_id'))}

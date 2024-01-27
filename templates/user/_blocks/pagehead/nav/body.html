@@ -1,6 +1,6 @@
 {% load format_count %}
 
-<a class="UnderlineNav-item {% if '/fork' not in request.path and '/starred' not in request.path %}selected{% endif %}" href="{{ github_user.get_absolute_url }}">
+<a class="UnderlineNav-item {% if request.path == gist.get_absolute_url not in request.path %}selected{% endif %}" href="{{ github_user.get_absolute_url }}">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
     Gists{% if github_user_stat.gists_count != None %} <span class="Counter">{{ github_user_stat.gists_count|format_count }}</span>{% endif %}
 </a>
@@ -14,5 +14,11 @@
 <a class="UnderlineNav-item {% if '/starred' in request.path and '/starred' != request.path %}selected{% endif %}" href="{{ github_user.get_absolute_url }}/starred">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#star" /></svg>
     Starred{% if github_user_stat.stars_count != None %} <span class="Counter">{{ github_user_stat.stars_count|format_count }}</span>{% endif %}
+</a>
+{% endif %}
+{% if github_user.login == request.user.login %}
+<a class="UnderlineNav-item {% if '/trash' in request.path %}selected{% endif %}" href="{{ github_user.get_absolute_url }}/trash">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#trash" /></svg>
+    Trash{% if github_user_stat.trash_count != None %} <span class="Counter">{{ github_user_stat.trash_count|format_count }}</span>{% endif %}
 </a>
 {% endif %}

@@ -3,19 +3,22 @@
 {% load emoji_tags %}
 
 {% block pagehead_actions %}
-todo: block file
 <ul class="d-md-flex d-none pagehead-actions float-none">
     {% if github_user.login == request.user.login %}
-    <li>
+    <li class="pr-1">
+        <a class="btn btn-sm" rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
+        <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#sync" /></svg> Refresh</a>
+    </li>
+    <li class="pr-1">
         <a class="btn btn-sm" aria-label="Edit this Gist" rel="nofollow" href="{{ gist.get_absolute_url }}/edit">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#pencil" /></svg> Edit</a>
     </li>
-    <li>
-        <a class="btn-danger btn btn-sm" rel="nofollow" href="{{ gist.get_absolute_url }}/delete" onclick="return confirm('Are you positive you want to delete this Gist?');">
+    <li class="pr-1">
+        <a class="btn-danger btn btn-sm" rel="nofollow" href="{{ gist.get_absolute_url }}/delete">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#trash" /></svg> Delete</a>
     </li>
     {% endif %}
-    <li>
+    <li class="pr-1">
         {% if starred_gist %}
         <a class="btn btn-sm btn-with-count" rel="nofollow" href="{{ gist.get_absolute_url }}/unstar">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star-fill" /></svg> Unstar
@@ -44,12 +47,7 @@ todo: block file
   </div>
   <div class="d-md-flex d-none flex-items-center flex-md-order-2 flex-order-1 file-navigation-options" data-multiple="">
     <div class="ml-2">
-      <a class="btn btn-sm Link--muted text-bold {% if '/clone' in request.path %}selected{% endif %}" rel="nofollow" href="{{ gist.get_absolute_url }}/clone"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#git-pull-request" /></svg> Clone</a>
-    </div>
-    <div class="ml-2">
-      <a class="btn btn-sm btn-primary" {% if gist_user_refresh %}aria-disabled="true"{% endif %} rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
-        <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>{% if gist_user_refresh %}Refreshing...{% else %}Refresh{% endif %}
-      </a>
+      todo
     </div>
   </div>
 {% endblock %}

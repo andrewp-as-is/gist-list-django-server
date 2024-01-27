@@ -2,7 +2,7 @@ __all__ = ['Following']
 
 from django.db import models
 
-from base.apps.github_matview.models import AbstractFollowing
+from base.apps.github_default_matview.models import AbstractFollowing
 
 class Following(AbstractFollowing):
     id = models.AutoField(primary_key=True)

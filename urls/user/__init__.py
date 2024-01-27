@@ -20,6 +20,7 @@ urlpatterns = [
     path('/following',      include('urls.user.following')),
     path('/languages',   include('urls.user.gists.languages')),
     path('/tags',   include('urls.user.gists.tags')),
+    path('/trash', include('urls.user.trash')),
     path('/<str:pk>', include('urls.user.gist')),
     path('',   include('urls.user.gists')),
 ]

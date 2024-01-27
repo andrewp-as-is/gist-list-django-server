@@ -14,7 +14,7 @@ from base.apps.github.models import (
     User404,
 )
 from base.apps.github_live_matview.utils import get_model as get_live_matview_model
-from base.apps.github_matview.utils import get_model as get_matview_model
+from base.apps.github_default_matview.utils import get_model as get_matview_model
 from base.apps.postgres.models import Matview
 from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
 

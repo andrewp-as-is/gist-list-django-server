@@ -6,3 +6,4 @@ all:
 	rsync --delete -a --no-links --exclude=".*/" ~/git/gist-list-base/ base
 
 	find . -type d -name .git -mindepth 2 -exec rm -fr {} \; ;:
+

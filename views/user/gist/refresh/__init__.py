@@ -7,7 +7,7 @@ from django.contrib import messages
 from base.apps.github.models import Gist, Token, GistRefresh
 
 from views.base import View
-from views.user.gist.mixins import GistMixin
+from ..mixins import GistMixin
 from utils import refresh_gist
 
 

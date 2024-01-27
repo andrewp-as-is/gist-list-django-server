@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db.models import Count, Q
 from django.shortcuts import redirect
 
-from base.apps.github.models import Gist, GistTrash, GistTag, GistLanguage, User
+from base.apps.github.models import Gist, Trash, GistTag, GistLanguage, User
 from views.base import ListView
 from views.details import Details
 from ..mixins import UserMixin
@@ -101,7 +101,7 @@ class View(UserMixin, ListView):
         prefix = "gist__" if self.request.path.split("/")[-1] == "starred" else ""
         qs = self.get_queryset_base()
         qs = qs.exclude(
-            id__in=GistTrash.objects.values_list("gist_id", flat=True)
+            id__in=Trash.objects.values_list("gist_id", flat=True)
         )  # live gists only
         language_value = self.request.GET.get("language", "").strip().lower()
         if language_value:

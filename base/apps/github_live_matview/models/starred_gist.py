@@ -1,7 +1,7 @@
 __all__ = ['StarredGist']
 
 from django.db import models
-from base.apps.github_matview.models import AbstractStarredGist
+from base.apps.github_default_matview.models import AbstractStarredGist
 
 
 class StarredGist(AbstractStarredGist):

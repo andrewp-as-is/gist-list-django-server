@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 import requests
 
 from base.apps.github.models import Gist
-from views.user.gist.mixins import GistMixin
+from ..mixins import GistMixin
 from views.base import View as _View
 
 from ..utils import update_user_stars
