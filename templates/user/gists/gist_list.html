@@ -2,12 +2,12 @@
 
 {% block container %}
 <div class="clearfix px-2">
-    {% if github_user.is_restricted %}
+    {% if context_data.github_user.is_restricted %}
       {% include "user/gists/_blocks/restricted.html" %}
     {% else %}
         {% include "user/gists/_blocks/search.html" %}
         {% include "_blocks/search/results.html" %}
-        {% if not queryset_count %}
+        {% if not context_data.languages_count %}
           {% include "user/gists/_blocks/blankslate.html" %}
         {% else %}
           {% include "user/gists/_blocks/table.html" %}

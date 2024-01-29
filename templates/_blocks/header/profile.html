@@ -16,8 +16,8 @@
     <a role="menuitem" class="dropdown-item" href="/token">Your token</a>
 
     <div role="none" class="dropdown-divider"></div>
-    <a role="menuitem" class="dropdown-item" href="https://github.com/{{ login }}">Your Github profile</a>
-    <a role="menuitem" class="dropdown-item" href="https://gist.github.com/{{ login }}">Your Gists profile</a>
+    <a role="menuitem" class="dropdown-item" href="https://github.com/{{ context_data.login  }}">Your Github profile</a>
+    <a role="menuitem" class="dropdown-item" href="https://gist.github.com/{{ context_data.login  }}">Your Gists profile</a>
 
     <div role="none" class="dropdown-divider"></div>
     <a class="dropdown-item dropdown-signout" href="/logout">Sign out</a>

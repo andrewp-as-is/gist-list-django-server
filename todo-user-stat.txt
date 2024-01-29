@@ -1,7 +1,9 @@
-public_gists_languages_count
-public_gists_tags_count
-secret_gists_languages_count
-secret_gists_tags_count
-
-stars_languages_count
-stars_tags_count
+#context["languages_count"] = len(language_stat.keys()) - 1
+#context["tags_count"] = len(tag_stat.keys()) - 1
+queryset_count
+---
+как переделать тк public vs secret
+2)
+---
+model2template удобно
+а какие-то структуры данных не оч удобно хнык хнык

@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 
-{% block title %}{{ login }}{% endblock %}
+{% block title %}{{ context_data.login  }}{% endblock %}
 
 {% block content %}
 
@@ -12,7 +12,7 @@
     <div class="blankslate">
         <svg height="32" width="32" class="octicon octicon-person blankslate-icon" viewBox="0 0 12 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M12 14.002a.328.328 0 0 1-.328.328H1.001A1 1 0 0 1 0 13.329V13c0-2.633 4-4 4-4s.229-.409 0-1c-.841-.62-.944-1.59-1-4 .173-2.413 1.867-3 3-3s2.827.586 3 3c-.056 2.41-.159 3.38-1 4-.229.59 0 1 0 1s4 1.367 4 4v1.002z"></path></svg>
       <h3 class="mb-1 text-gray">
-        <span class="text-gray-dark text-mono">{{ login }}</span> is not gists42.com user</h3>
+        <span class="text-gray-dark text-mono">{{ context_data.login  }}</span> is not gists42.com user</h3>
     </div>
   </div>
 </div>

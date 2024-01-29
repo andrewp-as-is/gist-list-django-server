@@ -4,7 +4,7 @@
 
 {% block pagehead_actions %}
 <ul class="d-md-flex d-none pagehead-actions float-none">
-    {% if github_user.login == request.user.login %}
+    {% if context_data.github_user.login == request.user.login %}
     <li class="pr-1">
         <a class="btn btn-sm" rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#sync" /></svg> Refresh</a>
@@ -27,11 +27,11 @@
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star" /></svg> Star
         {% endif %}
         </a>
-        <a class="social-count" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}" target="_blank">{% if gist.stargazers_count != None %}{{ gist.stargazers_count }}{% else %}?{% endif %}</a>
+        <a class="social-count" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ gist.id }}" target="_blank">{% if gist.stargazers_count != None %}{{ gist.stargazers_count }}{% else %}?{% endif %}</a>
     </li>
-    {% if github_user.login != request.user.login %}
+    {% if context_data.github_user.login != request.user.login %}
     <li>
-      <a class="btn btn-sm btn-with-count" rel="nofollow" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}" target="_blank">
+      <a class="btn btn-sm btn-with-count" rel="nofollow" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ gist.id }}" target="_blank">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg> Fork
       </a>
         <span class="social-count">{% if gist.forks_count >= 0 %}{{ gist.forks_count }}{% else %}?{% endif %}</span>

@@ -28,7 +28,7 @@
       {% if not gist.public %}<span class="Label Label--outline">Secret</span>{% endif %}
   </td>
   <td class="px-1 width-full">
-    <a class="f6 Link--muted mr-2" href="/{{ github_user.login }}/{{ gist.id }}">
+    <a class="f6 Link--muted mr-2" href="/{{ context_data.github_user.login }}/{{ gist.id }}">
     {% if gist.description %}
         {{ gist.description|truncatechars:150|emoji_replace }}
     {% endif %}

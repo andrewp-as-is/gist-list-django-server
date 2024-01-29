@@ -11,7 +11,7 @@ import requests
 
 from django_command_worker.models import Queue
 from base.apps.github_default_matview.models import Gist as MatviewGist
-from base.apps.github_live_matview.models import Gist as NewMatviewGist
+from base.apps.github_recent_matview.models import Gist as NewMatviewGist
 from base.apps.github.models import UserApiEtag
 from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
 from base.apps.github.utils.graphql import (

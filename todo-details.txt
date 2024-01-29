@@ -1,0 +1,73 @@
+context_data.details.xxx
+context_data.details.xxx
+
+1) generated url
+2) form
+100500 args не обязательно передавать если ссылка = btn в <form
+но в любом случае надо еще прописывать <input name="name" value="{{ value }}" />
+ок но можно передавать detail.html with input_name="language"
+3) templatetag
+---
+with css_class = и тд и тп 100500 options/vars можно передавать явно, а не в views ООП еще городить
+---
+{% include "_blocks/details.html" with summary=type_details.get_summary menu=type_details.get_menu %}
+{% include "_blocks/details.html" with summary_name="Type" css_class="" menu_title="Type" menu=type_details.get_menu %}
+selectmenu_title
+
+{% if sort_details and view_details %}
+{% include "_blocks/details.html" with summary=view_details.get_summary menu=view_details.get_menu %}
+{% endif %}
+Results per page
+---
+menu_item_list
+{% include "_blocks/details.html" with menu_item_list=menu_item_list %}
+{% include "_blocks/details.html" with menu_item_list=context_data.details.language.menu_item_list %}
+
+ок но такие chain зависят от аналогичной реализации с btn и ЕЩЕ nav/etc
+100500 элементов интерфейса логика/css которых регулировать можно в backend
+
+
+nav_xxx
+btn_xxx
+
+btn.xxx
+details.xxx
+nav.xxx
+удобно для debug и convention
+
+html.btn.xxx
+html.details.xxx
+1) html.nav.xxx но nav это лишь css class, а не html element
+2) конкретно html там нет, только данные для loop, value и тд
+почему не elements, html_elements и тд
+naming не однозначный
+просто btn.xxx, nav.xxx ?
+
+btn.refresh.disabled
+btn
+
+context_data.html.gists.selected но почему details не html.xxx ?
+и какая convention если где-то по name/логике, где-то по css, где-то по link name и тд
+
+context_data.a.gists.selected
+context_data.links.gists.selected
+class="btn" тоже link. тем более a class="btn" это link, а не html btn
+только если css btn но это все custom
+a VS links. links более наглядно
+---
+summary_css_class="btn-link color-fg-muted",
+Select order
+menu_title = None
+menu_title="Select language",
+menu_title="Select tag",
+---
+<a class="UnderlineNav-item {% if request.path == github_user.get_absolute_url %}selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}">
+---
+links.
+---
+details переделать на
+1) dict, а не ООП
+utils?
+2) form VS url (generated)
+input можно сгенерировать key2value параметрами
+menu_item_list Value/Text/Label count selected data/key2value

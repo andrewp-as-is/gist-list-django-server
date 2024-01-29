@@ -22,9 +22,9 @@ updated {{ stat.timestamp|timestamp2datetime|date:'h:i:s'}} UTC
 <table>
 {% for github_user in new_user_list %}
 <tr class="Box-row Box-row--hover-gray">
-    <td class="px-2"><a class="avatar" href="{{ github_user.get_absolute_url }}"><img src="https://avatars.githubusercontent.com/u/{{ github_user.id }}?s=32&amp;v=4" /></a></td>
-    <td class="px-2"><a class="avatar" href="{{ github_user.get_absolute_url }}">{{ user.login }}</a></td>
-    <td class="px-2"><a href="{{ github_user.get_absolute_url }}">42 gists</td>
+    <td class="px-2"><a class="avatar" href="{{ context_data.github_user.get_absolute_url }}"><img src="https://avatars.githubusercontent.com/u/{{ context_data.github_user.id }}?s=32&amp;v=4" /></a></td>
+    <td class="px-2"><a class="avatar" href="{{ context_data.github_user.get_absolute_url }}">{{ user.login }}</a></td>
+    <td class="px-2"><a href="{{ context_data.github_user.get_absolute_url }}">42 gists</td>
 </tr>
 {% endfor %}
 </table>

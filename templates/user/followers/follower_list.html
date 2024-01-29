@@ -2,7 +2,7 @@
 
 {% load follower_list %}
 
-{% block title %}{% if request.user.login == login %}Your followers{% else %}{{ login }}{% if github_user.name %} ({{ github_user.name}}) {% endif %}/Followers{% endif %}{% endblock %}
+{% block title %}{% if request.user.login == login %}Your followers{% else %}{{ context_data.login  }}{% if context_data.github_user.name %} ({{ context_data.github_user.name}}) {% endif %}/Followers{% endif %}{% endblock %}
 
 {% block container %}
 {% if not github_user.followers_count %}

@@ -14,8 +14,6 @@ def get_tag_list(total_count,stat):
         tag.percent = round((tag.count/total_count)*100,1)
     return tag_list
 
-TODO: ListView
-
 class View(ListView):
     template_name = "user/gists/tags/tag_list.html"
 
@@ -34,8 +32,6 @@ class View(ListView):
         ]
         context['sort_details'] = Details(self.request,
             name='Sort',
-            summary_css_class="btn-link color-fg-muted",
-            menu_title = 'Select order',
             menu_item_list=menu_item_list
         )
         context['tags_count'] = len(stat)-1

@@ -1,6 +1,6 @@
 {% extends "user/_base.html" %}
 
-{% block title %}{% if request.user.login == login %}Who you`re Following{% else %}{{ login }}{% if github_user.name %} ({{ github_user.name}}) {% endif %}/Following{% endif %}{% endblock %}
+{% block title %}{% if request.user.login == login %}Who you`re Following{% else %}{{ context_data.login  }}{% if context_data.github_user.name %} ({{ context_data.github_user.name}}) {% endif %}/Following{% endif %}{% endblock %}
 
 {% block container %}
 {% if not github_user.following_count %}

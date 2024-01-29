@@ -4,10 +4,10 @@
 {% load timestamp_timesince %}
 {% load timesince %}
 
-{% block title %}{{ login }}{% endblock %}
+{% block title %}{{ context_data.login  }}{% endblock %}
 
 {% block extra_head %}
-<link rel="canonical" href="{{ github_user.get_absolute_url }}" />
+<link rel="canonical" href="{{ context_data.github_user.get_absolute_url }}" />
 {% endblock %}
 
 {% block content %}
@@ -17,11 +17,11 @@
       <div class="flex-auto min-width-0 width-fit mr-3">
         <div class="d-flex">
           <div class="d-none d-md-block">
-            <a class="avatar mr-2 flex-shrink-0" href="{{ github_user.get_absolute_url }}"><img class=" avatar-user" src="{% if github_user %}https://avatars.githubusercontent.com/u/{{ github_user.id }}?s=32&amp;v=4{% else %}https://github.com/{{ login }}.png?size=32{% endif %}" width="32" height="32" alt="@{{ login }}"></a>
+            <a class="avatar mr-2 flex-shrink-0" href="{{ context_data.github_user.get_absolute_url }}"><img class=" avatar-user" src="{% if context_data.github_user %}https://avatars.githubusercontent.com/u/{{ context_data.github_user.id }}?s=32&amp;v=4{% else %}https://github.com/{{ context_data.login  }}.png?size=32{% endif %}" width="32" height="32" alt="@{{ context_data.login  }}"></a>
           </div>
           <div class="d-flex flex-column">
             <h1 class="break-word f3 text-normal mb-md-0 mb-1">
-              <span class="author"><a href="{{ github_user.get_absolute_url }}">{{ login }}</a></span>
+              <span class="author"><a href="{{ context_data.github_user.get_absolute_url }}">{{ context_data.login  }}</a></span>
               {% if gist %}
               <span class="mx-1 color-text-secondary">/</span>
               <strong itemprop="name" class="css-truncate-target mr-1" style="max-width: 410px">
@@ -31,30 +31,30 @@
             </h1>
             {% if not gist and github_user %}
             <div class="note m-0">
-              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}">
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}">
                   <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
-                  <span class="text-bold color-fg-default">{{ github_user_stat.gists_count }}</span> gists
+                  <span class="text-bold color-fg-default">{{ context_data.github_user_stat.gists_count }}</span> gists
               </a>
-              {% if github_user.followers_count >= 0 %}
-              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/followers">
+              {% if context_data.github_user.followers_count >= 0 %}
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/followers">
                 <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#people" /></svg>
-                    <span class="text-bold color-fg-default">{{ github_user.followers_count|format_count }}</span> followers
+                    <span class="text-bold color-fg-default">{{ context_data.github_user.followers_count|format_count }}</span> followers
               </a>
               {% endif %}
-              {% if github_user.following_count >= 0 %}
-              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/following">
-                    <span class="text-bold color-fg-default">{{ github_user.following_count|format_count }}</span> following
+              {% if context_data.github_user.following_count >= 0 %}
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/following">
+                    <span class="text-bold color-fg-default">{{ context_data.github_user.following_count|format_count }}</span> following
               </a>
               {% endif %}
-              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/languages">
-                  <span class="text-bold color-fg-default">{{ github_user_stat.languages_count }}</span> languages
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/languages">
+                  <span class="text-bold color-fg-default">{{ context_data.github_user_stat.languages_count }}</span> languages
               </a>
-              <a class="Link--secondary no-underline no-wrap" href="/{{ login }}/tags">
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/tags">
                   <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#tag" /></svg>
-                  <span class="text-bold color-fg-default">{{ github_user_stat.tags_count }}</span> tags
+                  <span class="text-bold color-fg-default">{{ context_data.github_user_stat.tags_count }}</span> tags
               </a>
               <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
-              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ login }}" href="https://gist.github.com/{{ login }}">gist.github.com/{{ login }}</a>
+              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ context_data.login  }}" href="https://gist.github.com/{{ context_data.login  }}">gist.github.com/{{ context_data.login  }}</a>
             </div>
             {% endif %}
             {% if gist %}
@@ -85,7 +85,7 @@
     </div>
   </div>
 </div>
-{% if github_user %}
+{% if context_data.github_user %}
     {% block container %}{% endblock %}
 {% else %}
     {% if user404 %}

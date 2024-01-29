@@ -21,6 +21,7 @@ class View(LoginRequiredMixin,UserMixin,TemplateView):
     template_name = "user/new/new.html"
 
     def post(self, request, *args, **kwargs):
+        return
         user_id = self.request.user.id
         token = Token.objects.get(user_id=user_id)
         public = request.POST.get("gist[public]") == "1"
@@ -65,7 +66,7 @@ class View(LoginRequiredMixin,UserMixin,TemplateView):
                 updated_at=timestamp
             ),
             GistOrderJob(user_id=user_id),
-            RefreshJob(schemaname='github_live_matview',matviewname='gist'),
+            RefreshJob(schemaname='github_recent_matview',matviewname='gist'),
             UserTableModification(
                 user_id=user_id,tablename='gist',modified_at=timestamp
             )

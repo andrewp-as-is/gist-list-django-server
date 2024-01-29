@@ -35,7 +35,7 @@ class AbstractGist(models.Model):
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
     language_list = ArrayField(models.TextField())  # language name list
-    raw_url_list = ArrayField(models.TextField())
+    raw_url_hash_list = ArrayField(models.TextField())
 
     version = models.TextField(null=True)
 
@@ -72,9 +72,9 @@ class AbstractGist(models.Model):
         )
 
     @property
-    def filename2raw_url(self):
-        if len(self.filename_list or [])==len(self.raw_url_list or []):
-            return dict(map(lambda i,j:(i,j),self.filename_list,self.raw_url_list))
+    def filename2raw_url_hash(self):
+        if len(self.filename_list or [])==len(self.raw_url_hash_list or []):
+            return dict(map(lambda i,j:(i,j),self.filename_list,self.raw_url_hash_list))
 
 
 class Gist(AbstractGist):

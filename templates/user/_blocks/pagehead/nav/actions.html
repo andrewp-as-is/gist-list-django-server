@@ -1,9 +1,9 @@
 {% load timestamp_timesince %}
 
 <span class="color-fg-muted">
-{% if github_user_refresh %}
-  <a class="color-fg-muted" href="/{{ login  }}/status">refreshed {{ github_user_refresh.refreshed_at|timestamp_timesince }}</a>
+{% if context_data.github_user_refresh %}
+  <a class="color-fg-muted" href="/{{ context_data.login  }}/status">refreshed {{ context_data.github_user_refresh.refreshed_at|timestamp_timesince }}</a>
   {% else %}
-  {% if github_user_refresh.refreshed_at %}refreshed {{ github_user_refresh.refreshed_at|timestamp_timesince }}{% endif %}
+  {% if context_data.github_user_refresh.refreshed_at %}refreshed {{ context_data.github_user_refresh.refreshed_at|timestamp_timesince }}{% endif %}
 {% endif %}
 </span>

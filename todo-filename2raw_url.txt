@@ -1,0 +1,7 @@
+переделать. как и download тк raw_url не нужно
+---
+gist.tar.gz сделать (в realtime)?
+why not. gist_backup_job
+места не более чем raw
+---
+todo: ok todo в будущем

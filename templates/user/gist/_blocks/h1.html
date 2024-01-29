@@ -1,10 +1,10 @@
 {% load timestamp_timesince %}
 
 <h1 class="public css-truncate float-none flex-auto width-fit pl-0">
-  <a class="avatar mr-1" href="/{{ github_user.login }}"><img class=" avatar-user" src="https://github.com/{{ github_user.login }}.png?size=26" width="26" height="26" alt="@{{ github_user.login }}"></a>
-  <span class="author"><a href="/{{ github_user.login }}">{{ github_user.login }}</a></span>
+  <a class="avatar mr-1" href="/{{ context_data.github_user.login }}"><img class=" avatar-user" src="https://github.com/{{ context_data.github_user.login }}.png?size=26" width="26" height="26" alt="@{{ context_data.github_user.login }}"></a>
+  <span class="author"><a href="/{{ context_data.github_user.login }}">{{ context_data.github_user.login }}</a></span>
   <span class="path-divider">/</span>
-  <strong itemprop="name" class="css-truncate-target" style="max-width: 410px"><a href="/{{ github_user.login }}/{{ gist.id }}">{{ gist.get_files.0 }}</a></strong>
+  <strong itemprop="name" class="css-truncate-target" style="max-width: 410px"><a href="/{{ context_data.github_user.login }}/{{ gist.id }}">{{ gist.get_files.0 }}</a></strong>
   {% if not gist.public %}
   <span class="Label Label--outline v-align-middle">Secret</span>
   {% endif %}

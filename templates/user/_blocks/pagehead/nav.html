@@ -1,6 +1,6 @@
 <nav class="UnderlineNav">
     <div class="UnderlineNav-body">
-        {% if github_user %}
+        {% if context_data.github_user %}
         {% include "user/_blocks/pagehead/nav/body.html" %}
         {% endif %}
     </div>

@@ -1,14 +1,16 @@
-{% include "_blocks/details.html" with summary=type_details.get_summary menu=type_details.get_menu %}
-{% if language_details %}
-{% include "_blocks/details.html" with summary=language_details.get_summary menu=language_details.get_menu %}
+{% include "_blocks/details.html" with summary_name="Type" menu_item_list=context_data.details.type.menu_item_list %}
+{% if context_data.details.language %}
+{% include "_blocks/details.html" with summary_name="Language" menu_item_list=context_data.details.language.menu_item_list %}
 {% endif %}
-{% if tag_details %}
-{% include "_blocks/details.html" with summary=tag_details.get_summary menu=tag_details.get_menu %}
+{% if context_data.details.tag %}
+{% include "_blocks/details.html" with summary_name="Tag" menu_item_list=context_data.details.tag.menu_item_list %}
 {% endif %}
-{% if sort_details %}
-{% include "_blocks/details.html" with summary=sort_details.get_summary menu=sort_details.get_menu %}
+{% if context_data.details.sort %}
+{% include "_blocks/details.html" with summary_name="Sort" menu_item_list=context_data.details.sort.menu_item_list %}
 {% endif %}
-{% if sort_details and view_details %}
-{% include "_blocks/details.html" with summary=view_details.get_summary menu=view_details.get_menu %}
+{% if context_data.details.sort and context_data.details.view %}
+{% include "_blocks/details.html" with summary_name="View" menu_item_list=context_data.details.view.menu_item_list %}
 {% endif %}
+<!-- github etalon css -->
+github etalon css
 {% include "user/gists/_blocks/search/details_github_css.html" %}

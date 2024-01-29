@@ -10,7 +10,7 @@
     </a>
   </td>
   <td class="px-1 width-full">
-    <a class="f6 Link--muted mr-2" href="/{{ github_user.login }}/{{ trash.gist_id }}">
+    <a class="f6 Link--muted mr-2" href="/{{ context_data.github_user.login }}/{{ trash.gist_id }}">
     {% if trash.description %}
         {{ trash.description|truncatechars:150|emoji_replace }}
     {% endif %}

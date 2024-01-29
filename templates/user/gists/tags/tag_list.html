@@ -16,7 +16,7 @@
 {% for tag in tag_list %}
 <tr class="Box-row Box-row--hover-gray">
   <td class="no-wrap px-1 text-left text-mono">
-    <a href="{{ github_user.get_absolute_url }}{% if '/starred/' in request.path %}/starred{% endif %}?tag={{ tag.slug|default:'none' }}">{% if tag.slug %}#{{ tag.slug }}{% else %}NO TAGS{% endif %}</a>
+    <a href="{{ context_data.github_user.get_absolute_url }}{% if '/starred/' in request.path %}/starred{% endif %}?tag={{ tag.slug|default:'none' }}">{% if tag.slug %}#{{ tag.slug }}{% else %}NO TAGS{% endif %}</a>
   </td>
   <td class="no-wrap px-1 text-left text-bold text-mono">
     <span class="Counter text-bold">{{ tag.count }}</span>

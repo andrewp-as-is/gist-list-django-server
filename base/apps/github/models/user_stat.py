@@ -15,10 +15,20 @@ class AbstractUserStat(models.Model):
     secret_forks_count = models.IntegerField(null=True)
 
     stars_count = models.IntegerField(null=True)
-    gist_trash_count = models.IntegerField(null=True)
+    trash_count = models.IntegerField(null=True)
 
-    language_list = ArrayField(models.TextField()) # language NAME list
-    tag_list = ArrayField(models.TextField()) # tag SLUG list
+    public_language_stat = models.TextField(null=True)
+    secret_language_stat = models.TextField(null=True)
+    public_tag_stat = models.TextField(null=True)
+    secret_tag_stat = models.TextField(null=True)
+    starred_language_stat = models.TextField(null=True)
+    starred_tag_stat = models.TextField(null=True)
+
+   # public_language_list = ArrayField(models.TextField()) # language NAME list
+   # public_tag_list = ArrayField(models.TextField()) # tag SLUG list
+
+    refreshed_at = models.IntegerField(null=True)
+    secret_refreshed_at = models.IntegerField(null=True)
 
     class Meta:
         abstract = True

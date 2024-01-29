@@ -2,8 +2,8 @@
 
 <ul class="d-md-flex d-none pagehead-actions float-none">
 <li class="mr-1" style="list-style-type:none">
-<a class="btn btn-sm Link--muted" {% if github_user_refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="/{{ login }}/refresh">
-  <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refresh{% if github_user_refresh_lock %}ing...{% endif %}
+<a class="btn btn-sm Link--muted" {% if context_data.github_user_refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="/{{ context_data.login  }}/refresh">
+  <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refresh{% if context_data.github_user_refresh_lock %}ing...{% endif %}
 </a>
     </li>
 </ul>

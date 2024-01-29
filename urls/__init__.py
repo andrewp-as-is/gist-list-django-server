@@ -19,7 +19,6 @@ urlpatterns = [
         next_page=(getattr(settings,'LOGOUT_REDIRECT_URL','/') or '/')
     )),
 
-    path('download', include('urls.download')),
     path('incident', include('urls.incident')),
     path('pricing', include('urls.pricing')),
     path('search', include('urls.search')),

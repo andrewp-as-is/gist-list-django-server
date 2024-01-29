@@ -6,6 +6,9 @@ from linkheader_parser import parse
 
 
 PATTERN2TEMPLATE = {
+    # gist.githubusercontent.com
+    '[\w]+/[\w]+/raw/[\w]+':"raw/{user_id}/{gist_id}/{filename}",
+    # api.github.com
     'gists/gist/[\w]+':"gists/gist/{gist_id}",
     'user/[\d]+$':"user/{user_id}/profile",
     'user/[\d]+/gists?+':"user/{user_id}/gists/{page}",
@@ -19,6 +22,16 @@ PATTERN2TEMPLATE = {
     'graphql\?schema=viewer\.gists':'graphql/viewer/{user_id}/gists/{page}',
 }
 REGEX2TEMPLATE = {re.compile(p):f for p,f in PATTERN2TEMPLATE.items()}
+
+
+def get_filename(url):
+    return url.split('/')[-1].split('?')[0]
+
+def get_gist_id(url):
+    if 'gist.githubusercontent.com' in url:
+        return url.split('gist.githubusercontent.com/')[1].split('/')[1]
+    if '/gists/gist/' in url:
+        return url.split('/gists/gist/')[1].split('/')[-1]
 
 def get_page(url):
     if '&page=' in url:
@@ -34,16 +47,22 @@ def get_user_id(url):
         return int(url.replace("https://api.github.com/user/", "").split("/")[0])
 
 def get_params(url):
-    return {'user_id':get_user_id(url),'page':get_page(url)}
+    return {
+        'user_id':get_user_id(url),
+        'gist_id':get_gist_id(url),
+        'page':get_page(url),
+        'filename':get_filename(url)
+    }
 
 def get_disk_path(url):
-    print(url.replace('https://api.github.com/',''))
+    host = url.split("//")[-1].split("/")[0].split('?')[0]
     for regex,template in REGEX2TEMPLATE.items():
-        if regex.match(url.replace('https://api.github.com/','')):
-            print(get_params(url))
+        if regex.match(url.replace('https://%s/' % host,'')):
             disk_relpath = template.format(**get_params(url))
             return os.path.join('HTTP_CLIENT_DIR','api.github.com',disk_relpath)
 
 
 url = 'https://api.github.com/graphql?schema=user.followers&user_id=13243941&login=andrewp-as-is&page=1'
+url = 'https://gist.githubusercontent.com/user/GIST_ID/raw/FILENAME?user_id=42'
 print(get_disk_path(url))
+# todo: user_id

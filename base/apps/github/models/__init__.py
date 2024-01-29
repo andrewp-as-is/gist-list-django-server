@@ -3,7 +3,7 @@ from .job import *
 from .follower import *
 from .following import *
 from .gist import *
-from .gist_file_backup import *
+from .gist_file_content import *
 from .gist_language import *
 from .gist_refresh import *
 from .gist_star import *
@@ -15,6 +15,6 @@ from .trash import *
 from .user import *
 from .user404 import *
 from .user_api_etag import *
-from .user_refresh import *
+from .user_refresh_lock import *
 from .user_stat import *
 from .user_table_modification import *

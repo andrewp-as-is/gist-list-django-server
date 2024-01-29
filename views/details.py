@@ -1,10 +1,7 @@
 
 
 class Details(dict):
-    name = None # summary name
     key = None # ?key=value
-    summary_css_class = None
-    menu_title = None
     default_value = None
     menu_item_list = []
 
@@ -23,7 +20,6 @@ class Details(dict):
 
     def get_menu(self):
         return {
-            'title':self.menu_title or self.name or type(self).__name__,
             'item_list':self.get_menu_item_list()
         }
 
@@ -33,7 +29,7 @@ class Details(dict):
         return self.menu_item_list[0]['value']
 
     def get_key(self):
-        return (self.key or self.name or type(self).__name__).lower()
+        return (self.key or type(self).__name__).lower()
 
     def get_menu_item_list(self):
         key = self.get_key()
@@ -51,21 +47,6 @@ class Details(dict):
     def get_values(self):
         return list(map(lambda i:i['value'],self.get_menu_item_list()))
 
-    def get_summary(self):
-        key = self.get_key()
-        text = ''
-        if self.request.GET.get(key,''):
-            text = self.get_menu_item_list()[0]['text']
-        for item in self.get_menu_item_list():
-            # if item['selected'] and self.request.GET.get(key,''):
-            if item['selected']:
-                text = item['text']
-        return {
-            'name':self.name or type(self).__name__,
-            'text':text,
-            'css_class':self.summary_css_class
-        }
-
     def __bool__(self):
         return len(self.get_menu_item_list())>0
 
@@ -73,7 +54,6 @@ class Details(dict):
 class View(Details):
     key = 'v'
     default_value = '50'
-    menu_title = 'Results per page'
     menu_item_list = [
         {'value':'10','text':'10'},
         {'value':'20','text':'20'},

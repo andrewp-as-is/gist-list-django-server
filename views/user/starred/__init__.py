@@ -1,17 +1,18 @@
 from views.user.gists import View as ListView
+from .utils import get_gist_star_model, get_starred_gist_model
 
 class View(ListView):
 
     def get_model(self):
-        return self.starred_gist_model
+        return get_starred_gist_model(self.github_user_stat)
 
     def get_queryset_base(self):
         model = self.get_model()
-        print('model: %s' % model)
+        gist_star_model = get_gist_star_model(self.github_user_stat)
         if not hasattr(self,'github_user') or not self.github_user:
             return model.objects.none()
         qs = model.objects.filter(
-            id__in=self.gist_star_model.objects.filter(user_id=self.github_user.id).values_list('gist_id',flat=True)
+            id__in=gist_star_model.objects.filter(user_id=self.github_user.id).values_list('gist_id',flat=True)
         )
         return qs
 

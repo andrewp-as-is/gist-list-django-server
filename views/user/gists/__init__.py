@@ -3,15 +3,17 @@ from django.conf import settings
 from django.db.models import Count, Q
 from django.shortcuts import redirect
 
-from base.apps.github.models import Gist, Trash, GistTag, GistLanguage, User
+from base.apps.github.models import Trash
 from views.base import ListView
 from views.details import Details
 from ..mixins import UserMixin
 from .utils import (
     get_object,
+    get_gist_model,
     get_language,
     get_language_item_list,
     get_language_stat,
+    get_stat_data,
     get_tag_item_list,
     get_tag_stat,
     get_tag,
@@ -24,7 +26,7 @@ class View(UserMixin, ListView):
     template_name = "user/gists/gist_list.html"
 
     def get_model(self):
-        return self.gist_model
+        return get_gist_model(self.github_user_stat)
 
     def get(self, request, *args, **kwargs):
         login = self.kwargs.get("login")
@@ -34,9 +36,10 @@ class View(UserMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context_data = context.get('context_data',{})
         if self.github_user:
             user_id = self.github_user.id
-            is_owner = (
+            secret = (
                 self.request.user.is_authenticated
                 and self.request.user.login == self.github_user.login
             )
@@ -47,42 +50,44 @@ class View(UserMixin, ListView):
            ##     )
            # else:
             #    context["blankslate"] = not self.github_user.public_gists_count
-            count = self.get_queryset_base().count()
-            context["queryset_count"] = count
-            if count:
-                model = self.gist_model
-                language_stat = get_language_stat(
-                    self.get_queryset_base(), self.gist_language_model
+            # count = self.get_queryset_base().count()
+            # todo: remake queryset_count
+            # todo: stat tags/etc
+            # context["queryset_count"] = count
+            model = self.get_model()
+            if self.github_user_stat:
+                language_stat = get_stat_data(self.github_user_stat.public_language_stat)
+                tag_stat = get_stat_data(self.github_user_stat.public_tag_stat)
+                if secret:
+                    language_stat = get_stat_data(self.github_user_stat.secret_language_stat)
+                    tag_stat = get_stat_data(self.github_user_stat.secret_tag_stat)
+                context_data["languages_count"] = len(language_stat.keys())
+                # context["tags_count"] = len(tag_stat.keys())
+                context_data['details'] = dict(
+                    language = Details(
+                        self.request,
+                        menu_item_list=get_language_item_list(language_stat),
+                    ),
+                        tag = Details(
+                        self.request,
+                        menu_item_list=get_tag_item_list(tag_stat),
+                    ),
+                    sort = details.Sort(self.request),
+                    type = details.Type(
+                        self.request, github_user=self.github_user
+                    )
                 )
-                tag_stat = get_tag_stat(self.get_queryset_base(), self.gist_tag_model)
-                context["languages_count"] = len(language_stat.keys()) - 1
-                context["tags_count"] = len(tag_stat.keys()) - 1
-                context["language_details"] = Details(
-                    self.request,
-                    name="Language",
-                    menu_title="Select language",
-                    menu_item_list=get_language_item_list(language_stat),
-                )
-                context["tag_details"] = Details(
-                    self.request,
-                    name="Tag",
-                    menu_title="Select tag",
-                    menu_item_list=get_tag_item_list(tag_stat),
-                )
-                context["sort_details"] = details.Sort(self.request)
-            context["type_details"] = details.Type(
-                self.request, github_user=self.github_user
-            )
+        context['context_data'] = context_data
         return context
 
     def get_queryset_base(self, **kwargs):
+        model = self.get_model()
         if (
             not hasattr(self, "github_user")
             or not self.github_user
-            or not self.github_user_refresh
         ):
-            return self.gist_model.objects.none()
-        qs = self.gist_model.objects.filter(owner_id=self.github_user.id)
+            return model.objects.none()
+        qs = model.objects.filter(owner_id=self.github_user.id)
         if (
             not self.request.user.is_authenticated
             or self.github_user.login != self.request.user.login
@@ -95,7 +100,6 @@ class View(UserMixin, ListView):
         if (
             not hasattr(self, "github_user")
             or not self.github_user
-            or not self.github_user_refresh
         ):
             return model.objects.none()
         prefix = "gist__" if self.request.path.split("/")[-1] == "starred" else ""
@@ -169,7 +173,7 @@ class View(UserMixin, ListView):
         return qs.order_by(*order_by_list)
 
     def get_queryset_order_by_list(self, **kwargs):
-        model = self.gist_model
+        model = self.get_model()
         sort = self.request.GET.get("sort", "")
         sort_prefix = "-" if sort and sort[0] == "-" else ""
         sort_column = self.request.GET.get("sort", "").replace("-", "")

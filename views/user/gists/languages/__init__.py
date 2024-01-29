@@ -38,8 +38,6 @@ class View(ListView):
         ]
         context['sort_details'] = Details(self.request,
             name='Sort',
-            summary_css_class="btn-link color-fg-muted",
-            menu_title = 'Select order',
             menu_item_list=menu_item_list
         )
         context['languages_count'] = len(stat)-1

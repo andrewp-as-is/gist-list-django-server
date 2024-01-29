@@ -12,15 +12,15 @@
       <span class="select-menu-title">Filter options</span>
     </div>
     <div class="select-menu-list">
-      <a class="js-selected-navigation-item select-menu-item {% if gists_type_all_page.active %}selected{% endif %}" role="menuitem" href="/{{ github_user.login }}/starred">
+      <a class="js-selected-navigation-item select-menu-item {% if gists_type_all_page.active %}selected{% endif %}" role="menuitem" href="/{{ context_data.github_user.login }}/starred">
         <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>
         <span class="select-menu-item-text" data-menu-button-text="">All</span>
       </a>
-      <a class="js-selected-navigation-item select-menu-item {% if gists_type_public_page.active %}selected{% endif %}" role="menuitem" href="/{{ github_user.login }}/starred/public">
+      <a class="js-selected-navigation-item select-menu-item {% if gists_type_public_page.active %}selected{% endif %}" role="menuitem" href="/{{ context_data.github_user.login }}/starred/public">
         <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>
         <span class="select-menu-item-text" data-menu-button-text="">Public</span>
       </a>
-      <a class="js-selected-navigation-item select-menu-item {% if gists_type_secret_page.active %}selected{% endif %}" role="menuitem" aria-current="page" href="/{{ github_user.login }}/starred/secret">
+      <a class="js-selected-navigation-item select-menu-item {% if gists_type_secret_page.active %}selected{% endif %}" role="menuitem" aria-current="page" href="/{{ context_data.github_user.login }}/starred/secret">
         <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>
         <span class="select-menu-item-text" data-menu-button-text="">Secret</span>
         </a>

@@ -1,13 +1,13 @@
 <details class="details-reset details-overlay position-relative mt-1 mt-lg-0 mr-1">
-<summary class="btn {{ summary.css_class|default:'' }}" aria-haspopup="menu" role="button">
-    {{ summary.name }}:
-    <span class="text-bold">{{ summary.text }}</span>
+<summary class="btn{% if css_class %} {{ css_class }}{% endif %}" aria-haspopup="menu" role="button">
+    {{ summary_name }}{% if summary_value %}:{% endif %}
+    <span class="text-bold">{{ summary_value }}</span>
     <span class="dropdown-caret"></span>
 </summary>
 <details-menu class="SelectMenu right-lg-0" role="menu">
   <div class="SelectMenu-modal">
     <header class="SelectMenu-header">
-      <span class="SelectMenu-title">{{ menu.title }}</span>
+      <span class="SelectMenu-title">{{ menu_title }}</span>
     </header>
     <div class="SelectMenu-list">
         {% for item in menu.item_list %}
@@ -17,10 +17,10 @@
         {% else %}
         <span class="mx-2"></span>
         {% endif %}
-            <span class="pl-2 text-normal width-full {% if item.selected %}text-bold{% endif %}">
-                {{ item.text }}
-                {% if item.count >= 0 %} <span class="Counter float-right">{{ item.count }}</span>{% endif %}
-            </span>
+        <span class="pl-2 text-normal width-full {% if item.selected %}text-bold{% endif %}">
+            {{ item.text }}
+            {% if item.count %} <span class="Counter float-right">{{ item.count }}</span>{% endif %}
+        </span>
         </a>
         {% endfor %}
     </div>

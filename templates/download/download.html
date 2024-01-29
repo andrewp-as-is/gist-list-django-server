@@ -4,7 +4,7 @@
 <div class="page-content container-lg text-center">
     <h3 class="mb-4 text-center">Download</h3>
 
-    {% if github_user %}
+    {% if context_data.github_user %}
         {% include "_blocks/user-tools/user.html" %}
         {% include "download/_blocks/urls.html" %}
         {% include "download/_blocks/scripts.html" %}

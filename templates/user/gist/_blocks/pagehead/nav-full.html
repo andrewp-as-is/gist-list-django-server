@@ -3,14 +3,14 @@
     <a class="js-selected-navigation-item selected UnderlineNav-item" href="/MarioHewardt/5759641727aae880b29c8f715ba4d30f">
       <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code" /></svg> Code
     </a>
-    <a class="js-selected-navigation-item UnderlineNav-item" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}/revisions" target="_blank">
+    <a class="js-selected-navigation-item UnderlineNav-item" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ gist.id }}/revisions" target="_blank">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#git-commit" /></svg> Revisions
         <span title="2" class="Counter hx_reponav_item_counter">
       {% if gist.revisions_count >= 0 %}{{ gist.revisions_count }}{% else %}?{% endif %}
         </span>
     </a>
     {% if gist.stargazers_count %}
-    <a class="js-selected-navigation-item UnderlineNav-item" href="https://gist.github.com/{{ github_user.login }}/{{ gist.id }}/stargazers" target="_blank">
+    <a class="js-selected-navigation-item UnderlineNav-item" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ gist.id }}/stargazers" target="_blank">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star" /></svg> Stars
         <span title="4" class="Counter hx_reponav_item_counter">{{ gist.stargazers_count }}</span>
     </a>

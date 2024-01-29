@@ -1,10 +1,13 @@
 import collections
+import time
 
 from django.db.models import Count, Q
 
 from base.apps.github.models import Language
 
 from base.apps.github.models import Gist, Trash
+from base.apps.github_default_matview.models import Gist as DefaultGist
+from base.apps.github_recent_matview.models import Gist as RecentGist
 from base.apps.tag.models import Tag
 
 LANGUAGE_LIST = list(Language.objects.all())
@@ -16,6 +19,19 @@ ID2TAG = {tag.id:tag for tag in TAG_LIST}
 SLUG2TAG = {tag.slug:tag for tag in TAG_LIST}
 
 
+def get_gist_model(user_stat):
+    if not user_stat:
+        return DefaultGist
+    if user_stat.refreshed_at and user_stat.refreshed_at+3600*24>time.time():
+        return RecentGist
+    return DefaultGist
+
+
+def get_stat_data(stat):
+    data = {}
+    for l in stat.splitlines():
+        data[l.split(':')[0]] = l.split(':')[1].strip()
+    return data
 
 def get_language_stat(queryset,gist_language_model):
     print('gist_language_model: %s' % gist_language_model)
@@ -49,8 +65,8 @@ def get_tag_stat(queryset,gist_tag_model):
 
 def get_stat_data(stat):
     data = {}
-    for l in stat.stat.splitlines():
-        data[int(l.split(':')[0])] = int(l.split(':')[1])
+    for l in filter(None,(stat or '').splitlines()):
+        data[l.split(':')[0]] = int(l.split(':')[1])
     return data
 
 

@@ -7,10 +7,12 @@ class Trash(models.Model):
     id = models.AutoField(primary_key=True)
     gist_id = models.TextField(unique=True)
 
+
     fork_of = models.ForeignKey("Gist", null=True, on_delete=models.DO_NOTHING)
     owner = models.ForeignKey(
         "github.User", related_name="+", on_delete=models.DO_NOTHING
     )
+    public = models.BooleanField(default=True)
 
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
