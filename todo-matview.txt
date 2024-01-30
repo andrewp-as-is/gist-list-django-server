@@ -1,7 +1,2 @@
-слишком сложно Карл
-и на уровне БД и на уровне mixins dispatch
----
-как вариант проверять еще по refresh_job?
----
-github.user_modification
-
+1) там где нет order matview не нужно
+2) edit/delete и тд matview не обновят в realtime все равно

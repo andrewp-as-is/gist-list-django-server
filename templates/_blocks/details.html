@@ -10,7 +10,7 @@
       <span class="SelectMenu-title">{{ menu_title }}</span>
     </header>
     <div class="SelectMenu-list">
-        {% for item in menu.item_list %}
+        {% for item in menu_item_list %}
         <a class="SelectMenu-item {% if item.selected %}selected{% endif %}" {% if item.selected %}aria-checked="true"{% endif %} role="menuitemradio" href="{{ item.url }}" rel="nofollow">
         {% if item.selected %}
         <svg class="octicon select-menu-item-icon" style="width:16px;height:16px"><use xlink:href="#check" /></svg>
@@ -18,7 +18,7 @@
         <span class="mx-2"></span>
         {% endif %}
         <span class="pl-2 text-normal width-full {% if item.selected %}text-bold{% endif %}">
-            {{ item.text }}
+            {{ item.description }}
             {% if item.count %} <span class="Counter float-right">{{ item.count }}</span>{% endif %}
         </span>
         </a>

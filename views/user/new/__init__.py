@@ -21,7 +21,6 @@ class View(LoginRequiredMixin,UserMixin,TemplateView):
     template_name = "user/new/new.html"
 
     def post(self, request, *args, **kwargs):
-        return
         user_id = self.request.user.id
         token = Token.objects.get(user_id=user_id)
         public = request.POST.get("gist[public]") == "1"
@@ -44,40 +43,29 @@ class View(LoginRequiredMixin,UserMixin,TemplateView):
             return HttpResponse(r.text, status=r.status_code)
         timestamp = round(time.time(),3)
         data = r.json()
-        filename_list, language_list, raw_url_list = [], [], []
-        for filename, file_data in d["files"].items():
+        filename_list, language_list, raw_url_hash_list = [], [], []
+        for filename, file_data in data["files"].items():
             filename_list += [filename]
             language_list += [file_data["language"]]
-            raw_url_list+=[file_data["raw_url"]]
+            # https://gist.githubusercontent.com/USER/GIST/raw/HASH/FILENAME
+            raw_url_hash = file_data["raw_url"].split('/')[-2]
+            raw_url_hash_list+=[raw_url_hash]
         language_list = list(sorted(set(filter(None, language_list))))
-        create_obj_list = [
-            Gist( # github.gist
-                id=data["id"],
-                owner_id=user_id,
-                description=description,
-                public=public,
-                fork=False,
-                filename_list=filename_list,
-                language_list=language_list,
-                raw_url_list=raw_url_list,
-                stargazers_count=0,
-                forks_count=0,
-                created_at=timestamp,
-                updated_at=timestamp
-            ),
-            GistOrderJob(user_id=user_id),
-            RefreshJob(schemaname='github_recent_matview',matviewname='gist'),
-            UserTableModification(
-                user_id=user_id,tablename='gist',modified_at=timestamp
-            )
-        ]
-        with transaction.atomic():
-            for obj in create_obj_list:
-                type(obj).models.bulk_create([obj],ignore_conflicts=True)
-            UserTableModification.objects.filter(
-                user_id=user_id,tablename='gist'
-            ).update(modified_at=timestamp)
-            self.execute_sql('CALL github.gist_order_job()')
-            # todo: UserStat
-        url = '/%s/%s' % (self.request.user.login,data["id"])
+        defaults = dict(
+            owner_id=user_id,
+            description=description,
+            public=public,
+            fork=False,
+            filename_list=filename_list,
+            language_list=language_list,
+            raw_url_hash_list=raw_url_hash_list,
+            stargazers_count=0,
+            forks_count=0,
+            created_at=timestamp,
+            updated_at=timestamp
+        )
+        Gist.objects.get_or_create(defaults,id=data['id'])
+        GistOrderJob.objects.get_or_create(user_id=user_id)
+        next_url = '/%s/%s' % (self.request.user.login,data["id"])
+        url = '/%s/refresh-stat?next=%s' % (self.request.user.login,next_url)
         return redirect(url)

@@ -6,35 +6,35 @@
 <ul class="d-md-flex d-none pagehead-actions float-none">
     {% if context_data.github_user.login == request.user.login %}
     <li class="pr-1">
-        <a class="btn btn-sm" rel="nofollow" href="{{ gist.get_absolute_url }}/refresh">
+        <a class="btn btn-sm" rel="nofollow" href="{{ context_data.gist.get_absolute_url }}/refresh">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#sync" /></svg> Refresh</a>
     </li>
     <li class="pr-1">
-        <a class="btn btn-sm" aria-label="Edit this Gist" rel="nofollow" href="{{ gist.get_absolute_url }}/edit">
+        <a class="btn btn-sm" aria-label="Edit this Gist" rel="nofollow" href="{{ context_data.gist.get_absolute_url }}/edit">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#pencil" /></svg> Edit</a>
     </li>
     <li class="pr-1">
-        <a class="btn-danger btn btn-sm" rel="nofollow" href="{{ gist.get_absolute_url }}/delete">
+        <a class="btn-danger btn btn-sm" rel="nofollow" href="{{ context_data.gist.get_absolute_url }}/delete">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#trash" /></svg> Delete</a>
     </li>
     {% endif %}
     <li class="pr-1">
         {% if starred_gist %}
-        <a class="btn btn-sm btn-with-count" rel="nofollow" href="{{ gist.get_absolute_url }}/unstar">
+        <a class="btn btn-sm btn-with-count" rel="nofollow" href="{{ context_data.gist.get_absolute_url }}/unstar">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star-fill" /></svg> Unstar
         {% else %}
-        <a class="btn btn-sm btn-with-count" rel="nofollow" href="{{ gist.get_absolute_url }}/star">
+        <a class="btn btn-sm btn-with-count" rel="nofollow" href="{{ context_data.gist.get_absolute_url }}/star">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star" /></svg> Star
         {% endif %}
         </a>
-        <a class="social-count" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ gist.id }}" target="_blank">{% if gist.stargazers_count != None %}{{ gist.stargazers_count }}{% else %}?{% endif %}</a>
+        <a class="social-count" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ context_data.gist.id }}" target="_blank">{% if gist.stargazers_count != None %}{{ context_data.gist.stargazers_count }}{% else %}?{% endif %}</a>
     </li>
     {% if context_data.github_user.login != request.user.login %}
     <li>
-      <a class="btn btn-sm btn-with-count" rel="nofollow" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ gist.id }}" target="_blank">
+      <a class="btn btn-sm btn-with-count" rel="nofollow" href="https://gist.github.com/{{ context_data.github_user.login }}/{{ context_data.gist.id }}" target="_blank">
         <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg> Fork
       </a>
-        <span class="social-count">{% if gist.forks_count >= 0 %}{{ gist.forks_count }}{% else %}?{% endif %}</span>
+        <span class="social-count">{% if gist.forks_count >= 0 %}{{ context_data.gist.forks_count }}{% else %}?{% endif %}</span>
     </li>
     {% endif %}
 </ul>

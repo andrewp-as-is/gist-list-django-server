@@ -1,51 +1,45 @@
-import time
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
 
-import requests
-
-from base.apps.github.models import Gist, GistStar, Token, Trash
-from views.base import View
+from base.apps.github.models import Gist,GistFileContent
+from views.base import TemplateView
 from ..mixins import GistMixin
 
 """
-https://docs.github.com/en/rest/reference/gists#delete-a-gist
+/USER/GIST/delete
+/USER/GIST/delete/confirm
 """
 
-class View(LoginRequiredMixin,GistMixin,View):
-    def get(self, request,*args,**kwargs):
-        print('DISABLED')
-        return
-        gist_id = self.gist.id
-        user_id = request.user.id
-        url = 'https://api.github.com/gists/%s' % gist_id
-        token = Token.objects.get(user_id=request.user.id)
-        headers = {"Authorization": "Bearer %s" % token.token}
-        # github.trash
-        defaults = dict(
-            owner_id=self.gist.owner_id,
-            fork_of_id=self.gist.fork_of_id,
-            public=self.gist.public,
-            description=self.gist.description,
-            filename_list=self.gist.filename_list,
-            language_list=self.gist.language_list,
-            deleted_at = int(time.time())
-        )
-        Trash.objects.get_or_create(defaults,gist_id=gist.id)
-        r = requests.delete(url,headers=headers)
-        remaining = r.headers.get('x-ratelimit-remaining',0)
-        reset = int(r.headers.get('x-ratelimit-reset',0))
-        Token.objects.filter(id=token.id).update(
-            core_ratelimit_remaining=remaining,
-            core_ratelimit_reset=reset
-        )
-        url = self.github_user.get_absolute_url()
-        if r.status_code >= 400:
-            message = 'ERROR %s: %s' % (r.status_code,r.text)
-            return redirect(url+'?error=%s' % message)
-        if r.status_code in [204]: # DELETED
-            Gist.objects.filter(id=gist_id).delete()
-            # UserModificationJob.objects.get_or_create(user_id=user_id)
-            message = "gist %s was successfully deleted." % gist_id
-            return redirect(url+'?message=%s' % message)
+class View(LoginRequiredMixin,GistMixin,TemplateView):
+    template_name = 'user/gist/delete/delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        gist = self.gist
+        file_list = []
+        file_content_list = list(GistFileContent.objects.filter(gist_id=gist.id))
+        filename2backup = {fc.filename:True for fc in file_content_list}
+        context_data = context.get('context_data',{})
+        for i,filename in enumerate(gist.filename_list,0):
+            raw_url = "https://gist.githubusercontent.com/%s/%s/raw/%s" % (self.github_user.login,gist.id,filename)
+            local_raw_url = "/%s/%s/raw/%s" % (self.github_user.login,gist.id,filename)
+            language, size = None, None
+            if gist.language_list and i>=len(gist.language_list):
+                language = gist.language_list[i]
+            if gist.file_size_list and i>=len(gist.file_size_list):
+                size = gist.file_size_list[i]
+            backup = filename2backup.get(filename,None)
+            danger = False
+            if size and size>1024*1024: # 1Mb
+                danger = True
+            file_list+=[dict(
+                filename=filename,
+                size=42,
+                language=language,
+                raw_url=raw_url,
+                local_raw_url=local_raw_url,
+                danger=danger
+            )]
+        context_data['file_list'] = file_list
+        context['context_data'] = context_data
+        return context
+

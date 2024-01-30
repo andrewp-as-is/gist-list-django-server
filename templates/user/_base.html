@@ -22,10 +22,10 @@
           <div class="d-flex flex-column">
             <h1 class="break-word f3 text-normal mb-md-0 mb-1">
               <span class="author"><a href="{{ context_data.github_user.get_absolute_url }}">{{ context_data.login  }}</a></span>
-              {% if gist %}
+              {% if context_data.gist %}
               <span class="mx-1 color-text-secondary">/</span>
               <strong itemprop="name" class="css-truncate-target mr-1" style="max-width: 410px">
-                <a href="{{ gist.get_absolute_url }}" rel="nofollow">{{  gist.filename_list.0 }}</a>
+                <a href="{{ context_data.gist.get_absolute_url }}" rel="nofollow">{{ context_data.gist.filename_list.0 }}</a>
               </strong>
               {% endif %}
             </h1>
@@ -57,16 +57,16 @@
               <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ context_data.login  }}" href="https://gist.github.com/{{ context_data.login  }}">gist.github.com/{{ context_data.login  }}</a>
             </div>
             {% endif %}
-            {% if gist %}
-            {% if gist.fork %}
+            {% if context_data.gist %}
+            {% if context_data.gist.fork %}
             <div class="note m-0">
-              Forked from <span class="color-text-secondary f6">forked from</span> <a class="f6" href="{{ gist.fork.get_absolute_url }}">{{ gist.fork_of.owner.login|truncatechars:70 }}/{{ gist.fork_of.filename_list.0|truncatechars:70 }}</a>
+              Forked from <span class="color-text-secondary f6">forked from</span> <a class="f6" href="{{ context_data.gist.fork.get_absolute_url }}">{{ context_data.gist.fork_of.owner.login|truncatechars:70 }}/{{ context_data.gist.fork_of.filename_list.0|truncatechars:70 }}</a>
             </div>
             {% endif %}
             <div class="note m-0">
-              Last active <time-ago datetime="{{ gist.updated_at|timestamp_timesince|date:'Y-m-dTH:i:S' }}Z" class="no-wrap" title="{{ gist.updated_at|date:'d b Y, H:i' }} GMT+3">{{ gist.updated_at|timestamp_timesince }}</time-ago>
+              Last active <time-ago datetime="{{ context_data.gist.updated_at|timestamp_timesince|date:'Y-m-dTH:i:S' }}Z" class="no-wrap" title="{{ context_data.gist.updated_at|date:'d b Y, H:i' }} GMT+3">{{ context_data.gist.updated_at|timestamp_timesince }}</time-ago>
               <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
-              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ gist.id }}" href="https://gist.github.com/{{ gist.id }}">gist.github.com/{{ gist.id }}</a>
+              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ context_data.gist.id }}" href="https://gist.github.com/{{ context_data.gist.id }}">gist.github.com/{{ context_data.gist.id }}</a>
             </div>
             {% endif %}
           </div>

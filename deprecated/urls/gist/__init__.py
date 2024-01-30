@@ -2,8 +2,6 @@ from django.urls import path
 
 from views import gist as views
 
-app_name = 'gist'
-
 urlpatterns = [
     path('create', views.GistCreateView.as_view(),name='gist_create'),
     path('<str:pk>/delete', views.TrashView.as_view(),name='gist_delete'),

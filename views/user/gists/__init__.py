@@ -5,7 +5,6 @@ from django.shortcuts import redirect
 
 from base.apps.github.models import Trash
 from views.base import ListView
-from views.details import Details
 from ..mixins import UserMixin
 from .utils import (
     get_object,
@@ -37,6 +36,7 @@ class View(UserMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context_data = context.get('context_data',{})
+        language_stat, tag_stat = {}, {}
         if self.github_user:
             user_id = self.github_user.id
             secret = (
@@ -59,26 +59,45 @@ class View(UserMixin, ListView):
                 language_stat = get_stat_data(self.github_user_stat.public_language_stat)
                 tag_stat = get_stat_data(self.github_user_stat.public_tag_stat)
                 if secret:
-                    language_stat = get_stat_data(self.github_user_stat.secret_language_stat)
-                    tag_stat = get_stat_data(self.github_user_stat.secret_tag_stat)
+                    language2count = get_stat_data(self.github_user_stat.secret_language_stat)
+                    tag2count = get_stat_data(self.github_user_stat.secret_tag_stat)
                 context_data["languages_count"] = len(language_stat.keys())
                 # context["tags_count"] = len(tag_stat.keys())
-                context_data['details'] = dict(
-                    language = Details(
-                        self.request,
-                        menu_item_list=get_language_item_list(language_stat),
-                    ),
-                        tag = Details(
-                        self.request,
-                        menu_item_list=get_tag_item_list(tag_stat),
-                    ),
-                    sort = details.Sort(self.request),
-                    type = details.Type(
-                        self.request, github_user=self.github_user
-                    )
-                )
+        details = context_data.get('details',{})
+        details.update(
+            language_menu_item_list=self.get_details_language_menu_item_list(language2count),
+            sort_menu_item_list=self.get_details_sort_menu_item_list(),
+            tag_menu_item_list=self.get_details_tag_menu_item_list(tag2count),
+            type_menu_item_list = self.get_type_menu_item_list()
+        )
+        context_data['details'] = details
         context['context_data'] = context_data
+        print("GISTS TEST")
         return context
+
+    def get_details_sort_menu_item_list(self):
+        return self.get_details_menu_item_list('sort',details.SORT_ITEM_LIST)
+
+    def get_details_language_menu_item_list(self,language2count):
+        item_list = []
+        # TODO
+        return []
+        return self.get_details_menu_item_list('language',item_list)
+
+    def get_details_tag_menu_item_list(self,tag2count):
+        item_list = []
+        # TODO
+        return []
+        return self.get_details_menu_item_list('tag',tag_stat)
+
+    def get_type_menu_item_list(self):
+        if self.github_user:
+            url = self.github_user.get_absolute_url()
+            return [
+                {'description':'All','url':url,'selected':self.request.path.endswith(self.github_user.login)},
+                {'description':'Public','url':url+'/public','selected':self.request.path.endswith('/public')},
+                {'description':'Secret','url':url+'/secret','selected':self.request.path.endswith('/secret')},
+            ]
 
     def get_queryset_base(self, **kwargs):
         model = self.get_model()
@@ -177,7 +196,11 @@ class View(UserMixin, ListView):
         sort = self.request.GET.get("sort", "")
         sort_prefix = "-" if sort and sort[0] == "-" else ""
         sort_column = self.request.GET.get("sort", "").replace("-", "")
-        order_by = ["created_order"]
+        order_by = ["-created_at"]
         if hasattr(model, "%s_order" % sort_column):
             order_by = [sort_prefix + "%s_order" % sort_column]
+        if hasattr(model, sort_column):
+            order_by = [sort_prefix + sort_column]
+        if hasattr(model, "%s_count" % sort_column):
+            order_by = [sort_prefix + "%s_count" % sort_column]
         return order_by

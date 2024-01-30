@@ -10,5 +10,5 @@ class GistFileContent(models.Model):
     raw_url_hash = models.TextField() # https://gist.githubusercontent.com/USER/GIST/raw/HASH/FILENAME
 
     class Meta:
-        abstract = True
+        managed = False
         unique_together = [('gist', 'filename',)]

@@ -1,0 +1,19 @@
+1) gist-download сделать (но с limit по размеру) тк view in browser не то
+2) download only already downloaded (with limit)?
+3) /USER/download
+file_list для быстрого backup? но почему не в backup если тоже самое
+---
+download="url" может работать только если нет target="_blank"
+НО. большинство будет кликать с cmd/ctrl
+так что свой download все равно нужен
+---
+/USER/GIST/download
+1) file list download
+2) gist.tar.gz и тд
+3) user.tar.gz link, backup gz
+4) docs
+
+
+download, clone где размешать?
+в sidebar тк слишком много ссылок/кнопок вверху неудобно?
+---

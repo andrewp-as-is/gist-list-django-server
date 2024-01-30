@@ -7,7 +7,6 @@ class Trash(models.Model):
     id = models.AutoField(primary_key=True)
     gist_id = models.TextField(unique=True)
 
-
     fork_of = models.ForeignKey("Gist", null=True, on_delete=models.DO_NOTHING)
     owner = models.ForeignKey(
         "github.User", related_name="+", on_delete=models.DO_NOTHING
@@ -22,3 +21,9 @@ class Trash(models.Model):
 
     class Meta:
         managed = False
+
+    def get_absolute_url(self):
+        return "/%s/trash/%s" % (
+            self.owner.login,
+            self.id,
+        )

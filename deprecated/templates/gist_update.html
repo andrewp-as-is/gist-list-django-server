@@ -14,7 +14,7 @@
     <div class="mb-3 d-flex">
       <h1 class="public float-none flex-auto width-fit pl-0">
         <svg height="32" class="octicon octicon-code-square mt-0 position-static v-align-middle" viewBox="0 0 24 24" version="1.1" width="32" aria-hidden="true"><path d="M10.3 8.24a.75.75 0 01-.04 1.06L7.352 12l2.908 2.7a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 011.06.04zm3.44 1.06a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.908-2.7-2.908-2.7z"></path><path fill-rule="evenodd" d="M2 3.75C2 2.784 2.784 2 3.75 2h16.5c.966 0 1.75.784 1.75 1.75v16.5A1.75 1.75 0 0120.25 22H3.75A1.75 1.75 0 012 20.25V3.75zm1.75-.25a.25.25 0 00-.25.25v16.5c0 .138.112.25.25.25h16.5a.25.25 0 00.25-.25V3.75a.25.25 0 00-.25-.25H3.75z"></path></svg>
-        <strong>Editing <a href="{{ gist.get_absolute_url }}">{{ gist.get_files.0 }}</a></strong>
+        <strong>Editing <a href="{{ context_data.gist.get_absolute_url }}">{{ context_data.gist.get_files.0 }}</a></strong>
       </h1>
       <ul class="pagehead-actions float-none">
           <li>
@@ -33,16 +33,16 @@
       {% csrf_token %}
         <div id="gists" class="js-gist-files">
           <input type="hidden" name="old_names" value="{{ old_names }}" />
-          <input type="text" class="form-control input-block input-contrast" name="gist[description]" value="{{ gist.description }}" aria-label="Gist description" placeholder="Gist description…" autocomplete="off">
+          <input type="text" class="form-control input-block input-contrast" name="gist[description]" value="{{ context_data.gist.description }}" aria-label="Gist description" placeholder="Gist description…" autocomplete="off">
           {% for filename,content in files.items %}
-          <div class="js-gist-file" id="gist-file-{{ gist.id }}">
+          <div class="js-gist-file" id="gist-file-{{ context_data.gist.id }}">
             <div class="file js-code-editor container-preview show-code mx-lg-3">
               <div class="file-header mb-2">
                 <div class="input-group gist-filename-input">
                   <input type="hidden" name="gist[contents][][name]" class="js-new-filename-field" value="{{ filename }}" data-default-value="{{ filename }}">
                   <input type="text" class="form-control input-block input-contrast" name="gist[contents][][new_name]" value="{{ filename }}" placeholder="Filename including extension…" autocomplete="off">
                   <span class="input-group-button">
-                    <button type="button" class="btn btn-danger js-remove-gist-file tooltipped tooltipped-e" onclick='document.getElementById("gist-file-{{ gist.id }}").remove()' aria-label="Remove file">
+                    <button type="button" class="btn btn-danger js-remove-gist-file tooltipped tooltipped-e" onclick='document.getElementById("gist-file-{{ context_data.gist.id }}").remove()' aria-label="Remove file">
                       <svg class="octicon octicon-trashcan" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z"></path></svg>
                     </button>
                   </span>
@@ -63,7 +63,7 @@
       </div>
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">Update public gist</button>
-        <a class="btn btn-danger" href="{{ gist.get_absoute_url }}">Cancel</a>
+        <a class="btn btn-danger" href="{{ context_data.gist.get_absoute_url }}">Cancel</a>
       </div>
     </form>
 

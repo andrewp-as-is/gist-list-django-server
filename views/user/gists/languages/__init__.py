@@ -1,7 +1,6 @@
 from base.apps.github.models import Language
 
 from django_postgres_database_size.models import DatabaseSize
-from views.details import Details
 from views.user.gists import View as ListView
 from views.user.gists.utils import get_language_stat
 
@@ -36,10 +35,10 @@ class View(ListView):
             {'value':'count','text':'Most gists'},
             {'value':'name','text':'Name'},
         ]
-        context['sort_details'] = Details(self.request,
-            name='Sort',
-            menu_item_list=menu_item_list
-        )
+        #context['sort_details'] = Details(self.request,
+        #    name='Sort',
+       #     menu_item_list=menu_item_list
+       # )
         context['languages_count'] = len(stat)-1
         unknown_count = total_count-len(stat)+1
         language_list = list(sorted(

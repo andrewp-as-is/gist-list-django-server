@@ -1,0 +1,16 @@
+{% extends "user/gist/_base.html" %}
+
+{% block container %}
+<div class="page-content container-lg">
+    <div class="Subhead border-bottom-0 mb-0">
+        <h3 class="Subhead-heading color-fg-danger text-center">Delete gist</h3>
+    </div>
+    <div class="py-2">
+        {% include "user/gist/delete/_blocks/filename_list.html" %}
+    </div>
+    <div class="py-2">
+        {% include "user/gist/delete/_blocks/how.html" %}
+    </div>
+    {% include "user/gist/delete/_blocks/confirm.html" %}
+</div>
+{% endblock %}

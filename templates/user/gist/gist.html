@@ -8,8 +8,8 @@
     <div class="d-flex flex-justify-center">
       <div class="">
         <div itemprop="about" class="pb-4">
-          <a class="Link--muted" href="{{ gist.get_absolute_url }}/description">
-              {% if gist.description %}{{ gist.description|emoji_replace }}{% endif %}
+          <a class="Link--muted" href="{{ context_data.gist.get_absolute_url }}/description">
+              {% if gist.description %}{{ context_data.gist.description|emoji_replace }}{% endif %}
           </a>
         </div>
 <div>
@@ -19,12 +19,12 @@
 </div>
 <div class="py-1">
     {% for filename,raw_url in gist.filename2raw_url.items %}
-    <a class="btn btn-sm Link--muted px-1 py-0" href="/download?gist={{ gist.id }}&filename={{ filename }}" title="{{ filename }}">
+    <a class="btn btn-sm Link--muted px-1 py-0" href="/download?gist={{ context_data.gist.id }}&filename={{ filename }}" title="{{ filename }}">
     <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#download" /></svg> {{ filename|truncatechars:30 }}
     </a>
     {% endfor %}
 </div>
-      <script src="https://gist.github.com/{{ context_data.github_user.login }}/{{ gist.id }}.js"></script>
+      <script src="https://gist.github.com/{{ context_data.github_user.login }}/{{ context_data.gist.id }}.js"></script>
     </div>
   </div>
 </div>

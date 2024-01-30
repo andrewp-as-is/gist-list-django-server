@@ -1,6 +1,5 @@
 from base.apps.tag.models import Tag
 
-from views.details import Details
 from views.user.gists import View as ListView
 from views.user.gists.utils import get_tag_stat
 
@@ -30,10 +29,10 @@ class View(ListView):
             {'value':'count','text':'Most gists'},
             {'value':'name','text':'Name'},
         ]
-        context['sort_details'] = Details(self.request,
-            name='Sort',
-            menu_item_list=menu_item_list
-        )
+       # context['sort_details'] = Details(self.request,
+       #     name='Sort',
+       #     menu_item_list=menu_item_list
+       # )
         context['tags_count'] = len(stat)-1
         unknown_count = total_count-len(stat)+1
         tag_list = list(sorted(

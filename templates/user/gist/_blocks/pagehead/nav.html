@@ -1,9 +1,9 @@
 <nav class="UnderlineNav box-shadow-none px-3 px-lg-0 " aria-label="Gist">
   <div class="UnderlineNav-body">
-    <a class="UnderlineNav-item {% if request.path == gist.get_absolute_url  %}selected{% endif %}" href="{{ gist.get_absolute_url }}">
+    <a class="UnderlineNav-item {% if request.path == gist.get_absolute_url  %}selected{% endif %}" href="{{ context_data.gist.get_absolute_url }}">
       <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code" /></svg> Code
     </a>
-    <a class="UnderlineNav-item {% if '/backup' in request.path %}selected{% endif %}" href="{{ gist.get_absolute_url }}/backup">
+    <a class="UnderlineNav-item {% if '/backup' in request.path %}selected{% endif %}" href="{{ context_data.gist.get_absolute_url }}/backup">
       <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#database" /></svg> Backup
     </a>
   </div>

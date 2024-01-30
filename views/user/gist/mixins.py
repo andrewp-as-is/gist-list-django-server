@@ -11,8 +11,10 @@ class GistMixin(UserMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["gist"] = self.gist
-        context["gist_user_refresh"] = (
+        context_data = context.get('context_data',{})
+        context_data["gist"] = self.gist
+        context_data["gist_user_refresh"] = (
             GistRefresh.objects.filter(gist_id=self.gist.id).count() > 0
         )
+        context['context_data'] = context_data
         return context

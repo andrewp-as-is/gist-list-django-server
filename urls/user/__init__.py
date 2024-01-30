@@ -2,8 +2,6 @@ from django.urls import include, path
 
 from views import user as views
 
-app_name = 'user'
-
 urlpatterns = [
     path('/api', include('urls.user.api')),
     path('/clone', include('urls.user.clone')),
@@ -15,6 +13,7 @@ urlpatterns = [
     path('/secret', include('urls.user.secret')),
     path('/starred', include('urls.user.starred')),
     path('/refresh', include('urls.user.refresh')),
+    path('/refresh-stat', include('urls.user.refresh_stat')),
     path('/status', include('urls.user.status')),
     path('/followers',      include('urls.user.followers')),
     path('/following',      include('urls.user.following')),

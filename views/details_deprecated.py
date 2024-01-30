@@ -10,6 +10,7 @@ class Details(dict):
         for k,v in kwargs.items():
             setattr(self,k,v)
 
+
     def get_url(self,**kwargs):
         data = {k:v for k,v in self.request.GET.items()}
         data.update(kwargs)
@@ -17,11 +18,6 @@ class Details(dict):
         for k in list(filter(lambda k:k not in ['page'],data.keys())):
             params.append('%s=%s' % (k,data[k]))
         return self.request.path+'?'+'&'.join(params)
-
-    def get_menu(self):
-        return {
-            'item_list':self.get_menu_item_list()
-        }
 
     def get_default_value(self):
         if self.default_value:
@@ -31,21 +27,18 @@ class Details(dict):
     def get_key(self):
         return (self.key or type(self).__name__).lower()
 
-    def get_menu_item_list(self):
+    def get_menu_item_list(value2text):
         key = self.get_key()
         value = self.request.GET.get(key,'')
         default_value = self.get_default_value()
         item_list = []
-        for i in self.menu_item_list:
+        for i in self.value2text:
             i['selected'] = i['value'] == value or i['text'] == value or (value=='' and i['value']==default_value)
             kwargs = {key:i['value']}
             if 'url' not in i:
                 i['url'] = self.get_url(**kwargs)
             item_list+=[i]
         return item_list
-
-    def get_values(self):
-        return list(map(lambda i:i['value'],self.get_menu_item_list()))
 
     def __bool__(self):
         return len(self.get_menu_item_list())>0

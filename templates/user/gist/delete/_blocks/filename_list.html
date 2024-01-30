@@ -1,0 +1,30 @@
+{% load timestamp_timesince %}
+{% load emoji_tags %}
+
+<h4 class="Subhead-heading">Files backup</h4>
+<table class="width-full">
+{% for file in context_data.file_list %}
+<tr class="Box-row Box-row--hover-gray {% if file.danger %}color-bg-danger{% endif %}">
+  <td class="no-wrap px-1" style="width: 1%;">
+      <span class="text-bold text-mono">{{ file.filename }}</span>
+  </td>
+  <td class="no-wrap px-1" style="width: 1%;">
+    <span class="text-mono">{{ file.size|filesizeformat }}</span>
+  </td>
+  <td class="no-wrap px-1" style="width: 1%;">
+      {{ file.language|default:'' }}
+  </td>
+  <td class="no-wrap px-1 width-full">
+     <a href="{{ file.raw_url }}" target="_blank">{{ file.raw_url }}</a>
+  </td>
+  <td class="no-wrap px-1 width-full">&#8594;</td>
+  <td class="no-wrap px-1">
+    {% if gist.backup %}
+    <a class="" href="{{ file.local_raw_url }}"><use xlink:href="#download" /></svg> {{ file.local_raw_url }}</a>
+    {% else %}
+    <a class="" href="{{ file.local_raw_url }}"><use xlink:href="#x" /></svg> {{ file.local_raw_url }}</a> NOT AVAILABLE
+    {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</table>

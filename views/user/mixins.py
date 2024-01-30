@@ -9,12 +9,13 @@ import requests
 from base.apps.github.models import (
     Gist,
     User,
+    UserStat,
     UserTableModification,
     User404,
 )
-from base.apps.github_default_matview.models import User as DefaultUser, UserStat as DefaultUserStat
+from base.apps.github_default_matview.models import User as DefaultUser
 from base.apps.github_default_matview.utils import get_model as get_matview_model
-from base.apps.github_recent_matview.models import User as RecentUser, UserStat as RecentUserStat
+from base.apps.github_recent_matview.models import User as RecentUser
 from base.apps.github_recent_matview.utils import get_model as get_live_matview_model
 from base.apps.postgres.models import Matview
 from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
@@ -44,12 +45,9 @@ class UserMixin:
             authenticated = self.request.user.id == self.github_user.id
             user_id = self.github_user.id
             try:
-                self.github_user_stat = RecentUserStat.objects.get(user_id=user_id)
-            except RecentUserStat.DoesNotExist:
-                try:
-                    self.github_user_stat = DefaultUserStat.objects.get(user_id=user_id)
-                except DefaultUserStat.DoesNotExist:
-                    pass
+                self.github_user_stat = UserStat.objects.get(user_id=user_id)
+            except UserStat.DoesNotExist:
+                pass
             try:
                 self.github_user_refresh_lock = GithubUserRefreshLock.objects.get(github_user_id=user_id)
             except GithubUserRefreshLock.DoesNotExist:

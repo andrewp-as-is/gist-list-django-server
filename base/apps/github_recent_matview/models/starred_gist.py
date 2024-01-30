@@ -5,7 +5,7 @@ from base.apps.github_default_matview.models import AbstractStarredGist
 
 
 class StarredGist(AbstractStarredGist):
-    owner = models.ForeignKey('github.User',related_name='github_live_matview_starred_gist_owner',on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey('github.User',related_name='github_recent_matview_starred_gist_owner',on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = False

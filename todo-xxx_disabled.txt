@@ -1,8 +1,0 @@
-TEMPLATE
-как передавать все эти 100500 параметов?
-xxx_list только норм native
-{% if backup_disabled %}
-{% if refresh_disabled %}
-
-{% if backup_selected %}можно в context_data тоже. но... это уже только templates данные. если backup/refresh еще связано с БД, то это уже никак. только request.path
----

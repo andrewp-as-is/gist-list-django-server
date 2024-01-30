@@ -9,6 +9,12 @@
       {{ trash.gist_id|slice:2 }}…{{ trash.gist_id|slice:"-2:" }}
     </a>
   </td>
+  <td class="no-wrap px-1" style="width: 1%;">
+    {{ trash.filename_list.0|truncatechars:30 }}
+  </td>
+  <td class="no-wrap px-1" style="width: 1%;">
+      {% if not trash.public %}<span class="Label Label--outline">Secret</span>{% endif %}
+  </td>
   <td class="px-1 width-full">
     <a class="f6 Link--muted mr-2" href="/{{ context_data.github_user.login }}/{{ trash.gist_id }}">
     {% if trash.description %}
@@ -16,9 +22,11 @@
     {% endif %}
     </a>
   </td>
+  {% if trash.fork_of %}
   <td class="f6 no-wrap px-1">
-    {% if gist.fork_of %}<span class="color-fg-muted f6">forked from</span> <a class="f6" href="{{ gist.fork_of.get_absolute_url }}">{{ gist.fork_of.owner.login }}/{{ gist.fork_of.filename_list.0|truncatechars:70 }}</a>
-    {% endif %}
+    <span class="color-fg-muted f6">forked from</span> <a class="f6" href="{{ trash.fork_of.get_absolute_url }}">{{ trash.fork_of.owner.login }}/{{ trash.fork_of.filename_list.0|truncatechars:70 }}</a>
+  </td>
+  {% endif %}
   <td class="f6 no-wrap px-1">
     {% for language_name in trash.language_list %}
     <a class="f6 Link--muted" href="{{ request.path }}?language={{ language_name }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language_name }}</a>{% if not forloop.last %},{% endif %}

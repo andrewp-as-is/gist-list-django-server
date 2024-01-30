@@ -1,9 +1,0 @@
-#context["languages_count"] = len(language_stat.keys()) - 1
-#context["tags_count"] = len(tag_stat.keys()) - 1
-queryset_count
----
-как переделать тк public vs secret
-2)
----
-model2template удобно
-а какие-то структуры данных не оч удобно хнык хнык

@@ -4,7 +4,7 @@
 </h4>
 <div class="flash flash-full flash-warn">
     {% for gist in unknown_version_gist_list %}
-    <a href="/{{ gist.id }}">{{ gist.id }}</a><br />
+    <a href="/{{ context_data.gist.id }}">{{ context_data.gist.id }}</a><br />
     {% endfor %}
 </div>
 {% endif %}

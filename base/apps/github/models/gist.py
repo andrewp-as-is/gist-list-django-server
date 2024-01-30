@@ -34,6 +34,7 @@ class AbstractGist(models.Model):
 
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
+    file_size_list = ArrayField(models.IntegerField())
     language_list = ArrayField(models.TextField())  # language name list
     raw_url_hash_list = ArrayField(models.TextField())
 

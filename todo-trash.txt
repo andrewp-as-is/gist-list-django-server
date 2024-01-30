@@ -1,2 +1,0 @@
-gist_id fork_of filename_list language_list deleted_at
-filter(owner_id=self.github_user.id)
