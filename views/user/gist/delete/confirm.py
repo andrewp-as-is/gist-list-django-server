@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 
 import requests
 
-from base.apps.github.models import Gist, GistStar, Token, Trash, UserStat, UserTableModification
+from base.apps.github.models import Gist, GistStar, Token, Trash, UserStat
 from views.base import View
 from ..mixins import GistMixin
 
@@ -28,6 +28,7 @@ class View(LoginRequiredMixin,GistMixin,View):
             public=self.gist.public,
             description=self.gist.description,
             filename_list=self.gist.filename_list,
+            file_size_list=self.gist.file_size_list,
             language_list=self.gist.language_list,
             deleted_at = int(time.time())
         )
@@ -44,6 +45,9 @@ class View(LoginRequiredMixin,GistMixin,View):
             return HttpResponse(r.text, status=r.status_code)
         if r.status_code in [204]: # DELETED
             Gist.objects.filter(id=gist_id).delete()
-            UserTableModification.objects.get_or_create(user_id=user_id,tablename='gist')
-            url = '/%s/refresh-stat' % request.user.login
-            return redirect(url)
+            trash_count = Trash.objects.filter(owner_id=user_id).count()
+            UserStat.objects.filter(user_id=user_id).update(
+                gist_modified_at=int(time.time()),
+                trash_count=trash_count,
+            )
+            return redirect(self.github_user.get_absolute_url())

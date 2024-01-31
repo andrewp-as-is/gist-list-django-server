@@ -1,8 +1,0 @@
-создавать backup перед DELETE
----
-filename.txt+database
----
-/USER/deleted
-gists forked starred deleted
-deleted_at
-stargazers_count,comments и тд не нужно

@@ -8,14 +8,14 @@ from base.apps.github.models import AbstractGist
 
 class AbstractGist(AbstractGist):
     id = models.AutoField(primary_key=True)
-    id_order = models.IntegerField()
+    #id_order = models.IntegerField()
     description_order = models.IntegerField()
     filename_order = models.IntegerField()
-    comments_order = models.IntegerField()
-    forks_order = models.IntegerField()
-    stars_order = models.IntegerField()
-    created_order = models.IntegerField()
-    updated_order = models.IntegerField()
+    #comments_order = models.IntegerField()
+    #forks_order = models.IntegerField()
+    #stars_order = models.IntegerField()
+    #created_order = models.IntegerField()
+    #updated_order = models.IntegerField()
 
     class Meta:
         abstract = True

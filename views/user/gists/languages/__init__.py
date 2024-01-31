@@ -1,8 +1,7 @@
 from base.apps.github.models import Language
 
-from django_postgres_database_size.models import DatabaseSize
 from views.user.gists import View as ListView
-from views.user.gists.utils import get_language_stat
+# from views.user.gists.utils import get_gist_language_model, get_language_stat
 
 
 LANGUAGE_ID2LANGUAGE = {l.id:l for l in Language.objects.all()}
@@ -25,15 +24,15 @@ class View(ListView):
         return get_queryset_base(self.request,self.github_user)
 
     def get_context_data(self, **kwargs):
-        print(list(DatabaseSize.objects.all()))
+        gist_language_model = get_gist_language_model(self.github_user_stat)
         context = super().get_context_data(**kwargs)
         qs = self.get_queryset_base()
         total_count = qs.count()
-        stat = get_language_stat(qs,self.gist_language_model)
+        stat = get_language_stat(qs,gist_language_model)
         language_list = get_language_list(total_count,stat)
         menu_item_list = [
-            {'value':'count','text':'Most gists'},
-            {'value':'name','text':'Name'},
+            {'value':'count','description':'Most gists'},
+            {'value':'name','description':'Name'},
         ]
         #context['sort_details'] = Details(self.request,
         #    name='Sort',

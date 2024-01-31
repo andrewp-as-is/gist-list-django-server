@@ -15,6 +15,7 @@ class Trash(models.Model):
 
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
+    file_size_list = ArrayField(models.IntegerField())
     language_list = ArrayField(models.TextField())  # language name list
 
     deleted_at = models.IntegerField()
@@ -25,5 +26,5 @@ class Trash(models.Model):
     def get_absolute_url(self):
         return "/%s/trash/%s" % (
             self.owner.login,
-            self.id,
+            self.gist_id,
         )

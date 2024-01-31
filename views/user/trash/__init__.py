@@ -1,17 +1,11 @@
 from base.apps.github.models import Trash
-from views.base import ListView
+from views.user.gists import ListView
 from ..mixins import UserMixin
 
 class View(UserMixin, ListView):
     model = Trash
     context_object_name = "trash_list"
     template_name = "user/trash/trash_list.html"
-
-    def get(self, request, *args, **kwargs):
-        login = self.kwargs.get("login")
-        if request.path == "/%s/" % login:
-            return redirect("/%s" % login)
-        return super().get(request, *args, **kwargs)
 
     def get_queryset_base(self, **kwargs):
         if (

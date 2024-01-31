@@ -19,7 +19,7 @@ class ListView(Mixin,ListView):
         if self.paginate_by:  # hardcoded
             return self.paginate_by
         value = self.request.GET.get(PAGINATE_BY_KEY, "")
-        if value and value.isdigit() and value in PAGINATE_BY_LIST:
+        if value.isdigit() and int(value) in PAGINATE_BY_LIST:
             return int(value)
         return PAGINATE_BY_DEFAULT
 
@@ -30,7 +30,6 @@ class ListView(Mixin,ListView):
         details['view_menu_item_list'] = self.get_details_view_menu_item_list()
         context_data['details'] = details
         context['context_data'] = context_data
-        print("BASE TEST")
         return context
 
     def get_details_view_menu_item_list(self):

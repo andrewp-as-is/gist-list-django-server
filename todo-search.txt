@@ -13,4 +13,12 @@ homepage search остается
 зачем search username если можно войти с помощью github и попадешь на свою страницу
 ---
 но... это не очевидно
+---
+/USER/
+/USER/starred
 
+
+search include, exclude?
+exclude чтобы without "test" filename/description
+---
+tsv

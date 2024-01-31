@@ -1,2 +1,0 @@
-1) там где нет order matview не нужно
-2) edit/delete и тд matview не обновят в realtime все равно

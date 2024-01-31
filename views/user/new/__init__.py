@@ -7,13 +7,14 @@ import time
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from views.base import TemplateView
 
 import requests
 
-from base.apps.github.models import Gist, GistOrderJob, Token, UserTableModification, UserStat
+from base.apps.github.models import Gist, UserGistOrderJob, Token, UserStat
 from ..mixins import UserMixin
 
 
@@ -64,8 +65,12 @@ class View(LoginRequiredMixin,UserMixin,TemplateView):
             created_at=timestamp,
             updated_at=timestamp
         )
-        Gist.objects.get_or_create(defaults,id=data['id'])
-        GistOrderJob.objects.get_or_create(user_id=user_id)
-        next_url = '/%s/%s' % (self.request.user.login,data["id"])
-        url = '/%s/refresh-stat?next=%s' % (self.request.user.login,next_url)
-        return redirect(url)
+        gist, created = Gist.objects.get_or_create(defaults,id=data['id'])
+        stat_kwargs = dict(gist_modified_at = int(time.time()))
+        if public:
+            stat_kwargs['public_gists_count']=F('public_gists_count') + 1
+        else:
+            stat_kwargs['secret_gists_count']=F('secret_gists_count') + 1
+        UserStat.objects.filter(user_id=user_id).update(**stat_kwargs)
+        UserGistOrderJob.objects.get_or_create(user_id=user_id)
+        return redirect(gist.get_absolute_url())

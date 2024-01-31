@@ -7,5 +7,7 @@
 {% endif %}
 {% if context_data.details.sort_menu_item_list %}
 {% include "_blocks/details.html" with summary_name="Sort" menu_title="Select order"  menu_item_list=context_data.details.sort_menu_item_list %}
+{% endif %}
+{% if context_data.details.view_menu_item_list %}
 {% include "_blocks/details.html" with summary_name="View" menu_title="Results per page" menu_item_list=context_data.details.view_menu_item_list %}
 {% endif %}

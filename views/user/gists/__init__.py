@@ -9,12 +9,8 @@ from ..mixins import UserMixin
 from .utils import (
     get_object,
     get_gist_model,
+    get_gist_language_model,
     get_language,
-    get_language_item_list,
-    get_language_stat,
-    get_stat_data,
-    get_tag_item_list,
-    get_tag_stat,
     get_tag,
 )
 from . import details
@@ -50,45 +46,33 @@ class View(UserMixin, ListView):
            ##     )
            # else:
             #    context["blankslate"] = not self.github_user.public_gists_count
-            # count = self.get_queryset_base().count()
-            # todo: remake queryset_count
-            # todo: stat tags/etc
-            # context["queryset_count"] = count
-            model = self.get_model()
-            if self.github_user_stat:
-                language_stat = get_stat_data(self.github_user_stat.public_language_stat)
-                tag_stat = get_stat_data(self.github_user_stat.public_tag_stat)
-                if secret:
-                    language2count = get_stat_data(self.github_user_stat.secret_language_stat)
-                    tag2count = get_stat_data(self.github_user_stat.secret_tag_stat)
-                context_data["languages_count"] = len(language_stat.keys())
-                # context["tags_count"] = len(tag_stat.keys())
+            # todo: remove queryset_count
         details = context_data.get('details',{})
         details.update(
-            language_menu_item_list=self.get_details_language_menu_item_list(language2count),
+            language_menu_item_list=self.get_details_language_menu_item_list(self.language2count),
             sort_menu_item_list=self.get_details_sort_menu_item_list(),
-            tag_menu_item_list=self.get_details_tag_menu_item_list(tag2count),
+            tag_menu_item_list=self.get_details_tag_menu_item_list(self.tag2count),
             type_menu_item_list = self.get_type_menu_item_list()
         )
         context_data['details'] = details
         context['context_data'] = context_data
-        print("GISTS TEST")
         return context
 
     def get_details_sort_menu_item_list(self):
         return self.get_details_menu_item_list('sort',details.SORT_ITEM_LIST)
 
     def get_details_language_menu_item_list(self,language2count):
-        item_list = []
-        # TODO
-        return []
+        item_list = [{'value':'','description':'All'}]
+        for language,count in language2count.items():
+             item_list+=[{'value':language,'description':language,'count':count}]
         return self.get_details_menu_item_list('language',item_list)
 
     def get_details_tag_menu_item_list(self,tag2count):
-        item_list = []
-        # TODO
-        return []
-        return self.get_details_menu_item_list('tag',tag_stat)
+        if tag2count:
+            item_list = [{'value':'','description':'All'}]
+            for tag,count in tag2count.items():
+                 item_list+=[{'value':tag,'description':tag,'count':count}]
+            return self.get_details_menu_item_list('tag',item_list)
 
     def get_type_menu_item_list(self):
         if self.github_user:
@@ -121,6 +105,7 @@ class View(UserMixin, ListView):
             or not self.github_user
         ):
             return model.objects.none()
+        gist_language_model = get_gist_language_model(self.github_user_stat)
         prefix = "gist__" if self.request.path.split("/")[-1] == "starred" else ""
         qs = self.get_queryset_base()
         qs = qs.exclude(
@@ -132,7 +117,7 @@ class View(UserMixin, ListView):
             if language:
                 # qs = qs.filter(language_m2m=language.id)
                 qs = qs.filter(
-                    id__in=self.gist_language_model.objects.filter(
+                    id__in=gist_language_model.objects.filter(
                         gist_id__in=self.get_queryset_base().values_list(
                             "id", flat=True
                         ),

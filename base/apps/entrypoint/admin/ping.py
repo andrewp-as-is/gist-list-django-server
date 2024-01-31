@@ -1,13 +1,12 @@
 from django.contrib import admin
 
-from ..models import Run
+from ..models import Ping
 
 
-class RunAdmin(admin.ModelAdmin):
+class PingAdmin(admin.ModelAdmin):
     list_display = [
         "name",
-        "started_at",
-        "finished_at",
+        "created_at",
     ]
 
     def has_add_permission(self, request, obj=None):
@@ -20,4 +19,4 @@ class RunAdmin(admin.ModelAdmin):
         return False
 
 
-admin.site.register(Run, RunAdmin)
+admin.site.register(Ping, PingAdmin)

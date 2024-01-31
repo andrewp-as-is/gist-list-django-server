@@ -4,19 +4,17 @@
 <table class="width-full">
 {% for trash in trash_list %}
 <tr class="Box-row Box-row--hover-gray">
-  <td class="no-wrap px-1 text-left text-mono">
-    <a class="Link--muted" href="{{ trash.get_absolute_url }}" title="{{ trash.gist_id }}">
-      {{ trash.gist_id|slice:2 }}…{{ trash.gist_id|slice:"-2:" }}
-    </a>
+  <td class="no-wrap" style="width: 1%;">
+    {% if not trash.public %}
+    <a class="Link--muted" href="{{ trash.get_absolute_url }}">
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#lock" /></svg></a>
+    {% endif %}
   </td>
   <td class="no-wrap px-1" style="width: 1%;">
-    {{ trash.filename_list.0|truncatechars:30 }}
-  </td>
-  <td class="no-wrap px-1" style="width: 1%;">
-      {% if not trash.public %}<span class="Label Label--outline">Secret</span>{% endif %}
+    <a class="f6" href="{{ trash.get_absolute_url }}">{{ trash.filename_list.0|truncatechars:30 }}</a>
   </td>
   <td class="px-1 width-full">
-    <a class="f6 Link--muted mr-2" href="/{{ context_data.github_user.login }}/{{ trash.gist_id }}">
+    <a class="f6 Link--muted mr-2" href="{{ trash.get_absolute_url }}">
     {% if trash.description %}
         {{ trash.description|truncatechars:150|emoji_replace }}
     {% endif %}
@@ -38,13 +36,14 @@
       {% endfor %}
   </td>
   <td class="no-wrap px-1">
+    <a class="Link--muted" href="{{ trash.get_absolute_url }}">
     {% if trash.filename_list %}
     <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> {{ trash.filename_list|length }} file{% if trash.filename_list|length > 1 %}s{% endif %}
     </a>
     {% endif %}
   </td>
   <td class="f6 px-1" nowrap>
-    deleted {{ trash.deleted_at|timestamp_timesince }}
+    <a class="Link--muted" href="{{ trash.get_absolute_url }}">deleted {{ trash.deleted_at|timestamp_timesince }}</a>
   </td>
 </tr>
 {% endfor %}

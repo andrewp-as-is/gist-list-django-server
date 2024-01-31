@@ -1,0 +1,7 @@
+/USER/gists.json
+/USER/trash.json
+/USER/trash.json
+/USER/backups.json
+
+download, clone, json где?
+json через django-rest-framework

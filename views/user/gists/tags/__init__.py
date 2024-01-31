@@ -1,7 +1,7 @@
 from base.apps.tag.models import Tag
 
 from views.user.gists import View as ListView
-from views.user.gists.utils import get_tag_stat
+# from views.user.gists.utils import get_tag_stat
 
 
 def get_tag_list(total_count,stat):

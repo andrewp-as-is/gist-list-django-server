@@ -1,14 +1,9 @@
-в любом случае надо показывать
----
+
 сортировка по language/tag аналогично?
----
-restore btn
 ---
 BACKUP VS DOWNLOAD
 1) backup немного не то тк backup = user backup
 2) желательно подчеркивать что это latest version, а не history
----
-delete gist confirm можно вставить еще описание и тд в стиле danger zone
 ---
 trash/GIST page
 download file
@@ -21,6 +16,34 @@ free vs pro - different interval
 language filter/etc
 tags
 ---
-SIZE
----
 todo: search
+---
+queryset
+order()
+
+а значит user_trash_order_job
+---
+Restore/Recover/Recreate
+Restore (New)/Recover (New)/Recreate (New)
+
+delete immediately
+
+как вариант btn внизу под files
+---
+delete immediately
+---
+логично показывать все files? тк как найдешь что нужно
+N files заодно можно убрать
+filename.ext можно укоротить тк по общему кол-ву файлов зато будет более понятно
+или... dynamic max lenth в зависимости от кол-ва файлов
+----
+restore delete btn логично в самом верху
+---
+file icon/btn
+raw download
+---
+ID:
+github gist ID:
+где-то ID так или иначе надо указать
+---
+gist_file_content VS trash_file_content ?

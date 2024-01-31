@@ -1,8 +1,8 @@
-__all__ = ["FollowerOrderJob"]
+__all__ = ["UserFollowerOrderJob"]
 
 from django.db import models
 
-class FollowerOrderJob(models.Model):
+class UserFollowerOrderJob(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(unique=True)
 

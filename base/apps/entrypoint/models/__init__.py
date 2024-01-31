@@ -1,2 +1,2 @@
-from .run import *
+from .ping import *
 from .stat import *

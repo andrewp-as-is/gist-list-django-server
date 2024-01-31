@@ -6,13 +6,13 @@ from base.apps.github_recent_matview.models import GistStar as RecentGistStar, S
 def get_gist_star_model(user_stat):
     if not user_stat:
         return
-    if user_stat.refreshed_at+3600*24>time.time():
+    if not user_stat.refreshed_at or user_stat.refreshed_at+3600*24>time.time():
         return RecentGistStar
     return DefaultGistStar
 
 def get_starred_gist_model(user_stat):
     if not user_stat:
         return
-    if user_stat.refreshed_at+3600*24>time.time():
+    if not user_stat.refreshed_at or user_stat.refreshed_at+3600*24>time.time():
         return RecentStarredGist
     return DefaultStarredGist

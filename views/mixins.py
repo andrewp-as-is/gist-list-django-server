@@ -7,8 +7,16 @@ from django.shortcuts import render
 #from base.apps.error.utils import save_python_error
 #from base.apps.incident.models import Incident
 from base.apps.postgres.models import Query
+from base.apps.status.models import Status
 
 class Mixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context_data = context.get('context_data',{})
+        context_data['status'] = Status.objects.get(id=1)
+        context['context_data'] = context_data
+        return context
+
 
     def execute_sql(self, query):
         cursor = connection.cursor()
@@ -34,7 +42,7 @@ class Mixin:
             kwargs = {key:item['value']}
             if 'url' not in item:
                 item['url'] = self.get_url(**kwargs)
-        if not request_value:
+        if not request_value and item_list:
             item_list[0]['selected'] = True
         return item_list
 

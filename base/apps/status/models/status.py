@@ -4,13 +4,8 @@ from django.db import models
 
 class Status(models.Model):
     id = models.AutoField(primary_key=True)
-    healthcheck_success = models.BooleanField()
-    incidents_count = models.IntegerField()
-    created_at = models.IntegerField()
+    postgres_vacuum_full = models.BooleanField(null=True)
+    refreshed_at = models.IntegerField()
 
     class Meta:
         managed = False
-
-    @property
-    def success(self):
-        return self.healthcheck_success and self.incidents_count==0

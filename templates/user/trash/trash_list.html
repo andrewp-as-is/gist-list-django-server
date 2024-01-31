@@ -3,6 +3,7 @@
 {% block container %}
 <div class="clearfix px-2">
 {% if trash_list %}
+{% include "user/trash/_blocks/search.html" %}
 {% include "user/trash/_blocks/table.html" %}
 {% else %}
 {% include "user/trash/_blocks/blankslate.html" %}

@@ -50,6 +50,9 @@ class AbstractGist(models.Model):
     pushed_at = models.IntegerField(null=True) # GraphQL api only
     updated_at = models.IntegerField(null=True)
 
+    description_order = models.IntegerField(null=True)
+    filename_order = models.IntegerField(null=True)
+
     class Meta:
         abstract = True
 

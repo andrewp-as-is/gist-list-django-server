@@ -1,12 +1,11 @@
-__all__ = ['Run',]
+__all__ = ['Ping',]
 
 from django.db import models
 
-class Run(models.Model):
+class Ping(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.TextField()
-    started_at = models.IntegerField()
-    finished_at = models.IntegerField(null=True)
+    created_at = models.IntegerField()
 
     class Meta:
         managed = False

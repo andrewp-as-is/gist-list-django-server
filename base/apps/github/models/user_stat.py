@@ -27,6 +27,14 @@ class AbstractUserStat(models.Model):
    # public_language_list = ArrayField(models.TextField()) # language NAME list
    # public_tag_list = ArrayField(models.TextField()) # tag SLUG list
 
+    gist_modified_at = models.IntegerField(null=True)
+    gist_language_modified_at = models.IntegerField(null=True)
+    gist_star_modified_at = models.IntegerField(null=True)
+    gist_tag_modified_at = models.IntegerField(null=True)
+    user_follower_modified_at = models.IntegerField(null=True)
+    user_following_modified_at = models.IntegerField(null=True)
+    user_modified_at = models.IntegerField(null=True)
+
     refreshed_at = models.IntegerField(null=True)
     secret_refreshed_at = models.IntegerField(null=True)
 

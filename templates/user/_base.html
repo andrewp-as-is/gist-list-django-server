@@ -29,11 +29,11 @@
               </strong>
               {% endif %}
             </h1>
-            {% if not gist and github_user %}
+            {% if not context_data.gist and context_data.github_user %}
             <div class="note m-0">
               <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}">
                   <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
-                  <span class="text-bold color-fg-default">{{ context_data.github_user_stat.gists_count }}</span> gists
+                  <span class="text-bold color-fg-default">{{ context_data.links.gists.count }}</span> gists
               </a>
               {% if context_data.github_user.followers_count >= 0 %}
               <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/followers">
@@ -49,7 +49,7 @@
               <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/languages">
                   <span class="text-bold color-fg-default">{{ context_data.github_user_stat.languages_count }}</span> languages
               </a>
-              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/tags">
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login }}/tags">
                   <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#tag" /></svg>
                   <span class="text-bold color-fg-default">{{ context_data.github_user_stat.tags_count }}</span> tags
               </a>

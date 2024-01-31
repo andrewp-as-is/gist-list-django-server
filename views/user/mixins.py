@@ -10,7 +10,6 @@ from base.apps.github.models import (
     Gist,
     User,
     UserStat,
-    UserTableModification,
     User404,
 )
 from base.apps.github_default_matview.models import User as DefaultUser
@@ -26,6 +25,13 @@ def get_model(tablename,live_matview_list):
     return get_matview_model(tablename)
 
 
+def get_stat_data(stat):
+    data = {}
+    if stat:
+        for l in stat.splitlines():
+            data[l.split(':')[0]] = l.split(':')[1].strip()
+    return data
+
 class UserMixin:
     def dispatch(self, *args, **kwargs):
         self.login = self.kwargs["login"]
@@ -40,12 +46,18 @@ class UserMixin:
         live_matview_list = []
         self.github_user_refresh_lock = None
         self.github_user_stat = None
+        self.language2count = {}
+        self.tag2count = {}
         try:
             self.github_user = User.objects.get(login=self.kwargs["login"])
-            authenticated = self.request.user.id == self.github_user.id
             user_id = self.github_user.id
             try:
                 self.github_user_stat = UserStat.objects.get(user_id=user_id)
+                self.language2count = get_stat_data(self.github_user_stat.public_language_stat)
+                self.tag2count = get_stat_data(self.github_user_stat.public_tag_stat)
+                if self.request.user.id == self.github_user.id:
+                    self.language2count = get_stat_data(self.github_user_stat.secret_language_stat)
+                    self.tag2count = get_stat_data(self.github_user_stat.secret_tag_stat)
             except UserStat.DoesNotExist:
                 pass
             try:
@@ -82,20 +94,29 @@ class UserMixin:
                         gists_count+=self.github_user_stat.secret_gists_count or 0
                     if forks_count:
                         forks_count+=self.github_user_stat.secret_forks_count or 0
+                # todo: languages
                 links = context_data.get('links',{})
                 links.update(
                     forked=dict(
                         count=forks_count,
-                        selected = self.request.path.endswith('/forked')
+                        selected = self.request.path.endswith('/forked') or '/forked/' in self.request.path
                     ),
                     starred=dict(
                         count=self.github_user_stat.stars_count,
-                        selected = self.request.path.endswith('/starred')
+                        selected = self.request.path.endswith('/starred') or '/starred/' in self.request.path
                     ),
                     trash=dict(
                         count=self.github_user_stat.trash_count,
-                        selected = self.request.path.endswith('/trash')
-                    )
+                        selected = self.request.path.endswith('/trash') or '/trash/' in self.request.path
+                    ),
+                    languages=dict(
+                        count=len(self.language2count.keys()),
+                        selected = self.request.path.endswith('/languages')
+                    ),
+                    tags=dict(
+                        count=len(self.tag2count.keys()),
+                        selected = self.request.path.endswith('/tags')
+                    ),
                 )
                 links['gists'] = dict(
                     count=gists_count,
