@@ -1,8 +1,0 @@
-<div class="py-1">
-    <a class="btn btn-outline {% if request.GET.protocol|default:'ssh' == 'ssh' %}selected{% endif %}" href="{{ request.path }}?protocol=ssh&name={{ request.GET.name }}">SSH</a>
-    <a class="btn btn-outline {% if request.GET.protocol|default:'ssh' == 'https' %}selected{% endif %}" href="{{ request.path }}?protocol=https&name={{ request.GET.name }}">HTTPS</a>
-</div>
-<div class="py-1">
-    <a class="btn btn-outline {% if request.GET.name|default:'id' == 'id' %}selected{% endif %}" href="{{ request.path }}?protocol={{ request.GET.protocol }}&name=id">ID</a>
-    <a class="btn btn-outline {% if request.GET.name == 'filename' %}selected{% endif %}" href="{{ request.path }}?protocol={{ request.GET.protocol }}&name=filename">Filename</a>
-</div>

@@ -1,17 +1,7 @@
-from base.apps.tag.models import Tag
 
 from views.user.gists import View as ListView
 # from views.user.gists.utils import get_tag_stat
 
-
-def get_tag_list(total_count,stat):
-    tag_id_list = list(stat.keys())
-    id2count = {tag_id:count for tag_id,count in stat.items()}
-    tag_list = list(Tag.objects.filter(id__in=tag_id_list))
-    for tag in tag_list:
-        tag.count = id2count.get(tag.id,0)
-        tag.percent = round((tag.count/total_count)*100,1)
-    return tag_list
 
 class View(ListView):
     template_name = "user/gists/tags/tag_list.html"

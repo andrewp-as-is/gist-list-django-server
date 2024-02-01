@@ -1,0 +1,6 @@
+{% if context_data.github_user.email %}
+<li style="max-width: 230px" class="mr-md-3 color-fg-default my-2 my-md-0 css-truncate css-truncate-target">
+<svg class="octicon flex-shrink-0 v-align-middle" style="width:16px;height:16px"><use xlink:href="#mail" /></svg>
+<a class="color-fg-default" itemprop="email" href="mailto:{{ context_data.github_user.email }}">{{ context_data.github_user.email }}</a>
+</li>
+{% endif %}

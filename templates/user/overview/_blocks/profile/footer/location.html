@@ -1,0 +1,6 @@
+{% if context_data.github_user.location %}
+<li style="max-width: 230px" class="mr-md-3 v-align-middle color-fg-default my-2 my-md-0 css-truncate css-truncate-target">
+  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#location" /></svg>
+  <a rel="nofollow" itemprop="url" class="color-fg-default" title="{{ context_data.github_user.location }}" href="{{ context_data.github_user.location }}">{{ context_data.github_user.location }}</a>
+</li>
+{% endif %}

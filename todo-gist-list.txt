@@ -1,4 +1,8 @@
 убрать ID?
-gists.json забыл надо где-то разместить ссылку
+ID если и нужно то только себе
 ---
-languages2count,tag2count
+как вариант сделать hidden URL GET arguments
+/USER?id=t
+показывать все ID
+---
+gists.json забыл надо где-то разместить ссылку

@@ -13,7 +13,7 @@
           </a>
         </div>
 <div>
-    {% for tag in gist.get_tag_list %}
+    {% for tag in gist.tag_list %}
     <a href="{{ tag }}">#{{ tag }}</a>
     {% endfor %}
 </div>

@@ -1,3 +1,10 @@
-api, clone, download
-куда впихнуть эти links и как сделать?
-а еще user info и тд
+rename script/gist
+id -> filename
+1) tooltip?
+2) flash message?
+
+p.s.: аналогичный скрипт для download
+---
+textarea rows
+max VS "100"
+хотя... в любом случае можно внизу разместить rename script/gist

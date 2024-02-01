@@ -1,0 +1,3 @@
+{% if context_data.details.view.menu_item_list %}
+{% include "_blocks/details.html" with summary_name="View" menu_title="Results per page" menu_item_list=context_data.details.view.menu_item_list %}
+{% endif %}

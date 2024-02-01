@@ -15,8 +15,9 @@ class Trash(models.Model):
 
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
-    file_size_list = ArrayField(models.IntegerField())
+    size_list = ArrayField(models.IntegerField())
     language_list = ArrayField(models.TextField())  # language name list
+    tag_list = ArrayField(models.TextField())
 
     deleted_at = models.IntegerField()
 

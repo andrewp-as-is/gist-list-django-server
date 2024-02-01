@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
-from views.user.public import View as _View
+from views.user.gists.public import View as _View
 
 class View(_View):
     paginate_by = 100000

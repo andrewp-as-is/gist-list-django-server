@@ -24,10 +24,11 @@ class View(ListView):
         return get_queryset_base(self.request,self.github_user)
 
     def get_context_data(self, **kwargs):
-        gist_language_model = get_gist_language_model(self.github_user_stat)
         context = super().get_context_data(**kwargs)
         qs = self.get_queryset_base()
         total_count = qs.count()
+        # todo
+        # qs = qs.filter(language__contains=None)
         stat = get_language_stat(qs,gist_language_model)
         language_list = get_language_list(total_count,stat)
         menu_item_list = [

@@ -1,0 +1,17 @@
+id.tar.gz
+по filename можно скриптом переименовать, как и в случае с clone
+---
+download script
+curl/wget hell
+---
+download table?
+но по идее кому это нужно
+а кому нужно download script? это все одноразовое
+download нужен если 1) windows 2) мало гистов и лень ковыряться с terminal
+
+gist_list логично по filename тк в ~/Downloads будет тоже самое с таким же порядком
+хотя... а в другом месте другой order и будет неразбериха
+---
+/USER/gists/download
+/USER/starred/download
+/USER/trash/download

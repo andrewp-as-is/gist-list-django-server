@@ -1,6 +1,10 @@
 {% load format_count %}
 
-<a class="UnderlineNav-item{% if context_data.links.gists.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}">
+<a class="UnderlineNav-item{% if context_data.links.overview.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#home" /></svg>
+    Overview
+</a>
+<a class="UnderlineNav-item{% if context_data.links.gists.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/gists">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
     Gists{% if context_data.links.gists.count != None %} <span class="Counter">{{ context_data.links.gists.count|format_count }}</span>{% endif %}
 </a>
@@ -12,7 +16,7 @@
 {% endif %}
 {% if context_data.github_user.login == request.user.login %}
 {% if context_data.links.starred.count %}
-<a class="UnderlineNav-item{% if context_data.links.starred.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/starred">
+<a class="UnderlineNav-item{% if context_data.links.starred.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/gists/starred">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#star" /></svg>
     Starred <span class="Counter">{{ context_data.links.starred.count|format_count }}</span>
 </a>

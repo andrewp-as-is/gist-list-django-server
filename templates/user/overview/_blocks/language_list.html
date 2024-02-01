@@ -1,0 +1,8 @@
+<div class="mb-3 my-3 py-3 border-bottom">
+  <h4 class="f4 mb-2 text-normal">
+    <a class="Link--muted color-fg-default" href="{{ context_data.github_user.get_absolute_url }}/languages">Top languages</a>
+  </h4>
+  {% for language in context_data.top_language_list %}
+    {{ language }}
+  {% endfor %}
+</div>

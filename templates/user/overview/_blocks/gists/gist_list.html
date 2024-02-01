@@ -1,0 +1,50 @@
+{% load timestamp_timesince %}
+{% load emoji_tags %}
+
+<table class="width-full">
+{% for gist in gist_list %}
+<tr class="Box-row Box-row--hover-gray">
+  <td class="no-wrap" style="width: 1%;">
+    {% if not gist.public %}
+    <a class="Link--muted" href="{{ gist.get_absolute_url }}">
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#lock" /></svg></a>
+    {% endif %}
+  </td>
+  <td class="no-wrap px-1" style="width: 1%;">
+    <a class="f6 no-wrap text-mono" href="{{ gist.get_absolute_url }}#{{ gist.filenames.0 }}" title="{{ gist.filename_list|join:',' }}">
+    {{ gist.filename_list.0|truncatechars:30 }}
+  </a>
+  </td>
+  <td class="px-1 width-full">
+    {% if gist.description %}
+    <a class="f6 Link--muted mr-2" href="/{{ context_data.github_user.login }}/{{ gist.id }}">{{ gist.description|truncatechars:100|emoji_replace }}</a>
+    {% endif %}
+  </td>
+  <td class="f6 no-wrap px-1">
+    {% for language in gist.language_list %}
+    <a class="f6 Link--muted" href="{{ request.path }}?language={{ language }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </td>
+  <td class="no-wrap px-1">
+    {% if gist.stargazers_count %}
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star" /></svg> {{ gist.stargazers_count }}
+     {% endif %}
+    </a>
+  </td>
+  <td class="f6 px-1" nowrap>
+    <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">
+    {% if gist.updated_at %}last active {{ gist.updated_at|timestamp_timesince }}{% else %}created {{ gist.created_at|timestamp_timesince }}{% endif %}</a>
+  </td>
+  {% if '/download' in request.path %}
+  <td class="no-wrap px-1" style="width: 1%;">
+  {% for filename,raw_url in gist.filename2raw_url.items %}
+  <a class="btn btn-sm Link--muted px-1 py-0" href="/download?gist={{ gist.id }}&filename={{ filename }}" title="{{ filename }}">
+  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#download" /></svg> {{ filename|truncatechars:30 }}
+  </a>
+  {% endfor %}
+  </td>
+  {% endif %}
+</tr>
+{% endfor %}
+</table>

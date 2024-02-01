@@ -1,0 +1,7 @@
+{% load format_count %}
+
+<li style="max-width: 230px" class="mr-md-3 v-align-middle color-fg-default my-2 my-md-0 css-truncate css-truncate-target">
+    <a class="Link--secondary no-underline no-wrap" href="{{ context_data.github_user.get_absolute_url }}/following">
+    <span class="text-bold color-fg-default">{{ context_data.github_user.following_count|format_count }}</span>
+    following</a>
+</li>

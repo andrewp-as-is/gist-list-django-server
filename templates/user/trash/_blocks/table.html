@@ -31,7 +31,7 @@
     {% endfor %}
   </td>
   <td class="f6 no-wrap px-1">
-      {% for tag in trash.get_tag_list %}
+      {% for tag in trash.tag_list %}
       <a class="f6 Link--muted" href="{{ request.path }}?tag={{ tag }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">#{{ tag }}</a>
       {% endfor %}
   </td>

@@ -6,12 +6,10 @@ from django.shortcuts import redirect
 from base.apps.github.models import Trash
 from views.base import ListView
 from ..mixins import UserMixin
+from ..utils import get_gist_model
 from .utils import (
     get_object,
-    get_gist_model,
-    get_gist_language_model,
     get_language,
-    get_tag,
 )
 from . import details
 
@@ -39,6 +37,7 @@ class View(UserMixin, ListView):
                 self.request.user.is_authenticated
                 and self.request.user.login == self.github_user.login
             )
+            # TODO: context_data.blankslate
            # if is_owner:
            #     context["blankslate"] = (
            #         not self.github_user.public_gists_count
@@ -49,10 +48,18 @@ class View(UserMixin, ListView):
             # todo: remove queryset_count
         details = context_data.get('details',{})
         details.update(
-            language_menu_item_list=self.get_details_language_menu_item_list(self.language2count),
-            sort_menu_item_list=self.get_details_sort_menu_item_list(),
-            tag_menu_item_list=self.get_details_tag_menu_item_list(self.tag2count),
-            type_menu_item_list = self.get_type_menu_item_list()
+            language={
+                'menu_item_list':self.get_details_language_menu_item_list(self.language2count)
+            },
+            sort={
+                'menu_item_list':self.get_details_sort_menu_item_list()
+            },
+            tag={
+                'menu_item_list':self.get_details_tag_menu_item_list(self.tag2count)
+            },
+            type={
+                'menu_item_list':self.get_type_menu_item_list()
+            }
         )
         context_data['details'] = details
         context['context_data'] = context_data
@@ -75,12 +82,15 @@ class View(UserMixin, ListView):
             return self.get_details_menu_item_list('tag',item_list)
 
     def get_type_menu_item_list(self):
+        public_selected = '/public' in self.request.path
+        secret_selected = '/secret' in self.request.path
+        all_selected = not public_selected and not secret_selected
         if self.github_user:
-            url = self.github_user.get_absolute_url()
+            url = self.github_user.get_absolute_url()+'/gists'
             return [
-                {'description':'All','url':url,'selected':self.request.path.endswith(self.github_user.login)},
-                {'description':'Public','url':url+'/public','selected':self.request.path.endswith('/public')},
-                {'description':'Secret','url':url+'/secret','selected':self.request.path.endswith('/secret')},
+                {'description':'All','url':url,'selected':all_selected},
+                {'description':'Public','url':url+'/public','selected':public_selected},
+                {'description':'Secret','url':url+'/secret','selected':secret_selected},
             ]
 
     def get_queryset_base(self, **kwargs):
@@ -105,7 +115,6 @@ class View(UserMixin, ListView):
             or not self.github_user
         ):
             return model.objects.none()
-        gist_language_model = get_gist_language_model(self.github_user_stat)
         prefix = "gist__" if self.request.path.split("/")[-1] == "starred" else ""
         qs = self.get_queryset_base()
         qs = qs.exclude(
@@ -116,23 +125,11 @@ class View(UserMixin, ListView):
             language = get_language(language_value)
             if language:
                 # qs = qs.filter(language_m2m=language.id)
-                qs = qs.filter(
-                    id__in=gist_language_model.objects.filter(
-                        gist_id__in=self.get_queryset_base().values_list(
-                            "id", flat=True
-                        ),
-                        language_id=language.id,
-                    ).values_list("gist_id", flat=True)
-                )
+
+                qs = qs.filter(language_list__contains=[language.name])
             if language_value == "none":
                 # qs = qs.filter(language_m2m=None)
-                qs = qs.exclude(
-                    id__in=self.gist_language_model.objects.filter(
-                        gist_id__in=self.get_queryset_base().values_list(
-                            "id", flat=True
-                        )
-                    ).values_list("gist_id", flat=True)
-                )
+                qs = qs.filter(language_list__contains=[None])
         tag_slug = self.request.GET.get("tag", "").strip().lower()
         if tag_slug:
             tag = get_tag(tag_slug)

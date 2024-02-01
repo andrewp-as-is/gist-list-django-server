@@ -18,19 +18,13 @@ from base.apps.github_recent_matview.models import User as RecentUser
 from base.apps.github_recent_matview.utils import get_model as get_live_matview_model
 from base.apps.postgres.models import Matview
 from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
+from .utils import get_stat_data
 
 def get_model(tablename,live_matview_list):
     if tablename in live_matview_list:
         return get_live_matview_model(tablename)
     return get_matview_model(tablename)
 
-
-def get_stat_data(stat):
-    data = {}
-    if stat:
-        for l in stat.splitlines():
-            data[l.split(':')[0]] = l.split(':')[1].strip()
-    return data
 
 class UserMixin:
     def dispatch(self, *args, **kwargs):
@@ -48,8 +42,10 @@ class UserMixin:
         self.github_user_stat = None
         self.language2count = {}
         self.tag2count = {}
+        self.secret = False
         try:
             self.github_user = User.objects.get(login=self.kwargs["login"])
+            self.secret = self.github_user.id == self.request.user.id
             user_id = self.github_user.id
             try:
                 self.github_user_stat = UserStat.objects.get(user_id=user_id)
@@ -97,6 +93,9 @@ class UserMixin:
                 # todo: languages
                 links = context_data.get('links',{})
                 links.update(
+                    overview=dict(
+                        selected = self.request.path == self.github_user.get_absolute_url()
+                    ),
                     forked=dict(
                         count=forks_count,
                         selected = self.request.path.endswith('/forked') or '/forked/' in self.request.path

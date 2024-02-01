@@ -2,10 +2,8 @@ from .job import *
 
 from .gist import *
 from .gist_file_content import *
-from .gist_language import *
 from .gist_refresh import *
 from .gist_star import *
-from .gist_tag import *
 from .gist_tsv import *
 from .language import *
 from .token import *

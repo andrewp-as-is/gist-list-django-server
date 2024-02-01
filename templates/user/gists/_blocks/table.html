@@ -11,11 +11,13 @@
     {% endif %}
   </td>
   {% if request.user.id == context_data.github_user.id and '/starred' not in request.path %}
+  {% if '/gists' in request.path %}
   <td class="no-wrap px-1 text-left text-mono">
     <a class="Link--muted" href="{{ gist.get_absolute_url }}" title="{{ gist.id }}">
       {{ gist.id|slice:2 }}…{{ gist.id|slice:"-2:" }}
     </a>
   </td>
+  {% endif %}
   {% endif %}
   {% if '/starred' in request.path %}
   <td style="width: 1%;">
@@ -48,8 +50,8 @@
       {% endfor %}
   </td>
   <td class="f6 no-wrap px-1">
-    {% for language in gist.get_language_list %}
-    <a class="f6 Link--muted" href="{{ request.path }}?language={{ language.slug }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language.name }}</a>{% if not forloop.last %},{% endif %}
+    {% for language in gist.language_list %}
+    <a class="f6 Link--muted" href="{{ request.path }}?language={{ language }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language }}</a>{% if not forloop.last %},{% endif %}
     {% endfor %}
   </td>
   <td class="no-wrap px-1">
@@ -89,4 +91,3 @@
 </tr>
 {% endfor %}
 </table>
-{% include "_blocks/pagination.html" %}

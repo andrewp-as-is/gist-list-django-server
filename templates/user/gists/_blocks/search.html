@@ -1,12 +1,14 @@
-<div class="clearfix">
+<div class="clearfix py-1">
     <div class="float-left d-flex">
     {% include "user/gists/_blocks/search/form.html" %}
 
     {% include "user/gists/_blocks/search/details.html" %}
     </div>
     <div class="float-right">
+    {% if '/starred' not in request.path %}
     <a class="btn btn-sm btn-primary" rel="nofollow" href="{{ context_data.github_user.get_absolute_url }}/new">
       <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg> New
     </a>
+    {% endif %}
     </div>
 </div>

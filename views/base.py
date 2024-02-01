@@ -27,7 +27,7 @@ class ListView(Mixin,ListView):
         context = super().get_context_data(**kwargs)
         context_data = context.get('context_data',{})
         details = context_data.get('details',{})
-        details['view_menu_item_list'] = self.get_details_view_menu_item_list()
+        details['view'] = dict(menu_item_list = self.get_details_view_menu_item_list())
         context_data['details'] = details
         context['context_data'] = context_data
         return context

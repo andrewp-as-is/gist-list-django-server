@@ -1,7 +1,6 @@
-<textarea class="color-bg-subtle text-mono" id="textarea" rows="{{ context_data.gist_list|length }}" cols="100">#!/bin/sh
+<textarea class="color-bg-subtle text-mono width-full" id="textarea" rows="{{ context_data.textarea.rows }}">#!/bin/sh
 {% for gist in gist_list %}
-[ -e {% if request.GET.name|default:'id' == 'id' %}{{ context_data.gist.id }}{% else %}{{ context_data.gist.filename_list.0 }}{% endif %} ] || {
-  ( set -x; git clone -q {% if request.GET.protocol != 'https' %}git@gist.github.com:{{ context_data.gist.id }}.git{% else %}https://gist.github.com/{{ context_data.gist.id }}.git{% endif %} {% if request.GET.name|default:'id' == 'id' %}{{ context_data.gist.id }}{% else %}{{ context_data.gist.filename_list.0 }}/{% endif %} ) || exit
-}
-{% endfor %}
+[ -e {{ gist.id }} ] || {
+  ( set -x; git clone -q {% if request.GET.protocol != 'https' %}git@gist.github.com:{{ gist.id }}.git{% else %}https://gist.github.com/{{ gist.id }}.git{% endif %} ) || exit
+}{% endfor %}
 </textarea>

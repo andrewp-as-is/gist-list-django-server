@@ -1,0 +1,97 @@
+{% extends "_base.html" %}
+
+{% load format_count %}
+{% load timestamp_timesince %}
+{% load timesince %}
+
+{% block title %}{{ context_data.login  }}{% endblock %}
+
+{% block extra_head %}
+<link rel="canonical" href="{{ context_data.github_user.get_absolute_url }}" />
+{% endblock %}
+
+{% block content %}
+<div class="pagehead bg-gray-light pb-0 pt-3 mb-4">
+  <div class="px-0">
+    <div class="mb-3 d-flex px-3 px-md-3 px-lg-2">
+      <div class="flex-auto min-width-0 width-fit mr-3">
+        <div class="d-flex">
+          <div class="d-none d-md-block">
+            <a class="avatar mr-2 flex-shrink-0" href="{{ context_data.github_user.get_absolute_url }}"><img class=" avatar-user" src="{% if context_data.github_user %}https://avatars.githubusercontent.com/u/{{ context_data.github_user.id }}?s=32&amp;v=4{% else %}https://github.com/{{ context_data.login  }}.png?size=32{% endif %}" width="32" height="32" alt="@{{ context_data.login  }}"></a>
+          </div>
+          <div class="d-flex flex-column">
+            <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+              <span class="author"><a href="{{ context_data.github_user.get_absolute_url }}">{{ context_data.login  }}</a></span>
+              {% if context_data.gist %}
+              <span class="mx-1 color-text-secondary">/</span>
+              <strong itemprop="name" class="css-truncate-target mr-1" style="max-width: 410px">
+                <a href="{{ context_data.gist.get_absolute_url }}" rel="nofollow">{{ context_data.gist.filename_list.0 }}</a>
+              </strong>
+              {% endif %}
+            </h1>
+            {% if not context_data.gist and context_data.github_user %}
+            <div class="note m-0">
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}">
+                  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
+                  <span class="text-bold color-fg-default">{{ context_data.links.gists.count }}</span> gists
+              </a>
+              {% if context_data.github_user.followers_count >= 0 %}
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/followers">
+                <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#people" /></svg>
+                    <span class="text-bold color-fg-default">{{ context_data.github_user.followers_count|format_count }}</span> followers
+              </a>
+              {% endif %}
+              {% if context_data.github_user.following_count >= 0 %}
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/following">
+                    <span class="text-bold color-fg-default">{{ context_data.github_user.following_count|format_count }}</span> following
+              </a>
+              {% endif %}
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login  }}/languages">
+                  <span class="text-bold color-fg-default">{{ context_data.github_user_stat.languages_count }}</span> languages
+              </a>
+              <a class="Link--secondary no-underline no-wrap" href="/{{ context_data.login }}/tags">
+                  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#tag" /></svg>
+                  <span class="text-bold color-fg-default">{{ context_data.github_user_stat.tags_count }}</span> tags
+              </a>
+              <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
+              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ context_data.login  }}" href="https://gist.github.com/{{ context_data.login  }}">gist.github.com/{{ context_data.login  }}</a>
+            </div>
+            {% endif %}
+            {% if context_data.gist %}
+            {% if context_data.gist.fork %}
+            <div class="note m-0">
+              Forked from <span class="color-text-secondary f6">forked from</span> <a class="f6" href="{{ context_data.gist.fork.get_absolute_url }}">{{ context_data.gist.fork_of.owner.login|truncatechars:70 }}/{{ context_data.gist.fork_of.filename_list.0|truncatechars:70 }}</a>
+            </div>
+            {% endif %}
+            <div class="note m-0">
+              Last active <time-ago datetime="{{ context_data.gist.updated_at|timestamp_timesince|date:'Y-m-dTH:i:S' }}Z" class="no-wrap" title="{{ context_data.gist.updated_at|date:'d b Y, H:i' }} GMT+3">{{ context_data.gist.updated_at|timestamp_timesince }}</time-ago>
+              <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
+              <a class="color-fg-muted" rel="nofollow" title="https://gist.github.com/{{ context_data.gist.id }}" href="https://gist.github.com/{{ context_data.gist.id }}">gist.github.com/{{ context_data.gist.id }}</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% block pagehead_actions %}
+        {% include "user/_blocks/pagehead/actions.html" %}
+      {% endblock %}
+    </div>
+    <div class="d-flex flex-md-row flex-column px-0 pr-md-3 px-lg-2">
+      {% block pagehead_nav %}
+      <div class="flex-md-order-1 flex-order-2 flex-auto">
+        {% include "user/_blocks/pagehead/nav.html" %}
+      </div>
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{% if context_data.github_user %}
+    {% block container %}{% endblock %}
+{% else %}
+    {% if user404 %}
+      {% include "user/_blocks/404.html" %}
+    {% else %}
+      {% include "user/_blocks/unknown.html" %}
+    {% endif %}
+{% endif %}
+{% endblock %}

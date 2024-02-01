@@ -1,0 +1,6 @@
+{% if context_data.github_user.twitter_username %}
+<li style="max-width: 230px" class="mr-md-3 v-align-middle my-2 my-md-0 css-truncate css-truncate-target">
+  <svg class="octicon flex-shrink-0" style="width:16px;height:16px"><use xlink:href="#twitter" /></svg>
+  <a rel="nofollow me" class="Link--primary" href="https://twitter.com/{{ context_data.github_user.twitter_username }}">@{{ context_data.github_user.twitter_username }}</a>
+</li>
+{% endif %}

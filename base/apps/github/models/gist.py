@@ -6,7 +6,6 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 
-from base.apps.tag.utils import get_hashtag_list
 from .language import Language
 
 
@@ -34,9 +33,10 @@ class AbstractGist(models.Model):
 
     description = models.CharField(max_length=256, null=True)
     filename_list = ArrayField(models.TextField())
-    file_size_list = ArrayField(models.IntegerField())
-    language_list = ArrayField(models.TextField())  # language name list
+    size_list = ArrayField(models.IntegerField())
     raw_url_hash_list = ArrayField(models.TextField())
+    language_list = ArrayField(models.TextField())  # language name list
+    tag_list = ArrayField(models.TextField())
 
     version = models.TextField(null=True)
 
@@ -69,11 +69,6 @@ class AbstractGist(models.Model):
             if language:
                 language_list += [language]
         return language_list
-
-    def get_tag_list(self):
-        return list(
-            map(lambda s: s.replace("#", ""), get_hashtag_list(self.description))
-        )
 
     @property
     def filename2raw_url_hash(self):

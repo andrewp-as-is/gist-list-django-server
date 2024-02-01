@@ -1,11 +1,4 @@
-{% include "_blocks/details.html" with summary_name="Type" menu_title="Select type" menu_item_list=context_data.details.type_menu_item_list %}
-{% if context_data.details.language_menu_item_list %}
-{% include "_blocks/details.html" with summary_name="Language" menu_title="Select language" menu_item_list=context_data.details.language_menu_item_list %}
-{% endif %}
-{% if context_data.details.tag_menu_item_list %}
-{% include "_blocks/details.html" with summary_name="Tag" menu_title="Select tag" menu_item_list=context_data.details.tag_menu_item_list %}
-{% endif %}
-{% if context_data.details.sort_menu_item_list %}
-{% include "_blocks/details.html" with summary_name="Sort" menu_title="Select order"  menu_item_list=context_data.details.sort_menu_item_list %}
-{% include "_blocks/details.html" with summary_name="View" menu_title="Results per page" menu_item_list=context_data.details.view_menu_item_list %}
-{% endif %}
+{% include "user/gists/_blocks/details/type.html" %}
+{% include "user/gists/_blocks/details/language.html" %}
+{% include "user/gists/_blocks/details/sort.html" %}
+{% include "user/gists/_blocks/details/view.html" %}

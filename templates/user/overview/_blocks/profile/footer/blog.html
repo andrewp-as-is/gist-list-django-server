@@ -1,0 +1,6 @@
+{% if context_data.github_user.blog %}
+<li style="max-width: 230px" class="mr-md-3 v-align-middle color-fg-default my-2 my-md-0 css-truncate css-truncate-target">
+  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#link" /></svg>
+  <a rel="nofollow" itemprop="url" class="color-fg-default" title="{{ context_data.github_user.blog }}" href="{{ context_data.github_user.blog }}">{{ context_data.github_user.blog }}</a>
+</li>
+{% endif %}

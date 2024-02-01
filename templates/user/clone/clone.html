@@ -6,11 +6,16 @@
 
 {% block container %}
 <div class="page-content container-lg">
-    {% include "_blocks/clone/options.html" %}
-    <div class="py-1">
-      <button class="btn" type="button" onclick="download('gists-clone.sh')"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#download" /></svg> gists-clone.sh</button>
-      <button class="btn" id="clipboard_btn" onclick="copy2clipboard()"><svg class="octicon" style="width:16px;height:16px"><use xlink:href="#copy" /></svg> copy to clipboard</button>
-    </div>
-    {% include "user/clone/_blocks/textarea.html" %}
+<div class="clearfix py-1">
+  <div class="float-left d-flex">
+    {% include "user/gists/_blocks/details/type.html" %}
+  </div>
+  <div class="float-right">
+    <button class="btn" id="clipboard_btn" onclick="copy2clipboard()"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#copy" /></svg> Copy</button>
+    <a class="btn" href="{{ request.path }}.sh">Raw</a>
+    <button class="btn" type="button" onclick="download('{{ context_data.clone_filename }}')"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#download" /></svg>Download</button>
+  </div>
+</div>
+{% include "user/clone/_blocks/textarea.html" %}
 </div>
 {% endblock %}
