@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 
-from base.apps.github_default_matview.models import User
+from base.apps.github.models import User
 from views.base import ListView
 
 class View(ListView):

@@ -4,7 +4,7 @@ SORT_ITEM_LIST = [
     # {'key':'forks','text':'Forks'},
     {'value':'-created','description':'Recently created'},
     {'value':'-updated','description':'Recently updated'},
-    {'value':'-stars','description':'Most stars'},
+    {'value':'-stargazers','description':'Most stars'},
     {'value':'-forks','description':'Most forks'},
     {'value':'-comments','description':'Most comments'},
     {'value':'created','description':'Least recently created'},

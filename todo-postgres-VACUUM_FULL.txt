@@ -1,0 +1,11 @@
+todo
+если lock то перенаправлять на xxx_matview (если есть)
+аналогично с postgres refresh_lock
+
+но а что если matview обновляется? надо на копию, а не concurrently
+---
+refresh VS refresh concurrently
+refresh concurrently медленнее, нужен уникальный индекс (не везде возможно. хз, нужно еще исследование)
+
+1) refresh concurrently
+2) refresh копию и делать select к копии вместо refresh concurrently

@@ -1,0 +1,15 @@
+<table align="center" class="Box">
+{% for tag in context_data.tag_list %}
+<tr class="Box-row Box-row--hover-gray">
+  <td class="no-wrap px-1 text-left text-mono">
+    <a href="{{ context_data.github_user.get_absolute_url }}{% if '/starred/' in request.path %}/starred{% endif %}?tag={{ tag.slug|default:'none' }}">{{ tag.slug }}</a>
+  </td>
+  <td class="no-wrap px-1 text-left text-bold text-mono">
+    <span class="Counter text-bold">{{ tag.count }}</span>
+  </td>
+  <td class="no-wrap px-2 text-left text-mono">
+    {{ tag.percent }} %
+  </td>
+</tr>
+{% endfor %}
+</table>

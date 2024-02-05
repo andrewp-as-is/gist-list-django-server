@@ -14,4 +14,4 @@ class ApiRateLimitHeadersJob(models.Model):
 
     @staticmethod
     def response_match(response):
-        return True
+        return 'https://api.github.com/' in response.url

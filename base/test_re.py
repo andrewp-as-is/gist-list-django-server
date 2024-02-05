@@ -7,7 +7,7 @@ from linkheader_parser import parse
 
 PATTERN2TEMPLATE = {
     # gist.githubusercontent.com
-    '[\w]+/[\w]+/raw/[\w]+':"raw/{user_id}/{gist_id}/{filename}",
+    '[\w\-\_\.]+/[\w]+/raw/[\w]+':"{user_id}/{gist_id}/{filename}",
     # api.github.com
     'gists/gist/[\w]+':"gists/gist/{gist_id}",
     'user/[\d]+$':"user/{user_id}/profile",
@@ -56,6 +56,8 @@ def get_params(url):
 
 def get_disk_path(url):
     host = url.split("//")[-1].split("/")[0].split('?')[0]
+    print(host)
+    print(url.replace('https://%s/' % host,''))
     for regex,template in REGEX2TEMPLATE.items():
         if regex.match(url.replace('https://%s/' % host,'')):
             disk_relpath = template.format(**get_params(url))
@@ -63,6 +65,7 @@ def get_disk_path(url):
 
 
 url = 'https://api.github.com/graphql?schema=user.followers&user_id=13243941&login=andrewp-as-is&page=1'
-url = 'https://gist.githubusercontent.com/user/GIST_ID/raw/FILENAME?user_id=42'
+url = 'https://gist.githubusercontent.com/andrewp-as-is/3417dd74c83e0b2ab860102afe0e16bd/raw/test%20secret.txt?user_id=13243941'
+# url = 'https://gist.githubusercontent.com/andrewp-as-is/41e89b66605a9f64cd84f3f8401defdc'
 print(get_disk_path(url))
 # todo: user_id

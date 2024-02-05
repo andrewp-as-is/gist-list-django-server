@@ -3,8 +3,8 @@ from django.urls import path
 from views import gist as views
 
 urlpatterns = [
-    path('create', views.GistCreateView.as_view(),name='gist_create'),
-    path('<str:pk>/delete', views.TrashView.as_view(),name='gist_delete'),
-    path('<str:pk>/star', views.GistStarView.as_view(),name='gist_star'),
-    path('<str:pk>/unstar', views.GistUnstarView.as_view(),name='gist_unstar'),
+    path('create', views.View.as_view()),
+    path('<str:pk>/delete', views.View.as_view()),
+    path('<str:pk>/star', views.View.as_view()),
+    path('<str:pk>/unstar', views.View.as_view()),
 ]

@@ -5,7 +5,7 @@ from base.apps.github.models import User, UserFollower
 from views.base import ListView
 from ..mixins import UserMixin
 
-class ListView(UserMixin,ListView):
+class View(UserMixin,ListView):
     context_object_name = "user_list"
     template_name = "user/following/user_list.html"
 

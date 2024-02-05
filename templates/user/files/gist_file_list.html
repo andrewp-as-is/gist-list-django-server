@@ -1,0 +1,9 @@
+{% extends "user/_base.html" %}
+
+{% block container %}
+<div class="clearfix px-2">
+  {% include "user/files/_blocks/header.html" %}
+    {% include "user/files/_blocks/table.html" %}
+    {% include "_blocks/pagination.html" %}
+</div>
+{% endblock %}

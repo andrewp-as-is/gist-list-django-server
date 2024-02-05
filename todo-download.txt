@@ -1,17 +1,42 @@
+1) download latest file by file
+2) id/filename.ext
+переименовать всегда можно
+3) download GUI? gist_list table with clickable download links, file by file links
+Windows, no terminal skills, no time, etc
+4) scripts
+curl vs wget/etc
+
 id.tar.gz
 по filename можно скриптом переименовать, как и в случае с clone
----
-download script
-curl/wget hell
----
-download table?
-но по идее кому это нужно
-а кому нужно download script? это все одноразовое
-download нужен если 1) windows 2) мало гистов и лень ковыряться с terminal
+--
+FILES логично было бы... но
+1) download script тоже качает files only, а не архив
+2) download vs raw
+files не означает что именно download :)
 
-gist_list логично по filename тк в ~/Downloads будет тоже самое с таким же порядком
-хотя... а в другом месте другой order и будет неразбериха
+files list only наверно удобно тк нет инструмента просмотра полного списка файлов
+---
+DOWNLOAD VS RAW
+кому возможно надо только raw :) и там если что сам скачает
+удобный быстрый view нужен. ВОЗМОЖНО нужен
+
+raw еще хорош тем что native without любых интерфейсов
+но... description может быть важно. или comments. или other files
+
+вообще не оч очевидно что такое download, что там должно быть. download gist.tar.gz это native, это очевидно и однозначно. а вот table какие-то, скрипты и тд круто (наверно), но неочевидно и возможно нужно что-то другое. возможно вообще не нужно. а нужно только стандартное gist.tar.gz тк шаблонное поведение (это не плохо и не хорошо, это default settings белковых)
+
+возможно надо тогда уточнять what a fuck mazafuck что тут вапще происходит :)
+или как-то ссылки уточнять
+не download, а scripts/download
+не download files table, а /USER/files и тд
+download all vs download
+clone all vs clone
+
 ---
 /USER/gists/download
 /USER/starred/download
 /USER/trash/download
+---
+Download
+сделать таблицей для скачивания по файлу?
+gist list - scripts,url,gist_list with download (+view in browser?). size?

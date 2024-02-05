@@ -4,7 +4,7 @@ from views import user as views
 
 urlpatterns = [
     path('/api', include('urls.user.api')),
-    path('/download', include('urls.user.download')),
+    path('/files', include('urls.user.files')),
     path('/gists', include('urls.user.gists')),
     path('/gists.json', include('urls.user.gists_json')),
     path('new', include('urls.user.new')),

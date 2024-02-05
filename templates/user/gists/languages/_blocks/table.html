@@ -1,0 +1,18 @@
+<table align="center" class="Box">
+{% for language in context_data.language_list %}
+<tr class="Box-row Box-row--hover-gray">
+<td class="no-wrap px-1 text-left">
+    <span class="d-block repo-language-color" style="background-color: {{ language.color }}"></span>
+  </td>
+  <td class="no-wrap px-1 text-left text-mono">
+    <a href="{{ context_data.github_user.get_absolute_url }}{% if '/starred/' in request.path %}/starred{% endif %}?language={{ language.name|default:'none' }}">{{ language.name }}</a>
+  </td>
+  <td class="no-wrap px-1 text-left text-bold text-mono">
+    <span class="Counter text-bold">{{ language.count }}</span>
+  </td>
+  <td class="no-wrap px-2 text-left text-mono">
+    {{ language.percent }} %
+  </td>
+</tr>
+{% endfor %}
+</table>

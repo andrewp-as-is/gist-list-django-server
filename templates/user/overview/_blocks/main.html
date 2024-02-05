@@ -1,0 +1,13 @@
+{% if context_data.github_user_stat.user_refreshed_at %}
+<div class="gutter-condensed gutter-lg width-full flex-column flex-md-row d-flex">
+  <div class="flex-shrink-0 col-12 col-md-9 mb-4 mb-md-0">
+    {% include "user/overview/_blocks/popular_gists.html" %}
+    {% include "user/overview/_blocks/gists.html" %}
+  </div>
+  <div class="flex-shrink-0 col-12 col-md-3">
+    <div class="px-3 px-md-0">
+      {% include "user/overview/_blocks/language_list.html" %}
+      {% include "user/overview/_blocks/tag_list.html" %}
+    </div>
+</div>
+{% endif %}

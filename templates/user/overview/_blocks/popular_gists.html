@@ -1,0 +1,6 @@
+{% if context_data.popular_gist_list %}
+<div class="mb-4">
+  <h2 class="f4 mb-2 text-normal">Popular gists</h2>
+  {% include "user/overview/_blocks/popular_gists/gist_list.html" %}
+</div>
+{% endif %}

@@ -6,19 +6,23 @@
 </a>
 <a class="UnderlineNav-item{% if context_data.links.gists.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/gists">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
-    Gists{% if context_data.links.gists.count != None %} <span class="Counter">{{ context_data.links.gists.count|format_count }}</span>{% endif %}
+    Gists{% if context_data.github_user_stat.gists_count != None %} <span class="Counter">{{ context_data.github_user_stat.gists_count|format_count }}</span>{% endif %}
 </a>
-{% if context_data.links.forked.count %}
+{% if context_data.github_user_stat.forks_count %}
 <a class="UnderlineNav-item{% if context_data.links.forked.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/forked">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg>
-    Forked <span class="Counter">{{ context_data.links.forked.count|format_count }}</span>
+    Forked <span class="Counter">{{ context_data.github_user_stat.forks_count|format_count }}</span>
 </a>
 {% endif %}
-{% if context_data.github_user.login == request.user.login %}
-{% if context_data.links.starred.count %}
+<a class="UnderlineNav-item{% if context_data.links.files.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/files">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
+    Files{% if context_data.github_user_stat.files_count != None %} <span class="Counter">{{ context_data.github_user_stat.files_count|format_count }}</span>{% endif %}
+</a>
+{% if context_data.secret %}
+{% if context_data.github_user_stat.stars_count %}
 <a class="UnderlineNav-item{% if context_data.links.starred.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/gists/starred">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#star" /></svg>
-    Starred <span class="Counter">{{ context_data.links.starred.count|format_count }}</span>
+    Starred <span class="Counter">{{ context_data.github_user_stat.stars_count|format_count }}</span>
 </a>
 {% endif %}
 <a class="UnderlineNav-item{% if context_data.links.trash.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/trash">

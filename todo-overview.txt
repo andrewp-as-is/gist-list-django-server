@@ -1,64 +1,11 @@
-nav:
-Overview gists forked starred trash backup
-
-Pagehead VS table
-centered pagehead ломает верстку и ниже width-full таблицу уже не разместить
-нужно тогда все остальное делать centered?
-
-
-popular gists
-
-gists (without header)
-
-right sidebar:
-Top languages
-
-Most used tags
-
-"View Github Profile" btn
+View all gists
+api, clone, download логично, но в /USER/gists pagination же еще
 ---
 
-Api, Clone, Download надо куда-то добавить
-но ссылки на Api, Clone, Download должны быть в /USER/gists в 1 очередь
-
-вместе с New?
-но это page, а не action. хотя new тоже page?
-хотя clone и download ссылками не оч очевидно что это page тк человеку нужно то действие
-
-рядом с New просто слишком навязчиво и будет misslick
-+есть github native/convention что там только New btn
-
-в этом dev вообще и так уже слишком много элементов
-
-можно по идее только в overview, но тогда человек в 1 раз на сайте на /USER/gists не заметит что есть api, clone, download
-
-Label
-https://github.com/andrewp-as-is?tab=stars
-Beta
-Lists are currently in beta.
-Share feedback and report bugs.
-
-scripts? но это не обязательно scripts (download link, clone url). и выполняется не на сервере. впрочем всякие каталоги scripts там же просто каталоги, а не execution
-
-
+Api
+gists.json
+secret.json
 ---
-Download
-gist list - scripts,url,gist_list with download (+view in browser?). size?
-
-Type
-All,public,secret
-
-в /clone, /download и можно N ссылок сделать
-/clone
-/public/clone
-/secret/clone
-
-или в виде Type/etc select/details с выбором
-
-gists-clone.sh логичнее с учетом urls
-gists-public-clone.sh
-gists-secret-clone.sh
-----
 API
 
 gists.json непонятно нихрена. api просто? со ссылкой на gists.json
@@ -73,11 +20,3 @@ files {
     raw_url
     backup_url
 }
-----
-/USER/gists/clone
-/USER/gists/download
-/USER/gists/starred/clone
-/USER/gists/starred/download
----
-View all gists
-но если <10 тогда не нужно

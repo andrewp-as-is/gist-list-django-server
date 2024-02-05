@@ -7,16 +7,14 @@ from base.apps.github.models import Trash
 from views.base import ListView
 from ..mixins import UserMixin
 from ..utils import get_gist_model
-from .utils import (
-    get_object,
-    get_language,
-)
+from .utils import get_language
 from . import details
 
 
 class View(UserMixin, ListView):
     context_object_name = "gist_list"
     template_name = "user/gists/gist_list.html"
+    default_order_by_list = ["-created_at","id"]
 
     def get_model(self):
         return get_gist_model(self.github_user_stat)
@@ -117,41 +115,22 @@ class View(UserMixin, ListView):
             return model.objects.none()
         prefix = "gist__" if self.request.path.split("/")[-1] == "starred" else ""
         qs = self.get_queryset_base()
-        qs = qs.exclude(
-            id__in=Trash.objects.values_list("gist_id", flat=True)
-        )  # live gists only
+       # qs = qs.exclude(
+       #     id__in=Trash.objects.values_list("gist_id", flat=True)
+       # )  # live gists only
         language_value = self.request.GET.get("language", "").strip().lower()
         if language_value:
             language = get_language(language_value)
             if language:
-                # qs = qs.filter(language_m2m=language.id)
-
                 qs = qs.filter(language_list__contains=[language.name])
             if language_value == "none":
-                # qs = qs.filter(language_m2m=None)
                 qs = qs.filter(language_list__contains=[None])
-        tag_slug = self.request.GET.get("tag", "").strip().lower()
-        if tag_slug:
-            tag = get_tag(tag_slug)
-            if tag:
-                # qs = qs.filter(tag_m2m=tag.id)
-                qs = qs.filter(
-                    id__in=self.gist_tag_model.objects.filter(
-                        gist_id__in=self.get_queryset_base().values_list(
-                            "id", flat=True
-                        ),
-                        tag_id=tag.id,
-                    ).values_list("gist_id", flat=True)
-                )
-            if tag_slug == "none":
-                # qs = qs.filter(tag_m2m=None)
-                qs = qs.exclude(
-                    id__in=self.gist_tag_model.objects.filter(
-                        gist_id__in=self.get_queryset_base().values_list(
-                            "id", flat=True
-                        )
-                    ).values_list("gist_id", flat=True)
-                )
+        tag = self.request.GET.get("tag", "").strip().lower()
+        if tag:
+            if tag != "none":
+                qs = qs.filter(tag_list__contains=[tag])
+            else: # none
+                qs = qs.filter(tag_list__contains=[None])
         q = self.request.GET.get("q", "").strip()
         if q:
             # todo: check q = gist ID (0-9A-F)
@@ -178,11 +157,13 @@ class View(UserMixin, ListView):
         sort = self.request.GET.get("sort", "")
         sort_prefix = "-" if sort and sort[0] == "-" else ""
         sort_column = self.request.GET.get("sort", "").replace("-", "")
-        order_by = ["-created_at"]
-        if hasattr(model, "%s_order" % sort_column):
-            order_by = [sort_prefix + "%s_order" % sort_column]
-        if hasattr(model, sort_column):
-            order_by = [sort_prefix + sort_column]
-        if hasattr(model, "%s_count" % sort_column):
-            order_by = [sort_prefix + "%s_count" % sort_column]
-        return order_by
+        order_by_list = self.default_order_by_list
+        if hasattr(model, "row_number_over_%s" % sort_column):
+            order_by_list = [sort_prefix + "row_number_over_%s" % sort_column]
+        # ORDER BY id
+        if sort_column == 'id':
+            order_by_list = [sort_prefix + "id"]
+        # ORDER BY xxx_at, id
+        if hasattr(model, sort_column+'_at'):
+            order_by_list = [sort_prefix + sort_column+'_at',sort_prefix + "id"]
+        return order_by_list

@@ -6,17 +6,16 @@ from django.shortcuts import render
 #from base.apps.error.models import PythonError
 #from base.apps.error.utils import save_python_error
 #from base.apps.incident.models import Incident
-from base.apps.postgres.models import Query
+from base.apps.postgres.models import Query,VacuumFullLock
 from base.apps.status.models import Status
 
 class Mixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context_data = context.get('context_data',{})
-        context_data['status'] = Status.objects.get(id=1)
+        context_data['postgres_vacuum_full_lock'] = VacuumFullLock.objects.all().first()
         context['context_data'] = context_data
         return context
-
 
     def execute_sql(self, query):
         cursor = connection.cursor()

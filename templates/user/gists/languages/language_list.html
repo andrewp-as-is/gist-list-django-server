@@ -4,32 +4,7 @@
 
 {% block container %}
 <div class="page-content container-lg text-center">
-
-<div class="Subhead border-bottom-0 mb-0">
-    <h2 class="Subhead-heading">Languages</h2>
-</div>
-<table align="center" class="Box">
-<tr class="Box-header">
-  <td class="Box-title f5 px-1 text-left" colspan="3"></td>
-  <td>{% include "_blocks/details.html" with summary=sort_details.get_summary menu=sort_details.get_menu %}</td>
-</tr>
-{% for language in language_list %}
-<tr class="Box-row Box-row--hover-gray">
-<td class="no-wrap px-1 text-left">
-    <span class="d-block repo-language-color" style="background-color: {{ language.color }}"></span>
-  </td>
-  <td class="no-wrap px-1 text-left text-mono">
-    <a href="{{ context_data.github_user.get_absolute_url }}{% if '/starred/' in request.path %}/starred{% endif %}?language={{ language.slug|default:'none' }}">{% if language.slug %}{{ language.name }}{% else %}NO LANGUAGES{% endif %}</a>
-  </td>
-  <td class="no-wrap px-1 text-left text-bold text-mono">
-    <span class="Counter text-bold">{{ language.count }}</span>
-  </td>
-  <td class="no-wrap px-2 text-left text-mono">
-    {{ language.percent }} %
-  </td>
-</tr>
-{% endfor %}
-</table>
-
+  {% include "user/gists/languages/_blocks/header.html" %}
+  {% include "user/gists/languages/_blocks/table.html" %}
 </div>
 {% endblock %}

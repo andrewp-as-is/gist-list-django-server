@@ -21,4 +21,4 @@ class UserApiEtagJob(models.Model):
     @staticmethod
     def response_match(response):
         page = get_page(response.url)
-        return 'api.github.com' in response.url and (not page or page==1)
+        return 'api.github.com' in response.url and (not page or page==1) and response.status==200

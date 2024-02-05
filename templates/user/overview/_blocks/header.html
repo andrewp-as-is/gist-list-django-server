@@ -1,0 +1,14 @@
+<div class="d-flex flex-wrap flex-items-start flex-md-items-center mb-3 border-bottom">
+    <div>
+      <img itemprop="image" class="avatar flex-shrink-0 mb-3 mr-3 mb-md-0 mr-md-4" src="https://avatars.githubusercontent.com/u/{{ context_data.github_user.id }}?s=200&amp;v=4" width="100" height="100" alt="@{{ context_data.github_user.login }}">
+    </div>
+    <div class="flex-1">
+      <h1 class="h2 lh-condensed">{{ context_data.github_user.login }}</h1>
+      {% include "user/overview/_blocks/profile/name.html" %}
+      {% include "user/overview/_blocks/profile/footer.html" %}
+    </div>
+    <div class="d-flex flex-items-center flex-self-start mt-3">
+      <a class="btn mr-1" href="https://gist.github.com/{{ context_data.login }}"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>View Github Gists</a>
+      <a class="btn mr-1" href="https://github.com/{{ context_data.login }}"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#mark-github" /></svg>View Github Profile</a>
+    </div>
+</div>

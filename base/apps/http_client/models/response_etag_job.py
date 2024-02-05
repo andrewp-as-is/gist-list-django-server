@@ -13,4 +13,4 @@ class ResponseEtagJob(models.Model):
 
     @staticmethod
     def response_match(response):
-        return '&etag=' not in response.url
+        return response.status==200 and '&etag=' not in response.url

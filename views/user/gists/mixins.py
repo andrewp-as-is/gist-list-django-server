@@ -59,3 +59,40 @@ class CloneShMixin:
 """ % "\n".join(clone_list)
         response = HttpResponse(content,content_type="text/plain")
         return response
+
+class DownloadMixin:
+    paginate_by = 100000
+    template_name = "user/download/download.html"
+
+    def get_paginate_by(self, request):
+        return 100000
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context_data = context.get('context_data',{})
+        gists_count = len(list(self.get_queryset().only('id')))
+        clone_filename = 'gists-download.sh'
+        if '/public/download' in self.request.path:
+            clone_filename = 'gists-public-download.sh'
+        if '/secret/download' in self.request.path:
+            clone_filename = 'gists-secret-download.sh'
+        context_data['download_filename'] = 'gists_download.sh'
+        context_data['textarea'] = dict(rows=2+3*gists_count)
+        context['context_data'] = context_data
+        return context
+
+
+    def get_type_menu_item_list(self):
+        public_selected = '/public/download' in self.request.path
+        secret_selected = '/secret/download' in self.request.path
+        all_selected = not public_selected and not secret_selected
+        protocol = self.request.GET.get('protocol','') or 'ssh'
+        if self.github_user:
+            url = self.github_user.get_absolute_url()+'/gists'
+            url_postfix='/clone?protocol=%s' % protocol
+            return [
+                {'description':'All','url':url+url_postfix,'selected':all_selected},
+                {'description':'Public','url':url+'/public'+url_postfix,'selected':public_selected},
+                {'description':'Secret','url':url+'/secret'+url_postfix,'selected':secret_selected},
+            ]
+

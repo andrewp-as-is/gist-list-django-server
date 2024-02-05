@@ -1,3 +1,11 @@
 <div class="blankslate">
+{% if context_data.user_stat %}
+    {% if context_data.user_stat.user_refreshed_at %}
     <h3 class="mb-1">{% if '/secret' in request.path %}You don’t have any secret gists yet.{% else %}{{ context_data.login  }} doesn’t have any public gists yet.{% endif %}</h3>
+    {% else %}
+        <h3 class="mb-1">Refreshing...</h3>
+    {% endif %}
+{% else %}
+<h3 class="mb-1">user info unavailable</h3>
+{% endif %}
 </div>

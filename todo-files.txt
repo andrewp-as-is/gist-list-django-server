@@ -1,0 +1,26 @@
+/USER/files как отдельная page вообще
+уникальный инструмент
+without stars, forks, comments и тд
++ file size, file language
++ raw, download links/btn
+search by filename only
++   gist id, description
++   sort by id,filename,size
+
+created/updated зачем если есть /USER/gists ?
+updated/created не оч корректно по отношению к files
+----
+URLS
+/USER/files
+/USER/gists/files
+/USER/gists/starred VS /USER/starred
+---
+stat hell
+хранить type, language stat
+files_count
+public_files_count
+secret_files_count
+но ок
+---
+type тем более немного не то
+MIME type

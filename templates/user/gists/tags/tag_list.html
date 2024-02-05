@@ -4,29 +4,7 @@
 
 {% block container %}
 <div class="page-content container-lg text-center">
-<div class="Subhead border-bottom-0 mb-0">
-    <h2 class="Subhead-heading">Tags</h2>
-</div>
-<table align="center" class="Box">
-<tr class="Box-header">
-  <td class="Box-title f5 px-1 text-left"></td>
-  <td></td>
-  <td>{% include "_blocks/details.html" with summary=sort_details.get_summary menu=sort_details.get_menu %}</td>
-</tr>
-{% for tag in tag_list %}
-<tr class="Box-row Box-row--hover-gray">
-  <td class="no-wrap px-1 text-left text-mono">
-    <a href="{{ context_data.github_user.get_absolute_url }}{% if '/starred/' in request.path %}/starred{% endif %}?tag={{ tag.slug|default:'none' }}">{% if tag.slug %}#{{ tag.slug }}{% else %}NO TAGS{% endif %}</a>
-  </td>
-  <td class="no-wrap px-1 text-left text-bold text-mono">
-    <span class="Counter text-bold">{{ tag.count }}</span>
-  </td>
-  <td class="no-wrap px-2 text-left text-mono">
-    {{ tag.percent }} %
-  </td>
-</tr>
-{% endfor %}
-</table>
-
+  {% include "user/gists/tags/_blocks/header.html" %}
+  {% include "user/gists/tags/_blocks/table.html" %}
 </div>
 {% endblock %}

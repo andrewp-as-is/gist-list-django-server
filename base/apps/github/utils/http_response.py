@@ -11,7 +11,7 @@ https://gist.githubusercontent.com/USER/GIST/raw/HASH/FILENAME
 
 PATTERN2TEMPLATE = {
     # https://gist.githubusercontent.com/USER/GIST/raw/FILENAME
-    '[\w]+/[\w]+/raw/[\w]+':"{user_id}/{gist_id}/{filename}",
+    '[\w\-\_\.]+/[\w]+/raw/[\w]+':"{user_id}/{gist_id}/{filename}",
     # api.github.com
     'gists/[\w]+':"gists/{gist_id}",
     'user/[\d]+$':"user/{user_id}/profile",
@@ -54,7 +54,8 @@ def get_params(url):
     return {
         'user_id':get_user_id(url),
         'gist_id':url.split('/')[-1],
-        'page':get_page(url)
+        'page':get_page(url),
+        'filename':get_filename(url)
     }
 
 def get_disk_path(url):

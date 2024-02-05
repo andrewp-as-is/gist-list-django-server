@@ -11,12 +11,6 @@ NAME2LANGUAGE = {language.name:language for language in LANGUAGE_LIST}
 SLUG2LANGUAGE = {language.slug:language for language in LANGUAGE_LIST}
 
 
-def get_object(model,**kwargs):
-    try:
-        return model.objects.get(**kwargs)
-    except model.DoesNotExist:
-        pass
-
 def get_language(value):
     if value in NAME2LANGUAGE:
         return NAME2LANGUAGE[value]

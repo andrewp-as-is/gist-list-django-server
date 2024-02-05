@@ -1,0 +1,45 @@
+{% load timestamp_timesince %}
+{% load emoji_tags %}
+
+<table class="width-full">
+{% for file in gist_file_list %}
+<tr class="Box-row Box-row--hover-gray">
+  <td class="no-wrap" style="width: 1%;">
+    {% if not file.gist.public %}
+    <a class="Link--muted" href="{{ file.gist.get_absolute_url }}">
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#lock" /></svg></a>
+    {% endif %}
+  </td>
+  <td class="no-wrap px-1 text-left text-mono">
+    <a class="Link--muted" href="{{ file.gist.get_absolute_url }}" title="{{ file.gist.id }}">
+      {{ file.gist_id|slice:2 }}…{{ file.gist_id|slice:"-2:" }}
+    </a>
+  </td>
+  <td class="no-wrap px-1" style="width: 1%;">
+    <a class="f6 no-wrap text-mono" href="{{ gist.get_absolute_url }}#{{ file.name }}">
+    {{ file.name|truncatechars:30 }}
+  </a>
+  </td>
+  <td class="px-1 width-full">
+    <a class="f6 Link--muted mr-2" href="/{{ context_data.github_user.login }}/{{ gist.id }}">
+    {% if file.gist.description %}
+        {{ file.gist.description|truncatechars:150|emoji_replace }}
+    {% endif %}
+    </a>
+  </td>
+  <td class="f6 no-wrap px-1">
+    {% if file.language %}
+    <a class="f6 Link--muted" href="{{ request.path }}?language={{ language }}">{{ file.language }}</a>
+    {% endif %}
+  </td>
+  {% if file.type %}
+  <td class="f6 no-wrap px-1">
+    <a class="f6 Link--muted" href="{{ request.path }}?type={{ file.type }}">{{ file.type }}</a>
+  </td>
+  {% endif %}
+  <td class="f6 no-wrap px-1">
+    <a class="f6 Link--muted" href="TODO">{{ file.size|filesizeformat }}</a>
+  </td>
+</tr>
+{% endfor %}
+</table>

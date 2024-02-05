@@ -1,10 +1,28 @@
 from views.user.gists import View as _View
 from ..mixins import UserMixin
-from .utils import get_top_language_list, get_most_used_tag_list
+
+SORT_ITEM_LIST = [
+    # {'key':'stars','text':'Stars'},
+    # {'key':'forks','text':'Forks'},
+    {'value':'-created','description':'Recently created'},
+    {'value':'-updated','description':'Recently updated'},
+    {'value':'-stargazers','description':'Most stars'},
+    #{'value':'-forks','description':'Most forks'},
+   # {'value':'-comments','description':'Most comments'},
+    #{'value':'created','description':'Least recently created'},
+    #{'value':'updated','description':'Least recently updated'},
+    {'value':'filename','description':'Filename'},
+    {'value':'description','description':'Description'},
+    #{'value':'id','description':'ID'},
+]
+
 
 class View(_View):
     paginate_by = 10
     template_name = "user/overview/overview.html"
+
+    def get_details_sort_menu_item_list(self):
+        return self.get_details_menu_item_list('sort',SORT_ITEM_LIST)
 
     def get_details_view_menu_item_list(self):
         pass
@@ -16,8 +34,10 @@ class View(_View):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context_data = context.get('context_data',{})
-        context_data['top_language_list'] = get_top_language_list(self.github_user_stat,self.secret)
-        context_data['most_used_tag_list'] = get_most_used_tag_list(self.github_user_stat,self.secret)
         context_data['popular_gist_list'] = self.get_popular_gist_list()
+        details = context_data.get('details',{})
+       # details['language'] = None
+        #details['tag'] = None
+        context_data['details'] = details
         context['context_data'] = context_data
         return context

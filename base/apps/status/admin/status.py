@@ -8,7 +8,7 @@ from ..models import Status
 
 class StatusAdmin(admin.ModelAdmin):
     list_display = [
-        "postgres_vacuum_full",
+        "postgres_vacuum_full_lock",
         "refreshed_at",
         "time",
         "timesince",

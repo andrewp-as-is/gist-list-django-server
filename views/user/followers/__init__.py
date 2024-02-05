@@ -1,7 +1,7 @@
 from views.base import ListView
 from ..mixins import UserMixin
 
-class ListView(UserMixin,ListView):
+class View(UserMixin,ListView):
     context_object_name = "follower_list"
     template_name = "user/followers/follower_list.html"
 

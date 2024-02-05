@@ -1,8 +1,24 @@
-<div class="mb-3 my-3 py-3 border-bottom">
+{% if context_data.language_list %}
+<div class="mb-3 mb-3 pb-3 border-bottom">
   <h4 class="f4 mb-2 text-normal">
-    <a class="Link--muted color-fg-default" href="{{ context_data.github_user.get_absolute_url }}/languages">Top languages</a>
+    <a class="Link--muted color-fg-default" href="{{ context_data.github_user.get_absolute_url }}/languages">
+    Languages <span class="Counter">{{ context_data.language_list|length }}</span>
+  </a>
   </h4>
-  {% for language in context_data.top_language_list %}
-    {{ language }}
+  <table>
+  {% for language in context_data.language_list %}
+  <tr class="Box-row Box-row--hover-gray border-bottom-0 border-top-0">
+    <td>
+        <a class="Link--muted d-block" href="{{ context_data.github_user.get_absolute_url }}/gists?language={{ language.name }}"><svg style="color:{{ language.color }};" aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-dot-fill mr-2">
+      <path d="M8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"></path></svg></a>
+    </td>
+    <td class="px-1"><a class="Link--muted d-block" href="{{ context_data.github_user.get_absolute_url }}/gists?language={{ language.name }}">{{ language.name }}</a></td>
+    <td class="px-1"><a class="Link--muted d-block" href="{{ context_data.github_user.get_absolute_url }}/gists?language={{ language.name }}"><span class="Counter">{{ language.count }}</span></a></td>
+    {% if language.percent %}
+    <td class="px-1"><a class="Link--muted d-block" href="{{ context_data.github_user.get_absolute_url }}/gists?language={{ language.name }}">{{ language.percent }}%</a></td>
+    {% endif %}
+  </tr>
   {% endfor %}
+  </table>
 </div>
+{% endif %}

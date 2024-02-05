@@ -1,0 +1,9 @@
+context_data.language
+вывести куда-нить с color, count, %
+% зачем?
+---
+gist_list
+/USER/languages ссылку логично будет вставить ?language=language
+/USER/tags ссылку логично будет вставить если ?tag=tag
+--
+gist_list language details зачем? если есть overview. гм. ну чтоб было. есть же на github.

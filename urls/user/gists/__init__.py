@@ -5,6 +5,7 @@ from views.user import gists as views
 urlpatterns = [
     path('/clone', include('urls.user.gists.clone')),
     path('/clone.sh', include('urls.user.gists.clone_sh')),
+    path('/download', include('urls.user.gists.download')),
     path('/forked', include('urls.user.gists.forked')),
     path('/public', include('urls.user.gists.public')),
     path('/secret', include('urls.user.gists.secret')),

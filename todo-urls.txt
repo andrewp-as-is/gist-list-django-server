@@ -1,0 +1,11 @@
+/USER/xxx
+
+НЕ нужно
+/starred/forked
+/starred/public
+/starred/secret
+
+поэтому
+/USER/forked
+/USER/public
+/USER/secret

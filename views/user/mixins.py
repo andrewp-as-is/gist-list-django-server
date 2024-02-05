@@ -9,22 +9,13 @@ import requests
 from base.apps.github.models import (
     Gist,
     User,
-    UserStat,
+    UserPublicStat,
+    UserSecretStat,
     User404,
 )
-from base.apps.github_default_matview.models import User as DefaultUser
-from base.apps.github_default_matview.utils import get_model as get_matview_model
-from base.apps.github_recent_matview.models import User as RecentUser
-from base.apps.github_recent_matview.utils import get_model as get_live_matview_model
 from base.apps.postgres.models import Matview
 from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
-from .utils import get_stat_data
-
-def get_model(tablename,live_matview_list):
-    if tablename in live_matview_list:
-        return get_live_matview_model(tablename)
-    return get_matview_model(tablename)
-
+from .utils import get_language_list, get_stat_data, get_tag_list
 
 class UserMixin:
     def dispatch(self, *args, **kwargs):
@@ -45,16 +36,14 @@ class UserMixin:
         self.secret = False
         try:
             self.github_user = User.objects.get(login=self.kwargs["login"])
-            self.secret = self.github_user.id == self.request.user.id
             user_id = self.github_user.id
+            self.secret = self.github_user.id == self.request.user.id
+            stat_model = UserSecretStat if self.secret else UserPublicStat
             try:
-                self.github_user_stat = UserStat.objects.get(user_id=user_id)
-                self.language2count = get_stat_data(self.github_user_stat.public_language_stat)
-                self.tag2count = get_stat_data(self.github_user_stat.public_tag_stat)
-                if self.request.user.id == self.github_user.id:
-                    self.language2count = get_stat_data(self.github_user_stat.secret_language_stat)
-                    self.tag2count = get_stat_data(self.github_user_stat.secret_tag_stat)
-            except UserStat.DoesNotExist:
+                self.github_user_stat = stat_model.objects.get(user_id=user_id)
+                self.language2count = get_stat_data(self.github_user_stat.language_stat)
+                self.tag2count = get_stat_data(self.github_user_stat.tag_stat)
+            except stat_model.DoesNotExist:
                 pass
             try:
                 self.github_user_refresh_lock = GithubUserRefreshLock.objects.get(github_user_id=user_id)
@@ -62,6 +51,8 @@ class UserMixin:
                 pass
         except User.DoesNotExist:
             self.github_user = None
+        self.language_list = get_language_list(self.github_user_stat,self.secret)
+        self.tag_list = get_tag_list(self.github_user_stat,self.secret)
         response = super().dispatch(*args, **kwargs)
         #if response.status_code in [200, 304] and self.refreshed_at:
        #     response["ETag"] = self.refreshed_at
@@ -100,6 +91,10 @@ class UserMixin:
                         count=forks_count,
                         selected = self.request.path.endswith('/forked') or '/forked/' in self.request.path
                     ),
+                    files=dict(
+                        count=42,
+                        selected = self.request.path.endswith('/files')
+                    ),
                     starred=dict(
                         count=self.github_user_stat.stars_count,
                         selected = self.request.path.endswith('/starred') or '/starred/' in self.request.path
@@ -128,5 +123,8 @@ class UserMixin:
             except User404.DoesNotExist:
                 pass
         context_data.update(login=self.login)
+        context_data['secret'] = self.secret
+        context_data['language_list'] = self.language_list
+        context_data['tag_list'] = self.tag_list
         context['context_data'] = context_data
         return context

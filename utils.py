@@ -10,9 +10,7 @@ from django.utils.timesince import timesince as _timesince
 import requests
 
 from django_command_worker.models import Queue
-from base.apps.github_default_matview.models import Gist as MatviewGist
-from base.apps.github_recent_matview.models import Gist as NewMatviewGist
-from base.apps.github.models import UserApiEtag
+from base.apps.github.models import UserApiEtag, UserStat
 from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
 from base.apps.github.utils.graphql import (
     get_user_followers_query,

@@ -1,7 +1,9 @@
 /USER/gists.json
-/USER/trash.json
-/USER/trash.json
-/USER/backups.json
+/USER/secret.json SECRET
+/USER/trash.json SECRET
+/USER/trash.json SECRET
+/USER/backup.json SECRET
 
-download, clone, json где?
-json через django-rest-framework
+----
+django-rest-framework
+---

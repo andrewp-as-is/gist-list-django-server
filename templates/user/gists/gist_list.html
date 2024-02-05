@@ -5,7 +5,6 @@
     {% if context_data.github_user.is_restricted %}
       {% include "user/gists/_blocks/restricted.html" %}
     {% else %}
-        {% include "user/gists/_blocks/extra_links.html" %}
         {% include "user/gists/_blocks/search.html" %}
         {% include "_blocks/search/results.html" %}
         {% if context_data.links.gists.count %}

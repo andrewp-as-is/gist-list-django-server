@@ -1,0 +1,93 @@
+{% load timestamp_timesince %}
+{% load emoji_tags %}
+
+<table class="width-full">
+{% for gist_star in gist_star_list %}
+{% with gist=gist_star.gist %}
+<tr class="Box-row Box-row--hover-gray">
+  <td class="no-wrap" style="width: 1%;">
+    {% if not gist.public %}
+    <a class="Link--muted" href="{{ gist.get_absolute_url }}">
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#lock" /></svg></a>
+    {% endif %}
+  </td>
+  {% if request.user.id == context_data.github_user.id and '/starred' not in request.path %}
+  {% if '/gists' in request.path %}
+  <td class="no-wrap px-1 text-left text-mono">
+    <a class="Link--muted" href="{{ gist.get_absolute_url }}" title="{{ gist.id }}">
+      {{ gist.id|slice:2 }}…{{ gist.id|slice:"-2:" }}
+    </a>
+  </td>
+  {% endif %}
+  {% endif %}
+  {% if '/starred' in request.path %}
+  <td style="width: 1%;">
+    <a href="{{ gist.owner.get_absolute_url }}">
+      <img src="https://github.com/{{ gist.owner.login }}.png?size=16" height="16" width="16" />
+    </a>
+  </td>
+  {% endif %}
+  <td class="no-wrap px-1" style="width: 1%;">
+    <a class="f6 no-wrap text-mono" href="{{ gist.owner.get_absolute_url }}">{{ gist.owner.login }}</a> /
+    <a class="f6 no-wrap text-mono" href="{{ gist.get_absolute_url }}#{{ gist.filenames.0 }}" title="{{ gist.filename_list|join:',' }}">
+    {{ gist.filename_list.0|truncatechars:30 }}
+  </a>
+  </td>
+  <td class="px-1 width-full">
+    <a class="f6 Link--muted mr-2" href="/{{ context_data.github_user.login }}/{{ gist.id }}">
+    {% if gist.description %}
+        {{ gist.description|truncatechars:150|emoji_replace }}
+    {% endif %}
+    </a>
+  </td>
+  <td class="f6 no-wrap px-1">
+    {% if gist.fork_of %}<span class="color-fg-muted f6">forked from</span> <a class="f6" href="{{ gist.fork_of.get_absolute_url }}">{{ gist.fork_of.owner.login }}/{{ gist.fork_of.filename_list.0|truncatechars:70 }}</a>
+    {% endif %}
+  <td class="f6 no-wrap px-1">
+      {% for tag in gist.get_tag_list %}
+      <a class="f6 Link--muted" href="{{ request.path }}?tag={{ tag }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">#{{ tag }}</a>
+      {% endfor %}
+  </td>
+  <td class="f6 no-wrap px-1">
+    {% for language in gist.language_list %}
+    <a class="f6 Link--muted" href="{{ request.path }}?language={{ language }}&columns={{ request.GET.columns }}&sort={{ request.GET.sort }}&v={{ request.GET.v }}">{{ language }}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </td>
+  <td class="no-wrap px-1">
+    {% if gist.stargazers_count %}
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#star" /></svg> {{ gist.stargazers_count }}
+     {% endif %}
+    </a>
+  </td>
+  <td class="no-wrap px-1">
+    {% if gist.forks_count %}
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}" target="_blank">
+      <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#repo-forked" /></svg> {{ gist.forks_count }}
+    </a>
+    {% endif %}
+  </td>
+  <td class="no-wrap px-1">
+    {% if gist.comments_count %}
+    <a class="f6 Link--muted" href="https://gist.github.com/{{ gist.id }}#comments" target="_blank">
+    <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#comment" /></svg> {{ gist.comments_count|default:'' }}
+    </a>
+    {% endif %}
+  </td>
+  <td class="f6 px-1" nowrap>
+    <a class="Link--muted f6" href="{{ gist.fork.get_absolute_url }}">
+    {% if gist.updated_at %}last active {{ gist.updated_at|timestamp_timesince }}{% else %}created {{ gist.created_at|timestamp_timesince }}{% endif %}</a>
+  </td>
+  {% if '/download' in request.path %}
+  <td class="no-wrap px-1" style="width: 1%;">
+  {% for filename,raw_url in gist.filename2raw_url.items %}
+  <a class="btn btn-sm Link--muted px-1 py-0" href="/download?gist={{ gist.id }}&filename={{ filename }}" title="{{ filename }}">
+  <svg class="octicon" style="width:16px;height:16px"><use xlink:href="#download" /></svg> {{ filename|truncatechars:30 }}
+  </a>
+  {% endfor %}
+  </td>
+  {% endif %}
+</tr>
+{% endwith %}
+{% endfor %}
+</table>

@@ -1,15 +1,8 @@
 __all__ = ["AbstractGist", "Gist"]
 
-import re
-
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.search import SearchVectorField
 from django.db import models
-
-from .language import Language
-
-
-NAME2LANGUAGE = {l.name: l for l in Language.objects.all()}
 
 """
 https://developer.github.com/v3/gists/
@@ -50,8 +43,15 @@ class AbstractGist(models.Model):
     pushed_at = models.IntegerField(null=True) # GraphQL api only
     updated_at = models.IntegerField(null=True)
 
-    description_order = models.IntegerField(null=True)
-    filename_order = models.IntegerField(null=True)
+    row_number_over_comments = models.IntegerField(null=True)
+    row_number_over_description = models.IntegerField(null=True)
+    row_number_over_filename = models.IntegerField(null=True)
+    row_number_over_forks = models.IntegerField(null=True)
+    row_number_over_stargazers = models.IntegerField(null=True)
+    # row_number_over_id = id
+    # row_number_over_created = created_at,id
+    # row_number_over_updated = updated_at,id
+    # row_number_over_sizes = size,id
 
     class Meta:
         abstract = True
@@ -61,14 +61,6 @@ class AbstractGist(models.Model):
             self.owner.login,
             self.id,
         )
-
-    def get_language_list(self):
-        language_list = []
-        for language_name in self.language_list or []:
-            language = NAME2LANGUAGE.get(language_name, None)
-            if language:
-                language_list += [language]
-        return language_list
 
     @property
     def filename2raw_url_hash(self):

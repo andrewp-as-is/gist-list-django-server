@@ -8,6 +8,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.db import connection
 
+from django_command_worker.models import Queue
 from base.apps.postgres.models import Query, RefreshJob
 from django_stdout.management.base import StdoutMessageCommand
 
@@ -19,6 +20,7 @@ class BaseCommand(StdoutMessageCommand):
         self.model2create_list = collections.defaultdict(list)
 
     def init(self):
+        self.job_command_name_list = []
         self.delete_list = []
         self.model2create_list = collections.defaultdict(list)
 
@@ -37,10 +39,19 @@ class BaseCommand(StdoutMessageCommand):
     def delete(self,obj):
         self.delete_list+=[obj]
 
+    def create_job(self,job):
+        command_name = type(job)._meta.db_table.replace('"','').replace('.','_')
+        if command_name not in self.job_command_name_list:
+            self.job_command_name_list+=[command_name]
+            self.create(Queue(name=command_name))
+            self.MODEL2BULK_CREATE_KWARGS[Queue] = dict(ignore_conflicts=True)
+
     def bulk_create(self):
         for model,obj_list in self.model2create_list.items():
             kwargs = self.MODEL2BULK_CREATE_KWARGS.get(model,{})
-            schemaname,tablename = model._meta.db_table.replace('"','').split('.')
+            schemaname,tablename = 'public', model._meta.db_table
+            if '.' in model._meta.db_table:
+                schemaname,tablename = model._meta.db_table.replace('"','').split('.')
             self.stdout.write('BULK CREATE: %s.%s: %s objects\n' % (schemaname,tablename,len(obj_list)))
             model.objects.bulk_create(obj_list,**kwargs)
 

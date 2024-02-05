@@ -1,0 +1,18 @@
+<form action="{{ request.path }}" method="get">
+    <input type="search" id="filter" name="q" class="form-control width-full" placeholder="Find a gist…" autocomplete="off" aria-label="Find a file…" value="{% if q %}{{ q }}{% endif %}">
+    {% if request.GET.columns %}
+    <input type="hidden" name="columns" value="{{ request.GET.columns }}" />
+    {% endif %}
+    {% if request.GET.language %}
+    <input type="hidden" name="language" value="{{ request.GET.language }}" />
+    {% endif %}
+    {% if request.GET.sort %}
+    <input type="hidden" name="sort" value="{{ request.GET.sort }}" />
+    {% endif %}
+    {% if request.GET.tag %}
+    <input type="hidden" name="tag" value="{{ request.GET.tag }}" />
+    {% endif %}
+    {% if request.GET.type %}
+    <input type="hidden" name="type" value="{{ request.GET.type }}" />
+    {% endif %}
+</form>

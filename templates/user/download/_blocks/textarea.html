@@ -1,3 +1,5 @@
+TODO: download
+
 <textarea class="color-bg-subtle text-mono" id="textarea" rows="{{ context_data.gist_list|length }}" cols="100">#!/bin/sh
 {% for gist in gist_list %}
 ! [ -e {% if request.GET.name|default:'id' == 'id' %}{{ context_data.gist.id }}{% else %}{{ context_data.gist.filename_list.0 }}{% endif %} ] && {

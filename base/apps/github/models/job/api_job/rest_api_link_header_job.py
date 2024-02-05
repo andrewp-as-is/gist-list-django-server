@@ -14,4 +14,4 @@ class RestApiLinkHeaderJob(models.Model):
 
     @staticmethod
     def response_match(response):
-        return 'api.github.com/graphql' not in response.url
+        return 'https://api.github.com/' in response.url and 'api.github.com/graphql' not in response.url

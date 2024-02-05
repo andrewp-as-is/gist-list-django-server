@@ -1,3 +1,12 @@
+{% if context_data.links.gists.count > 10 %}
 <div class="Box-footer color-bg-subtle text-center">
   <a href="{{ context_data.github_user.get_absolute_url }}/gists" class="Link Link--muted text-bold">View all gists</a>
 </div>
+<div class="py-3 text-center">
+  <a class="Link--muted" href="{{ context_data.github_user.get_absolute_url }}/api">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#gear" /></svg>API
+  </a>,
+  <a class="Link--muted" href="{{ context_data.github_user.get_absolute_url }}/clone"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#git-compare" /></svg>Clone</a>,
+  <a class="Link--muted" href="{{ context_data.github_user.get_absolute_url }}/download"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#download" /></svg>Download</a>
+</div>
+{% endif %}

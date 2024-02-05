@@ -14,7 +14,7 @@ from views.base import TemplateView
 
 import requests
 
-from base.apps.github.models import Gist, UserGistOrderJob, Token, UserStat
+from base.apps.github.models import Gist, UserGistRowNumberJob, Token, UserStat
 from ..mixins import UserMixin
 
 
@@ -72,5 +72,5 @@ class View(LoginRequiredMixin,UserMixin,TemplateView):
         else:
             stat_kwargs['secret_gists_count']=F('secret_gists_count') + 1
         UserStat.objects.filter(user_id=user_id).update(**stat_kwargs)
-        UserGistOrderJob.objects.get_or_create(user_id=user_id)
+        UserGistRowNumberJob.objects.get_or_create(user_id=user_id)
         return redirect(gist.get_absolute_url())
