@@ -15,6 +15,13 @@ from base.management.base import BaseCommand
 
 
 class JobCommand(BaseCommand):
+
+    def handle(self, *args, **options):
+        try:
+            self.main()
+        finally: # prevent endless loop
+            Job.objects.all().delete()
+
     def handle(self, *args, **options):
         super().handle(*args, **options)
         self.job_list = []  # prevent subclass errors
@@ -39,8 +46,6 @@ class JobCommand(BaseCommand):
             logging.error(e, exc_info=True)
             if settings.DEBUG:
                 raise e
-        max_id = max(list(map(lambda j: j.id, self.job_list)))
-        self.job_model.objects.filter(id__lte=max_id).delete()
 
     def do_job(self,job):
         raise NotImplementedError

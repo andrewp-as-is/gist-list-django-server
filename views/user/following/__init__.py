@@ -1,6 +1,6 @@
 from django.db.models.functions import Lower
 
-from base.apps.github.models import User, UserFollower
+from base.apps.github.models import User, Follower
 
 from views.base import ListView
 from ..mixins import UserMixin
@@ -11,7 +11,7 @@ class View(UserMixin,ListView):
 
     def get_queryset(self,**kwargs):
         qs = User.objects.filter(
-            id__in=UserFollower.objects.filter(follower_id=self.github_user.id).values_list('user_id',flat=True)
+            id__in=Follower.objects.filter(follower_id=self.github_user.id).values_list('user_id',flat=True)
         )
         q = self.request.GET.get('q','').strip()
         if q:

@@ -58,11 +58,11 @@ def get_params(url):
         'filename':get_filename(url)
     }
 
-def get_disk_path(url):
+def get_disk_relpath(url):
     host = url.split("//")[-1].split("/")[0].split('?')[0]
     for regex,template in REGEX2TEMPLATE.items():
         if regex.match(url.replace('https://%s/' % host,'')):
             disk_relpath = template.format(**get_params(url))
-            return _get_disk_path(os.path.join(host,disk_relpath))
+            return os.path.join(os.path.join(host,disk_relpath))
     raise ValueError(url)
 

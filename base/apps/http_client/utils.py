@@ -5,7 +5,8 @@ import os
 import time
 
 from django.conf import settings
-from base.conf import HTTP_CLIENT_DIR
+from base.settings import HTTP_CLIENT_DIR
+
 http.client._MAXHEADERS = 1000
 
 

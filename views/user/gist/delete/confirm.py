@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 
 import requests
 
-from base.apps.github.models import Gist, GistStar, Token, Trash, UserStat
+from base.apps.github.models import Gist, GistStar, Token, Trash, AuthenticatedUserStat
 from views.base import View
 from ..mixins import GistMixin
 
@@ -46,8 +46,9 @@ class View(LoginRequiredMixin,GistMixin,View):
         if r.status_code in [204]: # DELETED
             Gist.objects.filter(id=gist_id).delete()
             trash_count = Trash.objects.filter(owner_id=user_id).count()
-            UserStat.objects.filter(user_id=user_id).update(
-                gist_modified_at=int(time.time()),
+            # todo: user_table
+            AuthenticatedUserStat.objects.filter(user_id=user_id).update(
+                #gist_modified_at=int(time.time()),
                 trash_count=trash_count,
             )
             return redirect(self.github_user.get_absolute_url())

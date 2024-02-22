@@ -6,7 +6,7 @@ from views.user.mixins import UserMixin
 
 class GistMixin(UserMixin):
     def dispatch(self, *args, **kwargs):
-        self.gist = get_object_or_404(Gist, pk=self.kwargs["pk"])
+        self.gist = get_object_or_404(Gist, owner_id=self.github_user.id,id=self.kwargs["pk"])
         return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):

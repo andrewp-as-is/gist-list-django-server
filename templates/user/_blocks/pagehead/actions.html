@@ -2,8 +2,14 @@
 
 <ul class="d-md-flex d-none pagehead-actions float-none">
 <li class="mr-1" style="list-style-type:none">
-<a class="btn btn-sm Link--muted" {% if context_data.github_user_refresh_lock %}aria-disabled="true"{% endif %} rel="nofollow" href="/{{ context_data.login  }}/refresh">
-  <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refresh{% if context_data.github_user_refresh_lock %}ing...{% endif %}
+  github_user_stat={{ github_user_stat }}
+  {% if not context_data.github_user_stat or not context_data.github_user_stat.locked_at %}
+  <a class="btn btn-sm Link--muted" rel="nofollow" href="/{{ context_data.login  }}/refresh"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refresh</a>
+  {% else %}
+  <button class="btn btn-sm" aria-disabled="true">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refreshing...
+  </button>
+{% endif %}
 </a>
-    </li>
+</li>
 </ul>

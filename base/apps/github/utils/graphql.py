@@ -6,6 +6,7 @@ def get_user_followers_query(login,after=None):
     return """
 query {
   user(login: \"%s\") {
+    databaseId,
     followers(first: 100, after: %s) {
       nodes {
         databaseId
@@ -49,6 +50,7 @@ def get_user_following_query(login,after=None):
     return """
 query {
   user(login: \"%s\") {
+    databaseId,
     following(first: 100,after: %s) {
       nodes {
         databaseId
@@ -86,6 +88,7 @@ def get_user_gists_query(login,after=None):
     return """
 query {
   user(login: \"%s\") {
+    databaseId,
     gists (first: 100, after: %s, orderBy: {field: CREATED_AT, direction: DESC}) {
         nodes {
           description
@@ -118,6 +121,7 @@ def get_viewer_gists_query(after=None):
     return """
 query {
   viewer {
+    databaseId,
     gists (first: 100, privacy:ALL, after: %s, orderBy: {field: CREATED_AT, direction: DESC}) {
         nodes {
           description

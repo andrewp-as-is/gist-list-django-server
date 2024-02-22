@@ -11,6 +11,7 @@ class AbstractGistFile(models.Model):
     size = models.IntegerField()
     language = models.CharField(null=True,max_length=100)
     type = models.CharField(null=True,max_length=100)
+    raw_url_hash = models.CharField(max_length=100)
 
     row_number_over_gist = models.IntegerField(null=True)
     row_number_over_name = models.IntegerField(null=True)

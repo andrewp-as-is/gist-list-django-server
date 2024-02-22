@@ -14,7 +14,7 @@ from views.base import TemplateView
 
 import requests
 
-from base.apps.github.models import Gist, UserGistRowNumberJob, Token, UserStat
+from base.apps.github.models import Gist, UserGistRowNumberJob, Token, UserPublicStat, AuthenticatedUserStat
 from ..mixins import UserMixin
 
 
@@ -66,11 +66,15 @@ class View(LoginRequiredMixin,UserMixin,TemplateView):
             updated_at=timestamp
         )
         gist, created = Gist.objects.get_or_create(defaults,id=data['id'])
-        stat_kwargs = dict(gist_modified_at = int(time.time()))
-        if public:
-            stat_kwargs['public_gists_count']=F('public_gists_count') + 1
-        else:
-            stat_kwargs['secret_gists_count']=F('secret_gists_count') + 1
-        UserStat.objects.filter(user_id=user_id).update(**stat_kwargs)
+        # todo: github.gist_file
+        # secret_gists_count=F('secret_gists_count') + 1
+        gist_queryset = Gist.objects.filter(owner_id=user_id)
+        # todo: user_table
+        UserPublicStat.objects.filter(user_id=user_id).update(
+            gists_count=gist_queryset.filter(public=True).count()
+        )
+        AuthenticatedUserStat.objects.filter(user_id=user_id).update(
+            gists_count=gist_queryset.count()
+        )
         UserGistRowNumberJob.objects.get_or_create(user_id=user_id)
         return redirect(gist.get_absolute_url())

@@ -14,10 +14,12 @@
     Forked <span class="Counter">{{ context_data.github_user_stat.forks_count|format_count }}</span>
 </a>
 {% endif %}
+{% if context_data.github_user_stat.files_count or context_data.secret %}
 <a class="UnderlineNav-item{% if context_data.links.files.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/files">
     <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#code-square" /></svg>
     Files{% if context_data.github_user_stat.files_count != None %} <span class="Counter">{{ context_data.github_user_stat.files_count|format_count }}</span>{% endif %}
 </a>
+{% endif %}
 {% if context_data.secret %}
 {% if context_data.github_user_stat.stars_count %}
 <a class="UnderlineNav-item{% if context_data.links.starred.selected %} selected{% endif %}" href="{{ context_data.github_user.get_absolute_url }}/gists/starred">

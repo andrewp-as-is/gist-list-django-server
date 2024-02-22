@@ -17,6 +17,7 @@ class BaseCommand(StdoutMessageCommand):
 
     def handle(self, *args, **options):
         self.delete_list = []
+        self.model2create_id_list = collections.defaultdict(list)
         self.model2create_list = collections.defaultdict(list)
 
     def init(self):
@@ -34,7 +35,9 @@ class BaseCommand(StdoutMessageCommand):
         Query(query=query,duration=duration,created_at=int(created_at)).save()
 
     def create(self,obj):
-        self.model2create_list[type(obj)]+=[obj]
+        if not obj.id or obj.id not in self.model2create_id_list:
+            self.model2create_id_list[type(obj)]+=[obj.id]
+            self.model2create_list[type(obj)]+=[obj]
 
     def delete(self,obj):
         self.delete_list+=[obj]
@@ -64,3 +67,6 @@ class BaseCommand(StdoutMessageCommand):
             self.stdout.write('BULK DELETE: %s.%s: %s objects\n' % (schemaname,tablename,len(obj_list)))
             id_list = list(map(lambda obj:obj.id,obj_list))
             model.objects.filter(id__in=id_list).delete()
+
+    def bulk_update(self):
+        pass

@@ -4,25 +4,12 @@ import requests
 
 from base.apps.github.models import User
 from base.apps.github.utils import get_api_timestamp
-from base.apps.user.models import GithubUserRefreshLock
-
-
-def get_github_user_lock(github_user_id):
-    try:
-        return GithubUserRefreshLock.objects.get(github_user_id=github_user_id)
-    except GithubUserRefreshLock.DoesNotExist:
-        pass
-
 
 def get_github_user(user_id):
     try:
         return User.objects.get(id=user_id)
     except User.DoesNotExist:
         pass
-
-
-def get_locks_count(user_id):
-    return GithubUserRefreshLock.objects.filter(user_id=user_id).count()
 
 
 def create_github_user(data):

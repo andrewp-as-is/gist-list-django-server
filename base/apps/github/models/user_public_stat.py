@@ -10,16 +10,16 @@ class AbstractUserPublicStat(models.Model):
 
     gists_count = models.IntegerField(null=True)
     forks_count = models.IntegerField(null=True)
-    stars_count = models.IntegerField(null=True)
+    # stars_count = models.IntegerField(null=True) SECRET ONLY
     files_count = models.IntegerField(null=True)
-    trash_count = models.IntegerField(null=True)
+    # trash_count = models.IntegerField(null=True) SECRET ONLY
 
     language_stat = models.TextField(null=True)
     tag_stat = models.TextField(null=True)
-    file_type_stat = models.TextField(null=True)
+    type_stat = models.TextField(null=True)
 
-    user_locked_at = models.IntegerField(null=True)
-    user_refreshed_at = models.IntegerField(null=True)
+    locked_at = models.IntegerField(null=True)
+    refreshed_at = models.IntegerField(null=True)
 
     class Meta:
         abstract = True

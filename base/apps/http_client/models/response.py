@@ -8,25 +8,28 @@ import os
 
 import shutil
 
+from django.conf import settings
 from django.db import models
 
-from .mixins import HeadersMixin
 
-
-class AbstractResponse(HeadersMixin, models.Model):
+class AbstractResponse(models.Model):
     id = models.BigAutoField(primary_key=True)
+    request = models.ForeignKey('http_client.Request', related_name='+',on_delete=models.DO_NOTHING)
     url = models.CharField(max_length=255)
     status = models.IntegerField()
     headers = models.TextField(null=True)
-    disk_path = models.TextField(null=True)
     created_at = models.FloatField()
 
     class Meta:
         abstract = True
 
+    def get_disk_path(self):
+        return os.path.join(settings.HTTP_RESPONSE_DIR,self.request.disk_relpath)
+
     def get_content(self):
-        if os.path.exists(str(self.disk_path)):
-            return open(self.disk_path).read()
+        path = self.get_disk_path()
+        if os.path.exists(str(path)):
+            return open(path).read()
 
     def get_content_data(self):
         content = self.get_content()
@@ -34,11 +37,12 @@ class AbstractResponse(HeadersMixin, models.Model):
             return json.loads(content)
 
     def delete_disk_path(self):
-        if os.path.exists(self.disk_path):
-            if os.path.isfile(self.disk_path):
-                os.unlink(self.disk_path)
+        path = self.get_disk_path()
+        if os.path.exists(path):
+            if os.path.isfile(path):
+                os.unlink(path)
             else:
-                shutil.rmtree(self.disk_path)
+                shutil.rmtree(path)
 
 
 class Response(AbstractResponse):

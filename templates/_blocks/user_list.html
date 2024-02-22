@@ -29,8 +29,8 @@
     </td>
     <td class="no-wrap p-1 text-left">
       <a class="color-fg-muted" href="{{ user.get_absolute_url }}">
-        {% if user.public_gists_count %}
-        <svg class="octicon text-icon-tertiary" style="width:16px;height:16px"><use xlink:href="#file-code" /></svg> {{ user.public_gists_count|format_count }} gists
+        {% if user.gists_count %}
+        <svg class="octicon text-icon-tertiary" style="width:16px;height:16px"><use xlink:href="#file-code" /></svg> {{ user.gists_count|format_count }} gists
       {% endif %}
     </a>
     </td>

@@ -1,6 +1,6 @@
 from django.views.generic.base import TemplateView
 
-# from base.apps.github.models import UserInternalJobDetect, UserRequestJobDetect
+# from base.apps.github.models import UserInternalJobDetect, UserRequestDetect
 from views.user.mixins import UserMixin
 
 class View(UserMixin, TemplateView):
@@ -12,6 +12,6 @@ class View(UserMixin, TemplateView):
         if self.github_user:
             user_id = self.github_user.id
             raise ValueError('UserInternalJobDetect -> todo')
-            # context['request_job'] = UserRequestJobDetect.objects.filter(user_id=user_id).count()>0
+            # context['request_job'] = UserRequestDetect.objects.filter(user_id=user_id).count()>0
             # context['internal_job'] = UserInternalJobDetect.objects.filter(user_id=user_id).count()>0
         return context

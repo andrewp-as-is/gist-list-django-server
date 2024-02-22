@@ -10,8 +10,7 @@ from django.utils.timesince import timesince as _timesince
 import requests
 
 from django_command_worker.models import Queue
-from base.apps.github.models import UserApiEtag, UserStat
-from base.apps.user.models import GithubUserRefresh, GithubUserRefreshLock
+from base.apps.github.models import UserEtag, UserPublicStat, AuthenticatedUserStat
 from base.apps.github.utils.graphql import (
     get_user_followers_query,
     get_user_following_query,
@@ -19,8 +18,9 @@ from base.apps.github.utils.graphql import (
     get_user_gists_query,
 )
 
-from base.apps.github.utils.http_response import get_disk_path
-from base.apps.http_client.models import RequestJob
+from base.apps.github.utils.http_response import get_disk_relpath
+from base.apps.http_client.models import Request
+from base.apps.user.models import GithubUserRefresh
 from django_bulk_create import bulk_create
 
 def get_github_api_data(url, token):
@@ -54,7 +54,7 @@ def refresh_gist(gist, token, priority, **options):
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
         create_list += [
-            RequestJob(
+            Request(
                 host="api.github.com",
                 url=url,
                 method="GET" if "github.com/graphql" not in url else "POST",
@@ -72,41 +72,33 @@ def refresh_gist(gist, token, priority, **options):
 def refresh_user(request,github_user, priority):
     url_list = []
     url2query = {}
-    user_api_etag_list = list(UserApiEtag.objects.filter(user_id=github_user.id))
-    url2etag = {e.url:e.etag for e in user_api_etag_list}
+    url2disk_relpath = {}
     token = request.user.token
+    secret = github_user.id == token.user_id
     headers = {
         "Authorization": "Bearer %s" % token.token,
         "X-GitHub-Api-Version": "2022-11-28",
     }
-    # todo: followers/following request
-    """
-    if user.followers_count:
-        for page in range(1,int(user.followers_count/100)+2):
-            url = 'https://api.github.com/user/%s/followers?per_page=100&page=%s' % (user.id,page)
-            url2relpath[url] = 'followers/%s' % page
-    if user.following_count:
-        for page in range(1,int(user.following_count/100)+1):
-            url = 'https://api.github.com/user/%s/following?per_page=100&page=%s' % (user.id,page)
-            url2relpath[url] = 'following/%s' % page
-    """
     url = "https://api.github.com/user/%s" % github_user.id
     url_list+=[url]
-    # graphql user followers
+    # graphql user followers PROFILE
     url = (
         "https://api.github.com/graphql?schema=user.followers&page=1&user_id=%s"
         % (github_user.id)
     )
+    url = "https://api.github.com/graphql"
     url_list+=[url]
     url2query[url] = get_user_followers_query(github_user.login)
+    url2disk_relpath[url] = os.path.join('user',str(github_user.id),'graphql','followers','1')
     # graphql user following
     url = (
         "https://api.github.com/graphql?schema=user.following&page=1&user_id=%s"
         % (github_user.id)
     )
+    url = "https://api.github.com/graphql"
     url_list+=[url]
     url2query[url] = get_user_following_query(github_user.login)
-    secret = github_user.id == token.user_id
+    url2disk_relpath[url] = os.path.join('user',str(github_user.id),'graphql','following','1')
     if secret:  # authenticated user (unknown pages count)
         # gists/starred api v3 only, graphql not supported
         url = (
@@ -124,7 +116,7 @@ def refresh_user(request,github_user, priority):
         url2query[url] = get_viewer_gists_query()
     else:  # public user
         # todo: etag. no need all requests if no changes. where to check?
-        if github_user.public_gists_count:
+        if github_user.gists_count:
             # &page=1 request only (etag check)
             url = "https://api.github.com/user/%s/gists?per_page=100&page=1" % github_user.id
             url_list+=[url]
@@ -140,30 +132,33 @@ def refresh_user(request,github_user, priority):
             query = url2query[url]
             data = json.dumps({"query": query.replace("\n", "")})
             headers["Content-Type"] = "application/json"
-            if url in url2etag:
-                headers["Etag"] = url2etag[url]
+            #if url in url2etag:
+            #    headers["Etag"] = url2etag[url]
+        if url in url2disk_relpath:
+            disk_relpath = url2disk_relpath[url]
+        else:
+            disk_relpath = get_disk_relpath(url)
         if '?' not in url:
             url=url+'?'
         key2value = dict(
             user_id=github_user.id,
             token_id=token.id,
             login=github_user.login,
-            priority=priority,
-            etag=''
+            priority=priority
         )
         for key,value in key2value.items():
             if key not in url:
                 url=url+'&%s=%s' % (key,value)
         create_list += [
-            RequestJob(
+            Request(
                 host="api.github.com",
                 url=url,
                 method="GET" if "github.com/graphql" not in url else "POST",
                 headers=json.dumps(headers),
                 data=data,
-                disk_path=get_disk_path(url),
-                redirects_limit=4,
-                retries_limit=5,
+                disk_relpath=disk_relpath,
+                max_redirects=4,
+                max_retries=5,
                 timeout=10,
                 priority=priority,
             ),
@@ -171,19 +166,19 @@ def refresh_user(request,github_user, priority):
                 user_id=request.user.id,
                 github_user_id=github_user.id,
                 started_at=timestamp
-            ),
-            GithubUserRefreshLock(
-                user_id=request.user.id,
-                github_user_id=github_user.id,
-                created_at=timestamp
             )
         ]
     model2kwargs = {
-        RequestJob:dict(ignore_conflicts=True),
+        Request:dict(ignore_conflicts=True),
         GithubUserRefresh:dict(ignore_conflicts=True),
-        GithubUserRefreshLock:dict(ignore_conflicts=True),
     }
+    has_user_public_stat = bool(UserPublicStat.objects.filter(user_id=github_user.id).count()>0)
+    UserPublicStat.objects.get_or_create(user_id=github_user.id)
+    AuthenticatedUserStat.objects.get_or_create(user_id=github_user.id)
     with transaction.atomic():
+        UserPublicStat.objects.filter(user_id=github_user.id).update(locked_at=timestamp)
+        if secret:
+            AuthenticatedUserStat.objects.filter(user_id=github_user.id).update(locked_at=timestamp)
         bulk_create(create_list,model2kwargs)
         Queue.objects.get_or_create(name='github_user_refresh_unlock')
 

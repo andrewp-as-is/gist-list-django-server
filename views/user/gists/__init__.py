@@ -17,6 +17,7 @@ class View(UserMixin, ListView):
     default_order_by_list = ["-created_at","id"]
 
     def get_model(self):
+        print('get_gist_model(self.github_user_stat): %s' % get_gist_model(self.github_user_stat))
         return get_gist_model(self.github_user_stat)
 
     def get(self, request, *args, **kwargs):

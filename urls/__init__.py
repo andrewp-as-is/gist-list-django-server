@@ -30,7 +30,7 @@ urlpatterns = [
     path('<slug:login>/', include('urls.user')),
     path('<slug:login>', include('urls.user')),
 
-    path('', include('urls.frontpage')),
+    path('', include('urls.homepage')),
 ]
 
 if settings.DEBUG:

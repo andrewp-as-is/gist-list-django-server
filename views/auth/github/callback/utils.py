@@ -3,7 +3,7 @@ import time
 from django.conf import settings
 import requests
 
-from base.apps.github.models import Token, User as GithubUser, User
+from base.apps.github.models import Token, User as GithubUser, User, UserMapping
 from base.apps.github.utils import get_api_timestamp
 from base.apps.user.models import User
 
@@ -43,10 +43,12 @@ def create_github_user(data):
         'updated_at':get_api_timestamp(data['updated_at'])
     }
     GithubUser.objects.update_or_create(defaults,id=data['id'])
+    defaults =dict(created_at=int(time.time()))
+    UserMapping.objects.get_or_create(defaults,login=data['login'],user_id=data['id'])
 
-def create_github_token(user_id,access_token):
+def create_github_token(user_id,token):
     defaults = {
-        'token':access_token,
+        'token':token,
         'core_ratelimit_limit':5000,
         'core_ratelimit_remaining':5000,
         'core_ratelimit_reset':None,
@@ -55,7 +57,7 @@ def create_github_token(user_id,access_token):
         'graphql_ratelimit_reset':None,
         'created_at':int(time.time())
     }
-    token,created = Token.objects.update_or_create(defaults,user_id=user_id)
+    token,created = Token.objects.get_or_create(defaults,user_id=user_id)
 
 def create_user(data):
     try:
