@@ -1,10 +1,28 @@
 import time
 
-from base.apps.github.models import Gist, GistMatview, GistStar, GistStarMatview, Language, Trash
-from base.apps.github.models import GistMatview #, GistStarInfoMatview
+from base.apps.github.models import Gist, GistMatview, GistStar, GistStarMatview, Language, Token, Trash
+from base.apps.github.models import GistMatview, UserApiRequestStat, UserApiResponseStat
 # from base.apps.github_recent_matview.models import Gist as RecentGist, StarredGist as RecentStarredGist
 
 LANGUAGE_NAME2COLOR = {l.name:l.color for l in Language.objects.all()}
+
+def get_token(user_id):
+    try:
+        return Token.objects.get(user_id=user_id)
+    except Token.DoesNotExist:
+        pass
+
+def get_user_request_stat(user_id):
+    try:
+        return UserApiRequestStat.objects.get(user_id=user_id)
+    except UserApiRequestStat.DoesNotExist:
+        pass
+
+def get_user_response_stat(user_id):
+    try:
+        return UserApiResponseStat.objects.get(user_id=user_id)
+    except UserApiResponseStat.DoesNotExist:
+        pass
 
 def get_language_list(user_stat,secret):
     language_list = []

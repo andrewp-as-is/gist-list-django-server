@@ -1,7 +1,6 @@
 from ...utils import get_gist_star_model
 from .. import View as _View
 
-
 class View(_View):
     context_object_name = "gist_star_list"
     template_name = "user/starred/gist_star_list.html"

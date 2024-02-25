@@ -1,0 +1,14 @@
+{% load timesince %}
+
+<ul class="d-md-flex d-none pagehead-actions float-none">
+<li class="mr-1" style="list-style-type:none">
+  {% if not context_data.refresh_disabled %}
+  <a class="btn btn-sm Link--muted" rel="nofollow" href="{{ request.path }}/refresh"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refresh</a>
+  {% else %}
+  <button class="btn btn-sm" aria-disabled="true">
+    <svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refreshing...
+  </button>
+{% endif %}
+</a>
+</li>
+</ul>

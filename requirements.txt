@@ -1,6 +1,5 @@
 Django
 dj-database-url
-django_command_worker
 django-github-oauth
 django_passwordless_user
 django-passwordless-auth

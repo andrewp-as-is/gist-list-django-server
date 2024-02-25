@@ -1,12 +1,12 @@
 __all__ = [
-    "AbstractReqestException",
-    "ReqestException",
+    "AbstractRequestException",
+    "RequestException",
 ]
 
 from django.db import models
 
 
-class AbstractReqestException(models.Model):
+class AbstractRequestException(models.Model):
     id = models.AutoField(primary_key=True)
     request = models.ForeignKey('Request', related_name='+',on_delete=models.DO_NOTHING)
     exc_class = models.TextField()
@@ -17,7 +17,7 @@ class AbstractReqestException(models.Model):
         abstract = True
 
 
-class ReqestException(AbstractReqestException):
+class RequestException(AbstractRequestException):
 
     class Meta:
         managed = False

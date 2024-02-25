@@ -2,8 +2,7 @@
 
 <ul class="d-md-flex d-none pagehead-actions float-none">
 <li class="mr-1" style="list-style-type:none">
-  github_user_stat={{ github_user_stat }}
-  {% if not context_data.github_user_stat or not context_data.github_user_stat.locked_at %}
+  {% if not context_data.refresh_disabled %}
   <a class="btn btn-sm Link--muted" rel="nofollow" href="/{{ context_data.login  }}/refresh"><svg class="octicon mr-1" style="width:16px;height:16px"><use xlink:href="#sync" /></svg>Refresh</a>
   {% else %}
   <button class="btn btn-sm" aria-disabled="true">

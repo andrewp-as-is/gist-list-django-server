@@ -1,0 +1,7 @@
+gists refresh vs user check
+{% if not context_data.github_user %}
+another url
+/USER/refresh
+/USER/gists/refresh ?
+/USER/starred
+/USER/forked

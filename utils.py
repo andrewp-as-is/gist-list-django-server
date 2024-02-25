@@ -9,8 +9,8 @@ from django.db import transaction
 from django.utils.timesince import timesince as _timesince
 import requests
 
-from django_command_worker.models import Queue
-from base.apps.github.models import UserEtag, UserPublicStat, AuthenticatedUserStat
+from base.apps.django_command_worker.models import Queue
+from base.apps.github.models import UserApiEtag, UserPublicStat, AuthenticatedUserStat
 from base.apps.github.utils.graphql import (
     get_user_followers_query,
     get_user_following_query,
@@ -20,7 +20,6 @@ from base.apps.github.utils.graphql import (
 
 from base.apps.github.utils.http_response import get_disk_relpath
 from base.apps.http_client.models import Request
-from base.apps.user.models import GithubUserRefresh
 from django_bulk_create import bulk_create
 
 def get_github_api_data(url, token):
@@ -162,15 +161,9 @@ def refresh_user(request,github_user, priority):
                 timeout=10,
                 priority=priority,
             ),
-            GithubUserRefresh(
-                user_id=request.user.id,
-                github_user_id=github_user.id,
-                started_at=timestamp
-            )
         ]
     model2kwargs = {
         Request:dict(ignore_conflicts=True),
-        GithubUserRefresh:dict(ignore_conflicts=True),
     }
     has_user_public_stat = bool(UserPublicStat.objects.filter(user_id=github_user.id).count()>0)
     UserPublicStat.objects.get_or_create(user_id=github_user.id)

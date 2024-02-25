@@ -12,7 +12,7 @@ from datetime import datetime
 import os
 import time
 
-from base.management.base import BaseCommand
+from django.core.management.base import BaseCommand
 
 from ...models import Ping
 

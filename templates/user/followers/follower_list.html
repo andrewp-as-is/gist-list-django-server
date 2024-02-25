@@ -4,6 +4,10 @@
 
 {% block title %}{% if request.user.login == login %}Your followers{% else %}{{ context_data.login  }}{% if context_data.github_user.name %} ({{ context_data.github_user.name}}) {% endif %}/Followers{% endif %}{% endblock %}
 
+{% block pagehead_actions %}
+{% include "user/followers/_blocks/pagehead/actions.html" %}
+{% endblock %}
+
 {% block container %}
 {% if not github_user.followers_count %}
     {% include "user/followers/_blocks/blankslate.html" %}

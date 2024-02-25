@@ -16,6 +16,29 @@ class View(UserMixin, ListView):
     template_name = "user/gists/gist_list.html"
     default_order_by_list = ["-created_at","id"]
 
+    def has_request(self):
+        request_stat = self.github_user_request_stat
+        response_stat = self.github_user_response_stat
+        if not request_stat:
+            return False
+        if not response_stat:
+            return True
+        if self.secret: # authenticated user
+            request_created_at = max(
+                request_stat.rest_api_authenticated_user_gists_request_created_at or 0,
+                request_stat.graphql_api_authenticated_user_gists_request_created_at or 0,
+            )
+            response_created_at = min(
+                response_stat.rest_api_authenticated_user_gists_response_created_at or 0,
+                response_stat.graphql_api_authenticated_user_gists_response_created_at or 0,
+            )
+        else: # public
+            pass
+            # todo
+            #request_created_at = self.github_user_request.public_gists_request_created_at
+            #refreshed_at = self.github_user_refresh.public_gists_refreshed_at
+        return min(request_created_at or 0)>min(response_created_at or 0)
+
     def get_model(self):
         print('get_gist_model(self.github_user_stat): %s' % get_gist_model(self.github_user_stat))
         return get_gist_model(self.github_user_stat)
@@ -60,6 +83,7 @@ class View(UserMixin, ListView):
                 'menu_item_list':self.get_type_menu_item_list()
             }
         )
+        context_data['refresh_disabled'] = self.has_request()
         context_data['details'] = details
         context['context_data'] = context_data
         return context

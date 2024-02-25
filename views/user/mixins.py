@@ -14,8 +14,7 @@ from base.apps.github.models import (
     AuthenticatedUserStat,
 )
 from base.apps.postgres.models import Matview
-from base.apps.user.models import GithubUserRefresh
-from .utils import get_language_list, get_stat_data, get_tag_list
+from .utils import get_language_list, get_stat_data, get_tag_list, get_token, get_user_request_stat, get_user_response_stat
 
 class UserMixin:
     def dispatch(self, *args, **kwargs):
@@ -29,10 +28,10 @@ class UserMixin:
             return redirect(gist.get_absolute_url())
         except Gist.DoesNotExist:
             pass
-        live_matview_list = []
         self.github_user = None
-        self.github_user_refresh_lock = None
         self.github_user_stat = None
+        self.github_user_request_stat = None
+        self.github_user_refresh_stat = None
         self.language2count = {}
         self.tag2count = {}
         self.secret = False
@@ -48,6 +47,8 @@ class UserMixin:
                 self.tag2count = get_stat_data(self.github_user_stat.tag_stat)
             except stat_model.DoesNotExist:
                 pass
+            self.github_user_request_stat = get_user_request_stat(self.github_user.id)
+            self.github_user_response_stat = get_user_response_stat(self.github_user.id)
         except User.DoesNotExist:
             pass
         except UserMapping.DoesNotExist:
@@ -73,7 +74,6 @@ class UserMixin:
                 #tags_count=len(self.github_user_stat.public_tag_stat.splitlines())
             context_data["github_user"] = self.github_user
             context_data["github_user_stat"] = self.github_user_stat
-            context_data["github_user_refresh_lock"] = self.github_user_refresh_lock
             if self.github_user_stat:
                 # todo: languages
                 links = context_data.get('links',{})
@@ -114,3 +114,8 @@ class UserMixin:
         context_data['tag_list'] = self.tag_list
         context['context_data'] = context_data
         return context
+
+    def get_token(self):
+        token = get_token(self.request.user.id)
+        if token:
+            return token.token

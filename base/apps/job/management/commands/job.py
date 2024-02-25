@@ -1,6 +1,6 @@
 from django.apps import apps
 
-from django_command_worker.models import Queue
+from base.apps.django_command_worker.models import Queue
 from base.management.base import BaseCommand
 
 

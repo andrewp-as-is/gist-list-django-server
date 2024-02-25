@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.db import connection
 
-from django_command_worker.models import Queue
+from base.apps.django_command_worker.models import Queue
 from base.apps.postgres.models import Query, RefreshJob
 from django_stdout.management.base import StdoutMessageCommand
 
